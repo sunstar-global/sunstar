@@ -1,15 +1,25 @@
 export default function decorate(block) {
     //check if the section has class button and add the button class to a tag check if it has button-secondary class and add secondary class to a tag, check if section has button-branded and check the a href to map the brand (fro example apple.com add icon <span class="icon icon-apple"></span> after the text in a)
     //section is the first div with classes on the the first div
+    decorateButtons(block);
     
+}
+
+export function decorateButtons(block) {
     const isButton = block.classList.contains('button') || block.classList.contains('button-outline') || block.classList.contains('button-secondary');
     if(isButton){
         const a = block.querySelectorAll('a');
         if(a){
               
             a.forEach(el => {
-                //add button-container to the parent p element
-                el.parentNode.classList.add('button-container');
+                //find the closest parent p element and add button container  class to it
+                const p = el.closest('p');
+                if(p){
+                    p.classList.add('button-container');
+                } else {
+                    const parent = el.parentElement;
+                    parent.classList.add('button-container');
+                }
                 el.classList.add('button');
                 if(block.classList.contains('button-secondary')){
                     el.classList.add('button-secondary');
@@ -19,11 +29,11 @@ export default function decorate(block) {
                 }
                 
                 const href = el.getAttribute('href');
-                if(href.includes('apple.com')){
-                    el.innerHTML += '<span class="icon icon-apple"></span>';
+                if(href.includes('podcasts.apple.com')){   
+                    el.innerHTML += '<span class="icon icon-apple-podcasts brand"></span>';
                 }
                 if(href.includes('spotify.com')){
-                    el.innerHTML += '<span class="icon icon-spotify"></span>';
+                    el.innerHTML += '<span class="icon icon-spotify brand"></span>';
                 }
                 
 

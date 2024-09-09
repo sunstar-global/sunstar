@@ -1,7 +1,9 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { cropString } from '../../scripts/scripts.js';
+import { decorateButtons } from '../../blocks/text/text.js';
 
 export default function decorate(block) {
+  decorateButtons(block);
   const isHero = block.classList.contains('hero-block');
   /* change to ul, li */
   const ul = document.createElement('ul');
