@@ -110,7 +110,7 @@ main .block.cards {
   text-wrap: balance;
 }
 
-.cards .cards-card-body >:last-of-type {
+.cards .cards-card-body >:last-child {
   margin-bottom: 0;
 }
 

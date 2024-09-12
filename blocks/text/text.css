@@ -55,6 +55,12 @@ main .block.text.black p {
   color: var(--light-black);
 }
 
+main .block.text h1, 
+main .block.text h2, 
+main .block.text h3 {
+  margin: 0 auto 1rem!important;
+}
+
 main .block.text.highlight {
   margin-top: 5rem;
 }
@@ -270,6 +276,12 @@ main .block.text.red-circle > div > div * {
   main .block.text.p-h4 p {
     font-size: var(--h4-font-size-desktop);
     margin: 2rem 0 0.5rem;
+  }
+
+  main .block.text h1, 
+  main .block.text h2, 
+  main .block.text h3 {
+    margin: 0 auto 1.5rem!important;
   }
 
 }

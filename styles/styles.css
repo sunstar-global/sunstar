@@ -26,6 +26,7 @@
   --alice-blue: #e8f5ff;
   --caribbean-green: #00be91;
   --indigo: #6610f2;
+  --indigo-800: #3a0ca3;
   --purple: #6f42c1;
   --pink: #e83e8c;
   --red: #eb0000;
@@ -34,6 +35,7 @@
   --orange-light: #f68d2e;
   --green: #28a745;
   --teal: #20c997;
+  --teal-600: #0d9488;
   --cyan: #17a2b8;
   --white: #fff;
   --gray: #6c757d;
@@ -120,7 +122,7 @@
 
   /* Heading Variables */
   --hero-font-size-desktop: var(--heading-font-size-xxl);
-  --hero-font-size-mobile: var(--heading-font-size-xl);
+  --hero-font-size-mobile: var(--heading-font-size-m);
   --h1-font-size-desktop: var(--heading-font-size-mxl);
   --h1-font-size-mobile: var(--heading-font-size-m);
   --h2-font-size-desktop: var(--heading-font-size-s);
@@ -596,7 +598,7 @@ main img {
   height: auto;
 }
 
-a:any-link {
+a:any-link, button {
   color: var(--link-color);
   text-decoration: none;
 }
@@ -622,24 +624,23 @@ button {
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-a.button.primary {
+a.button.primary, button.primary {
   background: var(--secondary);
   color: var(--white);
 }
 
-
-a.button:hover,
+a.button:not(:disabled):hover,
 a.button:focus,
-button:hover,
+button:not(:disabled):hover,
 button:focus {
   background-color: #0092cc;
   cursor: pointer;
 }
 
-button:disabled,
-button:disabled:hover {
-  background-color: var(--overlay-background-color);
+button:disabled {
+  opacity: 0.5;
   cursor: unset;
+  font-size: var(--body-font-size-m);
 }
 
 a.button.secondary,
@@ -649,10 +650,13 @@ button.secondary {
   color: var(--text-color);
 }
 
+a.button.branded {
+  padding-inline: 2.5rem;
+}
+
 a.button.outline {
   background-color: unset;
   border: 1px solid var(--secondary);
-  padding-inline: 2.5rem;
 }
 
 .dark a.button.outline {
@@ -747,7 +751,7 @@ main .section.hero {
 }
 
 main .section.dark.hero  {
-  padding-block: 6rem;
+  padding-block: 3rem;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -758,12 +762,17 @@ main .section .section-container {
 }
 
 main .section.auto-top-spacing .section-container {
-  margin-top: 3rem !important;
+  margin-top: 4rem !important;
 }
 
 main .section .default-content-wrapper:first-of-type > :first-child, 
 main .section.no-top-margin .default-content-wrapper  {
   margin-top: 0;
+}
+
+main .section.hero  .section-container {
+  margin-top: 0!important;
+  padding: 0!important;
 }
 
 main .section .default-content-wrapper:last-of-type > :last-child {
@@ -1041,7 +1050,7 @@ main .section.dark.dark-secondary {
 
 
 main .section.bg-gradient {
-  background: linear-gradient(135deg, #0d9488, var(--primary), #3730a3);
+  background: linear-gradient(135deg, var(--teal-600), var(--primary), var(--indigo-800));
 }
 
 /* section - beau-blue */
@@ -1067,6 +1076,10 @@ main .section.apple-caribbean-green {
 /* section - light-blue */
 main .section.light-blue {
   background-color: var(--transparent-blue-light-color);
+}
+
+main .section.bg-oral-health {
+  background-color: var(--teal-600);
 }
 
 /* section - bg-primary */
@@ -1529,5 +1542,9 @@ p.button-container,
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  main .section.dark.hero  {
+    padding-block: 6rem;
   }
 }

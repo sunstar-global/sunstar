@@ -6,33 +6,45 @@ export default function decorate(block) {
 }
 
 export function decorateButtons(block) {
-    const isButton = block.classList.contains('button') || block.classList.contains('button-outline') || block.classList.contains('button-secondary');
+    const isButton = block.classList.contains('button') || block.classList.contains('button-outline') || block.classList.contains('button-secondary') || block.classList.contains('button-primary');
+    console.log(block.classList);
     if(isButton){
         const a = block.querySelectorAll('a');
         if(a){
               
             a.forEach(el => {
-                //find the closest parent p element and add button container  class to it
+                
+                el.classList.add('button');
                 const p = el.closest('p');
+        
                 if(p){
                     p.classList.add('button-container');
                 } else {
                     const parent = el.parentElement;
                     parent.classList.add('button-container');
                 }
-                el.classList.add('button');
+                
                 if(block.classList.contains('button-secondary')){
-                    el.classList.add('button-secondary');
+                    el.classList.add('secondary');
                 }
+        
                 if(block.classList.contains('button-outline')){  
                     el.classList.add('outline');
                 }
+        
+                if(block.classList.contains('button-primary')){
+                    el.classList.add('primary');
+                }
                 
                 const href = el.getAttribute('href');
-                if(href.includes('podcasts.apple.com')){   
+
+                if(href.includes('podcasts.apple.com')){
+                    el.classList.add('branded');   
                     el.innerHTML += '<span class="icon icon-apple-podcasts brand"></span>';
                 }
+
                 if(href.includes('spotify.com')){
+                    el.classList.add('branded');
                     el.innerHTML += '<span class="icon icon-spotify brand"></span>';
                 }
                 
