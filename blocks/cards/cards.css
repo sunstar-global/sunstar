@@ -379,7 +379,10 @@ main .nolink .cards > ul > li .cards-card-image {
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
-  border: 1px solid #3C46501A;
+}
+
+main .cards.text-center > ul > li .cards-card-body {
+  text-align: center!important;
 }
 
 main .nolink .cards.info-points > ul > li .cards-card-image {
