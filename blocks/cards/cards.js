@@ -1,7 +1,40 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { cropString } from '../../scripts/scripts.js';
+import { decorateButtons } from '../../blocks/text/text.js';
 
 export default function decorate(block) {
+  decorateButtons(block);
+
+  const isDisabledButton = block.classList.contains('disabled');
+
+
+  if (isDisabledButton) {
+    //find the h7 and create a button with disabled class
+    const h6 = block.querySelectorAll('h6');
+
+    if (h6) {
+
+      h6.forEach(el => {
+        //if h6 is last child then add create button with disabled class
+        //add several classes to the button
+      
+        if (el.nextElementSibling === null) {
+          //create button-container
+          const p = document.createElement('p');
+          p.classList.add('button-container');
+          el.parentElement.append(p);
+          p.append(el);
+          const button = document.createElement('button');
+          button.classList.add('button', 'primary', 'branded');
+          button.disabled = true;
+          button.textContent = el.textContent;
+          el.replaceWith(button);
+        } 
+      });
+      
+    }
+  }
+
   const isHero = block.classList.contains('hero-block');
   /* change to ul, li */
   const ul = document.createElement('ul');

@@ -110,7 +110,7 @@ main .block.cards {
   text-wrap: balance;
 }
 
-.cards .cards-card-body >:last-of-type {
+.cards .cards-card-body >:last-child {
   margin-bottom: 0;
 }
 
@@ -198,6 +198,11 @@ main .block.cards.light-background ul > li {
 
 .cards.aspect-ratio-16-9 .cards-card-image {
   aspect-ratio: 16/9;
+  height: unset;
+}
+
+.cards.aspect-ratio-1-1 .cards-card-image {
+  aspect-ratio: 1/1;
   height: unset;
 }
 

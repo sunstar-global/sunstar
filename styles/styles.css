@@ -26,6 +26,7 @@
   --alice-blue: #e8f5ff;
   --caribbean-green: #00be91;
   --indigo: #6610f2;
+  --indigo-800: #3a0ca3;
   --purple: #6f42c1;
   --pink: #e83e8c;
   --red: #eb0000;
@@ -34,6 +35,7 @@
   --orange-light: #f68d2e;
   --green: #28a745;
   --teal: #20c997;
+  --teal-600: #0d9488;
   --cyan: #17a2b8;
   --white: #fff;
   --gray: #6c757d;
@@ -65,6 +67,7 @@
   --transparent-grey-light-color: #3c46501f;
   --transparent-blue-light-color: #f0f5f7ff;
   --transparent-white-color: #ffffff1e;
+  --transparent-white-color-50: #ffffff80;
   --off-white: #ffffff80;
   --muted-text: #ffffffb3;
   --light-grey: #3c46507f;
@@ -82,6 +85,9 @@
   --underfill-dark-indigo: #490c61;
   --brown-rice-background: #d07c68;
   --brown-rice-color: #821e14;
+  --alpha-1: 100%;
+  --alpha-0-5: 50%;
+
 
 
   /* fonts */
@@ -115,6 +121,8 @@
   --heading-font-size-xxxs: 12px;
 
   /* Heading Variables */
+  --hero-font-size-desktop: var(--heading-font-size-xxl);
+  --hero-font-size-mobile: var(--heading-font-size-m);
   --h1-font-size-desktop: var(--heading-font-size-mxl);
   --h1-font-size-mobile: var(--heading-font-size-m);
   --h2-font-size-desktop: var(--heading-font-size-s);
@@ -274,7 +282,10 @@ h6 {
 
 h6 + h1,
 h6 + h2,
-h6 + h3 {
+h6 + h3,
+p.h6 + h1,
+p.h6 + h2,
+p.h6 + h3 {
   margin-top: 0;
 }
 
@@ -290,6 +301,10 @@ p {
   line-height: 1.7em;
   text-size-adjust: 100%;
   text-wrap: pretty;
+}
+
+.balance p {
+  text-wrap: balance;
 }
 
 p.lead {
@@ -345,6 +360,10 @@ a {
   color: var(--white);
 }
 
+.hero h1, .hero h2, .hero h3, .hero h4 {
+  font-size: var(--hero-font-size-mobile);
+}
+
 .h1 h2, .h1 h3, .h1 h4 {
   font-size: var(--h1-font-size-mobile)
 }
@@ -359,6 +378,19 @@ a {
 
 .h4 h1, .h4 h2, .h4 h3 {
   font-size: var(--h4-font-size-mobile);
+}
+
+main p.h6, 
+main h1.h6, 
+main h2.h6 {
+  color: var(--hero-strong-color);
+  font-size: var(--heading-font-size-xxxs);
+  letter-spacing: 0.7px;
+  margin-bottom: 0.75rem!important;
+  margin-top: 0!important;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: var(--heading-font-size-xxs);
 }
 
 main {
@@ -476,8 +508,23 @@ main pre {
   background-image: url("/icons/sunstar-logo.svg");
 }
 
+.icon.brand {
+  margin-left: 0.75rem;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
 .icon.icon-linkedin {
   background-image: url("/icons/linkedin.svg");
+}
+
+.icon.icon-spotify {
+  background-image: url("/icons/spotify.svg");
+  background-size: contain;
+}
+
+.icon.icon-apple-podcasts {
+  background-image: url("/icons/apple-podcasts.svg");
 }
 
 .icon.icon-youtube {
@@ -551,7 +598,7 @@ main img {
   height: auto;
 }
 
-a:any-link {
+a:any-link, button {
   color: var(--link-color);
   text-decoration: none;
 }
@@ -577,23 +624,23 @@ button {
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-a.button.primary {
+a.button.primary, button.primary {
   background: var(--secondary);
   color: var(--white);
 }
 
-a.button:hover,
+a.button:not(:disabled):hover,
 a.button:focus,
-button:hover,
+button:not(:disabled):hover,
 button:focus {
   background-color: #0092cc;
   cursor: pointer;
 }
 
-button:disabled,
-button:disabled:hover {
-  background-color: var(--overlay-background-color);
+button:disabled {
+  opacity: 0.5;
   cursor: unset;
+  font-size: var(--body-font-size-m);
 }
 
 a.button.secondary,
@@ -601,6 +648,30 @@ button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
   color: var(--text-color);
+}
+
+a.button.branded {
+  padding-inline: 2.5rem;
+}
+
+a.button.outline {
+  background-color: unset;
+  border: 1px solid var(--secondary);
+}
+
+.dark a.button.outline {
+  border: 1px solid var(--transparent-white-color-50);
+  color: var(--white);
+}
+
+a.button.outline:hover {
+  opacity: 0.8;
+}
+
+.dark a.button.outline:hover {
+  border: 1px solid var(--white);
+  color: var(--white);
+  opacity: 1;
 }
 
 main a:hover {
@@ -671,6 +742,18 @@ main .block.centered {
 
 /* START Section Styles START */
 
+main .section.flex {
+  display: flex;
+}
+
+main .section.hero {
+  min-height: 37.5rem;
+}
+
+main .section.dark.hero  {
+  padding-block: 3rem;
+}
+
 /* stylelint-disable-next-line no-descending-specificity */
 main .section .section-container {
   max-width: 100%;
@@ -679,11 +762,17 @@ main .section .section-container {
 }
 
 main .section.auto-top-spacing .section-container {
-  margin-top: 3rem !important;
+  margin-top: 4rem !important;
 }
 
-main .section .default-content-wrapper:first-of-type > :first-child {
+main .section .default-content-wrapper:first-of-type > :first-child, 
+main .section.no-top-margin .default-content-wrapper  {
   margin-top: 0;
+}
+
+main .section.hero  .section-container {
+  margin-top: 0!important;
+  padding: 0!important;
 }
 
 main .section .default-content-wrapper:last-of-type > :last-child {
@@ -955,6 +1044,15 @@ main .section.dark {
   background-color: var(--primary);
 }
 
+main .section.dark.dark-secondary {
+  background-color: var(--cyan);
+}
+
+
+main .section.bg-gradient {
+  background: linear-gradient(135deg, var(--teal-600), var(--primary), var(--indigo-800));
+}
+
 /* section - beau-blue */
 main .section.beau-blue {
   background-color: var(--beaublue);
@@ -978,6 +1076,10 @@ main .section.apple-caribbean-green {
 /* section - light-blue */
 main .section.light-blue {
   background-color: var(--transparent-blue-light-color);
+}
+
+main .section.bg-oral-health {
+  background-color: var(--teal-600);
 }
 
 /* section - bg-primary */
@@ -1096,6 +1198,12 @@ main .section.with-background-image.align-top > .section-container, main .sectio
   transform: translate(-50%, 0%);
 }
 
+p.button-container, 
+*.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
 /* END Section Styles END */
 
@@ -1330,6 +1438,10 @@ main .section.with-background-image.align-top > .section-container, main .sectio
     margin: 2rem 0 0.5rem;
   }
 
+  .hero h1, .hero h2, .hero h3, .hero h4 {
+    font-size: var(--hero-font-size-desktop);
+  }
+
   .h1 h2, .h1 h3, .h1 h4 {
     font-size: var(--h1-font-size-desktop)
   }
@@ -1353,8 +1465,6 @@ main .section.with-background-image.align-top > .section-container, main .sectio
   h6 {
     font-size: var(--heading-font-size-xxs);
   }
-
-
 
   p,
   dl,
@@ -1419,5 +1529,22 @@ main .section.with-background-image.align-top > .section-container, main .sectio
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
+  }
+
+  p.button-container,
+  *.button-container {
+    display: inline-flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  main .section .cards *.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  main .section.dark.hero  {
+    padding-block: 6rem;
   }
 }
