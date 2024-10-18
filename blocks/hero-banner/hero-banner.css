@@ -1,6 +1,7 @@
 .section.full-width.hero-banner-container {
     height: auto;
     margin-bottom: 2rem;
+    position: relative;
 }
 
 main .block.hero-banner.composite.two-column .composite-container {
@@ -71,6 +72,16 @@ main .block.hero-banner.composite.button a:hover {
     display: none;
 }
 
+
+.hero-banner .hero-banner-media-section {
+    height: 32rem;
+    position: absolute;
+}
+
+.hero-banner.superposition .hero-banner-media-section {
+    height: 100%;
+}
+
 .hero-banner video,
 .hero-banner img,
 .hero-banner.image-right img {
@@ -78,6 +89,10 @@ main .block.hero-banner.composite.button a:hover {
     object-fit: cover;
     height: 22.5rem;
     object-position: 80% 0;
+}
+
+.hero-banner.superposition img {
+    height: 100%;
 }
 
 .hero-banner.image-center img {
@@ -126,7 +141,8 @@ main .block.hero-banner.composite.button a:hover {
     height: 15rem;
 }
 
-.hero-banner.careers .hero-banner-text-container {
+.hero-banner.careers .hero-banner-text-container,
+.hero-banner.superposition .hero-banner-text-container {
     background: unset;
     flex-direction: column;
     text-align: center;
@@ -221,6 +237,14 @@ main .block.hero-banner.composite.button a:hover {
     width: 2.125rem;
 }
 
+.hero-banner.superposition .hero-banner-media-section::after {
+    content: "";
+    background: var(--transparent-grey-color-2);
+    position: absolute;
+    inset: 0;
+    display: block;
+}
+
 @media (min-width: 48rem) {
     .hero-banner .hero-banner-text-container::before:not(.right-text) {
         content: "";
@@ -246,14 +270,11 @@ main .block.hero-banner.composite.button a:hover {
     }
 
     /* TODO refactor to work on firefox as well */
-    .section.full-width.hero-banner-container:has(.hero-banner.careers) {
+    .section.full-width.hero-banner-container:has(.hero-banner.careers),
+    .section.full-width.hero-banner-container:has(.hero-banner.superposition) {
         height: 36.4rem;
     }
 
-    .hero-banner .hero-banner-media-section {
-        height: 32rem;
-        position: absolute;
-    }
 
     .hero-banner video,
     .hero-banner img,
@@ -354,16 +375,19 @@ main .block.hero-banner.composite.button a:hover {
         margin: 0 auto 1.5rem;
     }
 
-    .hero-banner.careers .hero-banner-heading-container {
+    .hero-banner.careers .hero-banner-heading-container,
+    .hero-banner.superposition .hero-banner-heading-container {
         top: 0;
     }
 
-    .hero-banner.careers .hero-banner-media-section {
+    .hero-banner.careers .hero-banner-media-section,
+    .hero-banner.superposition .hero-banner-media-section {
         display: block;
         height: 40rem;
     }
 
-    .hero-banner.careers .hero-banner-media-section::after {
+    .hero-banner.careers .hero-banner-media-section::after,
+    .hero-banner.superposition .hero-banner-media-section::after {
         content: "";
         background: var(--transparent-grey-color-2);
         position: absolute;
@@ -372,8 +396,10 @@ main .block.hero-banner.composite.button a:hover {
     }
 
     .hero-banner.careers .hero-banner-text-wrapper h2,
-    .hero-banner.careers .hero-banner-text-wrapper h1 {
-        font-size: 3rem;
+    .hero-banner.careers .hero-banner-text-wrapper h1,
+    .hero-banner.superposition .hero-banner-text-wrapper h2,
+    .hero-banner.superposition .hero-banner-text-wrapper h1 {
+        font-size: var(--heading-font-size-xxl);
     }
 }
 
@@ -389,7 +415,8 @@ main .block.hero-banner.composite.button a:hover {
         margin-bottom: -2rem;
     }
 
-    .hero-banner.careers .hero-banner-text-container {
+    .hero-banner.careers .hero-banner-text-container,
+    .hero-banner.superposition .hero-banner-text-container {
         width: 74rem;
     }
 
