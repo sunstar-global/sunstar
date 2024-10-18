@@ -97,28 +97,28 @@
   --fixed-font-family: "Roboto Mono", menlo, consolas, "Liberation Mono",
     monospace;
 
-  /* body sizes */
-  --body-font-size-xxl: 22px;
-  --body-font-size-xl: 20px;
-  --body-font-size-l: 18px;
-  --body-font-size-m: 16px;
-  --body-font-size-s: 14px;
-  --body-font-size-xs: 12px;
+  /* Body sizes */
+  --body-font-size-xxl: 1.375rem; /* 22px / 16px = 1.375rem */
+  --body-font-size-xl: 1.25rem;   /* 20px / 16px = 1.25rem */
+  --body-font-size-l: 1.125rem;   /* 18px / 16px = 1.125rem */
+  --body-font-size-m: 1rem;       /* 16px / 16px = 1rem */
+  --body-font-size-s: 0.875rem;   /* 14px / 16px = 0.875rem */
+  --body-font-size-xs: 0.75rem;   /* 12px / 16px = 0.75rem */
 
-  /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 42px;
-  --heading-font-size-xmxl: 40px;
-  --heading-font-size-mxl: 36px;
-  --heading-font-size-l: 32px;
-  --heading-font-size-ml: 30px;
-  --heading-font-size-m: 28px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-ms: 20px;
-  --heading-font-size-xs: 18px;
-  --heading-font-size-mxs: 16px;
-  --heading-font-size-xxs: 14px;
-  --heading-font-size-xxxs: 12px;
+  /* Heading sizes */
+  --heading-font-size-xxl: 3rem;       /* 48px / 16px = 3rem */
+  --heading-font-size-xl: 2.625rem;    /* 42px / 16px = 2.625rem */
+  --heading-font-size-xmxl: 2.5rem;    /* 40px / 16px = 2.5rem */
+  --heading-font-size-mxl: 2.25rem;    /* 36px / 16px = 2.25rem */
+  --heading-font-size-l: 2rem;         /* 32px / 16px = 2rem */
+  --heading-font-size-ml: 1.875rem;    /* 30px / 16px = 1.875rem */
+  --heading-font-size-m: 1.75rem;      /* 28px / 16px = 1.75rem */
+  --heading-font-size-s: 1.5rem;       /* 24px / 16px = 1.5rem */
+  --heading-font-size-ms: 1.25rem;     /* 20px / 16px = 1.25rem */
+  --heading-font-size-xs: 1.125rem;    /* 18px / 16px = 1.125rem */
+  --heading-font-size-mxs: 1rem;       /* 16px / 16px = 1rem */
+  --heading-font-size-xxs: 0.875rem;   /* 14px / 16px = 0.875rem */
+  --heading-font-size-xxxs: 0.75rem;   /* 12px / 16px = 0.75rem */
 
   /* Heading Variables */
   --hero-font-size-desktop: var(--heading-font-size-xxl);
@@ -179,7 +179,6 @@ html {
 }
 
 body {
-  font-size: var(--body-font-size-m);
   font-family: var(--body-font-family);
   font-variant-ligatures: common-ligatures;
   font-style: normal;
@@ -384,7 +383,6 @@ main p.h6,
 main h1.h6, 
 main h2.h6 {
   color: var(--hero-strong-color);
-  font-size: var(--heading-font-size-xxxs);
   letter-spacing: 0.7px;
   margin-bottom: 0.75rem!important;
   margin-top: 0!important;

@@ -53,6 +53,10 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
   let textDiv = headingRow.querySelector('div');
   const heroBannerWrapper = document.createElement('div');
 
+  //check if it contains h6 if yes replace it with p and add h6 class
+
+ 
+
   if (overlap) {
     if (textDiv.querySelector('p') === null) {
       textDiv = textDiv.nextElementSibling;
@@ -78,16 +82,15 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
 
     pElement.append(linkedin);
   } else if (!target.classList.contains('small-box') && pElement && pElement.childElementCount === 1 && pElement.firstElementChild.tagName === 'A') {
-    textDiv.removeChild(pElement);
-    const buttonDiv = document.createElement('div');
-    buttonDiv.classList.add('hero-banner-button-container');
-    const aElement = pElement.querySelector('a');
-    const spanElement = document.createElement('span');
-    spanElement.textContent = aElement.textContent;
-    aElement.textContent = '';
-    buttonDiv.appendChild(aElement);
-    buttonDiv.appendChild(spanElement);
-    headingRow.appendChild(buttonDiv);
+   
+  }
+
+  if (textDiv.querySelector('h6') !== null) {
+    const h6 = textDiv.querySelector('h6');
+    const p = document.createElement('p');
+    p.classList.add('h6');
+    p.innerHTML = h6.innerHTML;
+    h6.replaceWith(p);
   }
 
   heroBannerWrapper.classList.add('hero-banner-heading-container');
