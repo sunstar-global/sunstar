@@ -1199,7 +1199,7 @@ main .section.with-background-image.align-top > .section-container, main .sectio
 p.button-container, 
 *.button-container {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -1533,6 +1533,7 @@ p.button-container,
   *.button-container {
     display: inline-flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 

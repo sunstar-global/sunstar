@@ -12,6 +12,7 @@
 
 import { getNamedValueFromTable } from "../../scripts/scripts.js";
 import { createTabs, addTabs } from "../../scripts/blocks-utils.js";
+import { decorateButtons } from '../../blocks/text/text.js';
 
 /* eslint-disable no-console */
 
@@ -112,6 +113,7 @@ export default function decorate(block) {
   const media = getMedia(block);
   const text = getText(block);
   const tabs = createTabs(block, text);
+  decorateButtons(block);
   if (tabs) {
     // move the tab riders in front
     const wrapper = block.parentElement;

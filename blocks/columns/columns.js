@@ -1,4 +1,5 @@
 import { embedYoutube, loadEmbed } from "../embed/embed.js";
+import { decorateButtons } from "../text/text.js";
 
 export function applySplitPercentages(block) {
   const ratios = [];
@@ -195,28 +196,36 @@ export default function decorate(block) {
     !block.classList.contains("no-buttons") &&
     !block.classList.contains("embed-yt")
   ) {
-    [...block.firstElementChild.children].forEach((row) => {
-      [...row.children].forEach((col) => {
-        const anchors = col.querySelectorAll("a");
-        if (anchors.length) {
-          [...anchors].forEach((a) => {
-            a.title = a.title || a.textContent;
-            const up = a.parentElement;
-            if (!a.querySelector("img") && up.tagName !== "LI") {
-              if (up.tagName === "P") {
-                up.classList.add("button-container");
-              }
-              a.classList.add("button");
-              if (a.previousElementSibling?.tagName === "A") {
-                a.classList.add("tertiary");
-              } else {
-                a.classList.add("primary");
-              }
+    if(block.classList.contains('button')) {
+      console.log("true");
+      decorateButtons(block);
+    } else {
+      [...block.firstElementChild.children].forEach((row) => {
+        [...row.children].forEach((col) => {
+          const anchors = col.querySelectorAll("a");
+          //check if contains button
+        
+            if (anchors.length) {
+              [...anchors].forEach((a) => {
+                a.title = a.title || a.textContent;
+                const up = a.parentElement;
+                if (!a.querySelector("img") && up.tagName !== "LI") {
+                  if (up.tagName === "P") {
+                    up.classList.add("button-container");
+                  }
+                  a.classList.add("button");
+                  if (a.previousElementSibling?.tagName === "A") {
+                    a.classList.add("tertiary");
+                  } else {
+                    a.classList.add("primary");
+                  }
+                }
+              });
             }
-          });
-        }
+          
+        });
       });
-    });
+    }
   }
 
   if (youtubeAnchor.length && block.classList.contains("embed-yt")) {

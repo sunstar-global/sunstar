@@ -312,6 +312,10 @@ main .block.hero-banner.composite.button a:hover {
         padding-left: 2rem;
     }
 
+    .hero-banner.superposition .hero-banner-text-wrapper {
+        padding-left: 0;
+    }
+
     .hero-banner .hero-banner-button-container a.button.primary {
         margin-bottom: 0.5rem;
         height: 5.125rem;

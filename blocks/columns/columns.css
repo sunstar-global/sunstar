@@ -98,11 +98,11 @@
 }
 
 .columns p.button-container {
-  display: inline;
+  display: flex;
   align-items: flex-start;
+  flex-wrap: nowrap;
   flex-direction: column;
   gap: 1rem;
-  width: 11rem;
 }
 
 .columns a.button.tertiary {
@@ -474,7 +474,6 @@ div.img-col > video {
   .columns p.button-container {
     flex-direction: row;
     align-items: center;
-    gap: 2rem;
     width: unset;
   }
 
