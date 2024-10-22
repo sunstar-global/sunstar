@@ -1,5 +1,6 @@
 import { getLanguage } from '../../scripts/scripts.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { decorateButtons } from '../../blocks/text/text.js';
 
 /* eslint-disable no-console */
 
@@ -126,6 +127,8 @@ function appendColumnContent(item, column) {
 
 export default async function decorate(block) {
   const rows = [...block.children];
+
+  decorateButtons(block);
 
   if (block.classList && block.classList.contains('composite')) {
     const compositeContainer = document.createElement('div');

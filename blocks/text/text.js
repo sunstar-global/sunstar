@@ -7,7 +7,7 @@ export default function decorate(block) {
 
 export function decorateButtons(block) {
     const isButton = block.classList.contains('button') || block.classList.contains('button-outline') || block.classList.contains('button-secondary') || block.classList.contains('button-primary');
-    console.log(block.classList);
+    
     if(isButton){
         const a = block.querySelectorAll('a');
         if(a){

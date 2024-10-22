@@ -122,6 +122,15 @@ main .hero-horiz-tabs-img video {
   height: inherit;
 }
 
+main .hero-horizontal-tabs.image-contain .hero-horiz-tabs-img picture > img,
+main .hero-horizontal-tabs.image-contain .hero-horiz-tabs-img video {
+  object-fit: contain;
+  object-position: center center;
+  max-height: 100%;
+  min-width: 100%;
+  height: inherit;
+}
+
 main .hero-horizontal-tabs nav ul {
   padding: 0;
   margin: 0;
@@ -212,6 +221,8 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
 
   main .hero-horiz-tabs-img {
     order: 0;
+    display: flex;
+    align-items: center;
   }
 
   main .hero-horiz-tabs-img picture {
