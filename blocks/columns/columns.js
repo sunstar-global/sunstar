@@ -193,8 +193,7 @@ export default function decorate(block) {
 
   // stylize anchors unless block has no-buttons class or the anchor is a youtube link which has embed-yt class
   if (
-    !block.classList.contains("no-buttons") &&
-    !block.classList.contains("embed-yt")
+    !block.classList.contains("no-buttons") 
   ) {
     if(block.classList.contains('button')) {
       console.log("true");
