@@ -1232,6 +1232,13 @@ p.button-container,
 /* END Keyframes END */
 
 @media (min-width: 62rem) {
+
+  :root {
+    --nav-top-height: 42px;
+    --nav-middle-height: 26px;
+    --nav-bottom-height: 52px;
+  }
+
   .mobile {
     display: none;
   }
@@ -1410,11 +1417,6 @@ p.button-container,
 }
 
 @media (min-width: 77rem) {
-  :root {
-    --nav-top-height: 42px;
-    --nav-middle-height: 26px;
-    --nav-bottom-height: 52px;
-  }
 
   h1 {
     font-size: var(--h1-font-size-desktop);

@@ -171,7 +171,7 @@ function getNavbarToggler() {
   </span>
   </button>`);
 
-  if (window.deviceType !== 'Desktop') {
+  if (window.deviceType !== 'Desktop' && window.deviceType !== 'Tablet') {
     navbarToggl.classList.add('visible');
   }
   navbarToggl.addEventListener('click', () => {
@@ -196,7 +196,7 @@ function attachWindowResizeListeners(nav) {
   const { body } = document;
   window.addEventListener('viewportResize', (event) => {
     const toggler = nav.querySelector('.navbar-toggler');
-    if (event.detail.deviceType === 'Desktop') {
+    if (event.detail.deviceType === 'Desktop' || event.detail.deviceType === 'Tablet') {
       if (nav.classList.contains('open')) {
         nav.classList.remove('open');
         header.classList.remove('menu-open');

@@ -726,9 +726,15 @@ header .mega-dropdown.fixed {
   width: 100vw;
 }
 
-@media (min-width: 77rem) {
+@media (min-width: 62rem) {
   header {
     border-bottom: 1px solid var(--transparent-grey-light-color);
+  }
+
+  header nav.nav-bottom, 
+  header nav.nav-top, 
+  header nav.nav-middle {
+    padding-inline: 1rem;
   }
 
   header.header-wrapper.fixed {
@@ -738,10 +744,6 @@ header .mega-dropdown.fixed {
 
   header nav.nav-top {
     display: flex;
-  }
-
-  header nav.nav-middle {
-    padding: 0;
   }
 
   header nav.nav-middle > h4 {
@@ -993,5 +995,13 @@ header .mega-dropdown.fixed {
     display: block;
     opacity: 1;
     z-index: 10
+  }
+}
+
+@media (min-width: 77rem) {
+  header nav.nav-bottom, 
+  header nav.nav-top, 
+  header nav.nav-middle {
+    padding-inline: 0;
   }
 }
