@@ -34,7 +34,7 @@ function changeLinks(document) {
   if (detailPageNav) {
     detailPageNav.querySelectorAll('a').forEach((a) => {
       if (!a.href.includes('sunstar-engineering') && !a.href.includes('sunstarfoundation')) {
-        a.href = 'https://main--sunstar--sunstar-global.hlx.live'.concat(a.href).replace(/\/$/, '');
+        a.href = 'https://main--sunstar--sunstar-global.aem.live'.concat(a.href).replace(/\/$/, '');
       }
     });
   }
