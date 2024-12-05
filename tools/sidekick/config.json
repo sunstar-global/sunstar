@@ -1,6 +1,6 @@
 {
   "project": "Sunstar",
-  "host": "main--sunstar--sunstar-global.hlx.live",
+  "host": "main--sunstar--sunstar-global.aem.live",
   "plugins": [
     {
       "id": "library",
