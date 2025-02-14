@@ -487,9 +487,11 @@ div.img-col > video {
 .columns.h1-h2 h1 {
   font-size: var(--h2-font-size-mobile) !important;
 }
+
 .columns.h1-h3 h1 {
   font-size: var(--h3-font-size-mobile) !important;
 }
+
 .columns.h1-h4 h1 {
   font-size: var(--h4-font-size-mobile) !important;
 }
@@ -497,9 +499,11 @@ div.img-col > video {
 .columns.h2-h1 h2 {
   font-size: var(--h1-font-size-mobile) !important;
 }
+
 .columns.h2-h3 h2 {
   font-size: var(--h3-font-size-mobile) !important;
 }
+
 .columns.h2-h4 h2 {
   font-size: var(--h4-font-size-mobile) !important;
 }
@@ -507,9 +511,11 @@ div.img-col > video {
 .columns.h3-h1 h3 {
   font-size: var(--h1-font-size-mobile) !important;
 }
+
 .columns.h3-h2 h3 {
   font-size: var(--h2-font-size-mobile) !important;
 }
+
 .columns.h3-h4 h3 {
   font-size: var(--h4-font-size-mobile) !important;
 }
@@ -517,9 +523,11 @@ div.img-col > video {
 .columns.h4-h1 h4 {
   font-size: var(--h1-font-size-mobile) !important;
 }
+
 .columns.h4-h2 h4 {
   font-size: var(--h2-font-size-mobile) !important;
 }
+
 .columns.h4-h3 h4 {
   font-size: var(--h3-font-size-mobile) !important;
 }

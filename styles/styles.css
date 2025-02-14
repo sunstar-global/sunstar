@@ -614,6 +614,7 @@ button {
   display: inline-flex;
   align-items: center;
   align-content: center;
+  font-size: inherit;
   /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
   justify-content: center;
   line-height: 1;
