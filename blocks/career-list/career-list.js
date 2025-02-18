@@ -1,4 +1,4 @@
-import { createOptimizedPicture, fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, readBlockConfig } from '../../scripts/lib-franklin.js';
 import { fetchIndex, getLanguage } from '../../scripts/scripts.js';
 
 export function filterIncompleteEntries(json) {
@@ -6,18 +6,50 @@ export function filterIncompleteEntries(json) {
 }
 
 export default async function decorate(block) {
+  const blockCfg = readBlockConfig(block);
+  const chunkSize = parseInt(blockCfg.chunk, 10) || 8; // Set chunk size
+  block.innerHTML = '';
   const lang = getLanguage();
-  const placeholders = await fetchPlaceholders(lang);
-
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
+
   const json = await fetchIndex('query-index', `${idxPrefix}career-testimonials`);
   const data = filterIncompleteEntries(json);
+  let currentResults = 0; // Track number of loaded results
 
   const careerGrid = document.createElement('div');
   careerGrid.classList.add('career-grid');
 
-  const slideDivs = [];
-  for (let i = 0; i < data.length; i += 1) {
+  // **Load Initial Results**
+  loadResults(careerGrid, data, currentResults, chunkSize);
+  currentResults += chunkSize;
+
+  // **Load More Button**
+  if (currentResults < data.length) {
+    const loadMoreContainer = document.createElement('div');
+    loadMoreContainer.classList.add('load-more-container');
+
+    const loadMoreButton = document.createElement('button');
+    loadMoreButton.classList.add('primary');
+    loadMoreButton.classList.add('button');
+    loadMoreButton.textContent = 'Load More';
+    loadMoreButton.addEventListener('click', async () => {
+      await loadMoreResults(careerGrid, data, currentResults, chunkSize, loadMoreButton);
+      currentResults += chunkSize;
+      if (currentResults >= data.length) {
+        loadMoreButton.remove(); // Hide button when all data is loaded
+      }
+    });
+
+    loadMoreContainer.append(loadMoreButton);
+    careerGrid.append(loadMoreContainer);
+  }
+
+  block.append(careerGrid);
+}
+
+// **Load Specific Results**
+function loadResults(container, data, startIndex, chunkSize) {
+  for (let i = startIndex; i < Math.min(startIndex + chunkSize, data.length); i += 1) {
     const div = document.createElement('div');
     div.classList.add('career-card');
 
@@ -48,23 +80,13 @@ export default async function decorate(block) {
     role.textContent = data[i]['career-jobtitle'];
     contentDiv.append(role);
 
-    a.append(contentDiv); // Append content inside the card
-
-    // 🌟 Footer: Button
-    const footer = document.createElement('div');
-    footer.classList.add('career-card-footer');
-
-
-
-    a.append(footer);
-
+    a.append(contentDiv);
     div.append(a);
-    careerGrid.append(div);
-    slideDivs.push(div);
+    container.insertBefore(div, container.lastChild); // Ensure it inserts before "Load More"
   }
-
-
-  block.append(careerGrid);
-
 }
 
+// **Load More Results**
+async function loadMoreResults(container, data, currentResults, chunkSize, button) {
+  loadResults(container, data, currentResults, chunkSize);
+}
