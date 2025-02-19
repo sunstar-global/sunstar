@@ -1027,6 +1027,10 @@ main .section.no-margin-top {
   margin-top: 0;
 }
 
+main .section.no-margin-block {
+  margin-block: 0!important;
+}
+
 /* fixed padding bottom of section-container - 400px */
 /* stylelint-disable-next-line no-descending-specificity */
 main .section.padding-bottom-400 .section-container {
