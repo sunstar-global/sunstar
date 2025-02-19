@@ -101,6 +101,10 @@ main .feed-newsroom-wrapper .load-more-container {
     margin-bottom: 5vh;
 }
 
+main .section.feed-newsroom-container {
+    padding-inline: 1rem;
+}
+
 @media (min-width: 62rem) {
     main .block.feed-newsroom {
         gap: 0;
@@ -119,7 +123,6 @@ main .feed-newsroom-wrapper .load-more-container {
         margin-inline: auto;
         padding-left: 16px;
         padding-right: 16px;
-        ;
     }
 
     .block.highlight.feed-newsroom > .others:last-of-type {
