@@ -1,83 +1,82 @@
 body.philosophy main .section.narrower.section.with-background-image .section-container {
-    display: flex;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  body.philosophy main .section.narrower.section.with-background-image .section-container > div {
-    flex: 1;
-  }
-  
-  body.philosophy main .section.narrower.section.with-background-image .link.block {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-evenly;
-  }
-  
-  body.philosophy main .section.narrower.section.with-background-image .link.block > div {
-    width: 100%;
-  }
-  
-  body.philosophy main .section.narrower.section.with-background-image .link.block > div:last-child {
-    display: flex;
-    justify-content: space-evenly;
-  }
-  
+  display: flex;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+body.philosophy main .section.narrower.section.with-background-image .section-container > div {
+  flex: 1;
+}
+
+body.philosophy main .section.narrower.section.with-background-image .link.block {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+}
+
+body.philosophy main .section.narrower.section.with-background-image .link.block > div {
+  width: 100%;
+}
+
+body.philosophy main .section.narrower.section.with-background-image .link.block > div:last-child {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+body.philosophy main .section.narrower.section.with-background-image a {
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 6px 24px;
+  font-weight: normal;
+  line-height: 1.5em;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  min-height: 48px !important;
+  height: unset !important;
+  text-wrap: balance;
+}
+
+body.philosophy main .section.narrower.section.with-background-image .link.block > div a {
+  background-color: #00a4d6;
+}
+
+body.philosophy main .section.narrower.section.with-background-image .link.block > div:first-child a {
+  background: #00587c;
+  width: 72%;
+  display: flex;
+  margin: 0 auto;
+}
+
+body.philosophy main .section.narrower.section.with-background-image a .icon.icon-angle-white-70 {
+  background-image: url('/icons/angle-white-70.svg');
+  margin-left: 6px;
+  height: 23px !important;
+  width: 15px !important;
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: auto;
+  flex-shrink: 0;
+  scale: 0.5;
+}
+
+body.philosophy main .section.narrower.section.with-background-image .link.block > div:nth-child(2) a {
+  background: #007cad;
+  width: 85%;
+}
+
+@media (min-width: 48rem) {
   body.philosophy main .section.narrower.section.with-background-image a {
-    text-align: center;
-    font-size: 0.8rem;
-    padding: 6px 24px;
-    font-weight: normal;
-    line-height: 1.5em;
-    border: 1px solid #fff;
-    border-radius: 5px;
-    min-height: 48px!important;
-    height: unset!important;
-    text-wrap: balance;
+    font-size: 1rem;
+    min-height: 92px !important;
+    height: unset !important;
   }
-  
-  body.philosophy main .section.narrower.section.with-background-image .link.block > div a {
-    background-color: #00a4d6;
-  }
-  
-  body.philosophy main .section.narrower.section.with-background-image .link.block > div:first-child a {
-    background: #00587c;
-    width: 72%;
-    display: flex;
-    margin: 0 auto;
+
+  body.philosophy main .section.narrower.section.with-background-image .link.block > div:last-child {
+    gap: 1.5rem;
   }
 
   body.philosophy main .section.narrower.section.with-background-image a .icon.icon-angle-white-70 {
-    background-image: url("/icons/angle-white-70.svg");
-    margin-left: 6px;
-    height: 23px !important;
-    width: 15px !important;
-    background-position: left top;
-    background-repeat: no-repeat;
-    background-size: auto;
-    flex-shrink: 0;
-    scale: 0.5;
+    scale: 1;
   }
-  
-  body.philosophy main .section.narrower.section.with-background-image .link.block > div:nth-child(2) a {
-    background: #007CAD;
-    width: 85%;
-  }
-  
-  @media (min-width: 48rem) {
-    body.philosophy main .section.narrower.section.with-background-image a {
-      font-size: 1rem;
-      min-height: 92px!important;
-      height: unset!important;
-    }
-  
-    body.philosophy main .section.narrower.section.with-background-image .link.block > div:last-child {
-      gap: 1.5rem;
-    }
-
-    body.philosophy main .section.narrower.section.with-background-image a .icon.icon-angle-white-70 {
-      scale: 1;
-    }
-  }
-  
+}

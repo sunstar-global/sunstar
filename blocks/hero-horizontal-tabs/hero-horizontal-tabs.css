@@ -174,7 +174,7 @@ main .hero-horizontal-tabs-wrapper + .section.static {
 }
 
 main .hero-horizontal-tabs a.button.primary.video-link::after {
-  content: url("../../icons/play.svg");
+  content: url('../../icons/play.svg');
   position: relative;
   top: 0.1rem;
   left: 0.3rem;
@@ -276,11 +276,7 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
     flex: 0 1 auto;
   }
 
-  main
-    .hero-horiz-tabs-with-button
-    .hero-horiz-tabs-text
-    p.button-container
-    > a {
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container > a {
     width: 14.375rem;
     font-size: var(--body-font-size-s);
     background-color: var(--orange-light);

@@ -97,9 +97,7 @@ export default function decorate(block) {
   const cols = [...block.firstElementChild.children];
   block.classList.add(`columns-${cols.length}-cols`);
   const videoAnchor = [...block.querySelectorAll('a')].filter((a) => a.href.includes('.mp4'));
-  const youtubeAnchor = [...block.querySelectorAll('a')].filter((a) =>
-    a.href.toLowerCase().includes('youtu.be')
-  );
+  const youtubeAnchor = [...block.querySelectorAll('a')].filter((a) => a.href.toLowerCase().includes('youtu.be'));
 
   const textOnlyColBlock = !block.querySelector('picture') && !videoAnchor.length;
 

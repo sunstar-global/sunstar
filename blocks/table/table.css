@@ -1,173 +1,173 @@
 main .table.block h3.table-title {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 main .table .table-item {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: auto repeat(calc(var(--row) - 1), minmax(50px, max-content));
-    grid-template-rows: repeat(var(--col), auto);
-    grid-gap: 1px;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--transparent-grey-light-color);
-    background-color: var(--transparent-grey-light-color);
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: auto repeat(calc(var(--row) - 1), minmax(50px, max-content));
+  grid-template-rows: repeat(var(--col), auto);
+  grid-gap: 1px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--transparent-grey-light-color);
+  background-color: var(--transparent-grey-light-color);
 }
 
 main .table .table-item div {
-    font-size: var(--body-font-size-s);
-    line-height: 1.7em;
-    font-weight: var(--font-weight-medium);
-    padding: 0.5em 1em;
-    text-align: center;
-    vertical-align: middle;
-    background-color: var(--white);
+  font-size: var(--body-font-size-s);
+  line-height: 1.7em;
+  font-weight: var(--font-weight-medium);
+  padding: 0.5em 1em;
+  text-align: center;
+  vertical-align: middle;
+  background-color: var(--white);
 }
 
 main .section .table.block p.table-annotation {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 main .section .table.inner-table img {
-    vertical-align: middle;
-    border-style: none;
-    width: 9.375rem;
-    max-width: unset;
+  vertical-align: middle;
+  border-style: none;
+  width: 9.375rem;
+  max-width: unset;
 }
 
 main .table.inner-table table {
-    background-color: var(--white);
-    border-collapse: collapse;
-    overflow-x: auto;
-    margin-bottom: 1.5rem;
+  background-color: var(--white);
+  border-collapse: collapse;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
 }
 
 main .table.inner-table .table-item {
-    display: unset;
-    margin-bottom: unset;
-    border: unset;
+  display: unset;
+  margin-bottom: unset;
+  border: unset;
 }
 
 main .table.inner-table .table-item div {
-    padding: unset;
+  padding: unset;
 }
 
 main .table.inner-table table td {
-    font-size: 0.88rem;
-    line-height: 1.7em;
-    text-align: center;
-    padding: 0.5em 1em;
-    border: 1px solid var(--transparent-grey-light-color);
-    vertical-align: middle;
+  font-size: 0.88rem;
+  line-height: 1.7em;
+  text-align: center;
+  padding: 0.5em 1em;
+  border: 1px solid var(--transparent-grey-light-color);
+  vertical-align: middle;
 }
 
 main .table.inner-table table td p {
-    font-size: 0.88rem;
-    line-height: 1.7em;
-    margin-bottom: 0;
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-text-size-adjust: none;
+  font-size: 0.88rem;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-text-size-adjust: none;
 }
 
 main .table.fixed .table-item {
+  display: inline-grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(var(--col), auto);
+  grid-template-rows: repeat(var(--row), auto);
+}
+
+main .table.fixed .table-item div {
+  padding: 0.5em 1em;
+}
+
+main .table .table-item .table-head {
+  text-align: left;
+  background: var(--transparent-blue-light-color);
+}
+
+main .table.fixed .table-item .table-head {
+  text-align: center;
+}
+
+main .table .table-item sup {
+  top: -0.5em;
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+main .multiple-table {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-bottom: 1.75rem;
+}
+
+main .multiple-table .flat-table {
+  flex-basis: 100%;
+  flex-grow: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 62rem) {
+  main .multiple-table {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  main .table .table-item {
     display: inline-grid;
     grid-auto-flow: row;
     grid-template-columns: repeat(var(--col), auto);
     grid-template-rows: repeat(var(--row), auto);
-}
+  }
 
-main .table.fixed .table-item div {
-    padding: 0.5em 1em;
-}
-
-main .table .table-item .table-head {
-    text-align: left;
-    background: var(--transparent-blue-light-color);
-}
-
-main .table.fixed .table-item .table-head {
+  main .table .table-item .table-head {
     text-align: center;
-}
+  }
 
-main .table .table-item sup {
-    top: -0.5em;
-    position: relative;
-    font-size: 75%;
-    line-height: 0;
-    vertical-align: baseline;
-}
-
-main .multiple-table {
-    display: flex;
-    flex-flow: column nowrap;
-    margin-bottom: 1.75rem;
-}
-
-main .multiple-table .flat-table {
-    flex-basis: 100%;
-    flex-grow: 1;
-    min-width: 0;
-    word-break: break-word;
-    overflow-wrap: break-word;
-}
-
-@media (min-width: 62rem) {
-    main .multiple-table {
-        display: flex;
-        flex-flow: row nowrap;
-    }
-
-    main .table .table-item {
-        display: inline-grid;
-        grid-auto-flow: row;
-        grid-template-columns: repeat(var(--col), auto);
-        grid-template-rows: repeat(var(--row), auto);
-    }
-
-    main .table .table-item .table-head {
-        text-align: center;
-    }
-
-    main .section .table.block p.table-annotation {
-        margin-bottom: 2rem;
-    }
+  main .section .table.block p.table-annotation {
+    margin-bottom: 2rem;
+  }
 }
 
 /* Text Table varient */
 main .table.text-table h3.table-title {
-    text-transform: uppercase;
-    border-bottom: 0.1em solid var(--primary);
-    font-size: var(--heading-font-size-ms);
-    line-height: 2.4em;
-    font-weight: var(--font-weight-bold);
-    margin-bottom: 0.5em;
+  text-transform: uppercase;
+  border-bottom: 0.1em solid var(--primary);
+  font-size: var(--heading-font-size-ms);
+  line-height: 2.4em;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 0.5em;
 }
 
 main .table.text-table .table-item {
-    border: none;
-    display: block;
+  border: none;
+  display: block;
 }
 
 main .table.text-table .table-item .table-head {
-    background: var(--white);
-    padding: 0;
+  background: var(--white);
+  padding: 0;
 }
 
 main .table.text-table table {
-    text-align: left;
-    border-spacing: unset;
-    display: block;
+  text-align: left;
+  border-spacing: unset;
+  display: block;
 }
 
 main .table.text-table table tbody {
-    display: block;
+  display: block;
 }
 
 main .table.text-table table tr {
-    display: flex;
-    flex-direction: column;
-    padding: 1.2rem 0;
-    border-bottom: 1px solid var(--transparent-grey-light-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--transparent-grey-light-color);
 }
 
 main .table.inner-table table tr {
@@ -179,96 +179,96 @@ main .table.inner-table table tr a {
 }
 
 main .table.padding-1 table td {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 main .table.padding-2 table td {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 main .table.text-align-left tr td {
-    text-align: left;
+  text-align: left;
 }
 
 main .table.text-align-right tr td {
-    text-align: right;
+  text-align: right;
 }
 
 main .table.text-align-center tr td {
-    text-align: center;
+  text-align: center;
 }
 
 main .table.text-table table tr td {
-    color: var(--text-color);
-    flex-basis: calc(100% - 7.5em);
+  color: var(--text-color);
+  flex-basis: calc(100% - 7.5em);
 }
 
 /* Blue theme */
 main .table.theme-blue table tbody tr td {
-    color: var(--secondary);
+  color: var(--secondary);
 }
 
 main .table.text-table table tr td h4 {
-    color: var(--text-color);
-    font-size: var(--heading-font-size-ms);
-    font-weight: var(--font-weight-bold);
-    line-height: 1.7em;
-    margin: unset;
+  color: var(--text-color);
+  font-size: var(--heading-font-size-ms);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.7em;
+  margin: unset;
 }
 
 main .table.text-table table tr td p {
-    font-size: var(--body-font-size-s);
-    margin: unset;
+  font-size: var(--body-font-size-s);
+  margin: unset;
 }
 
 main .table.text-table table tr td a {
-    font-size: var(--body-font-size-m);
-    line-height: 2rem;
+  font-size: var(--body-font-size-m);
+  line-height: 2rem;
 }
 
 main .table.text-table table tr td a .icon {
-    margin-left: 0.25em;
-    height: 1.5em;
-    width: 1.5em;
+  margin-left: 0.25em;
+  height: 1.5em;
+  width: 1.5em;
 }
 
 main .table.text-table table tr td:first-child {
-    color: var(--transparent-grey-color);
-    font-size: var(--body-font-size-m);
-    line-height: 1.5rem;
+  color: var(--transparent-grey-color);
+  font-size: var(--body-font-size-m);
+  line-height: 1.5rem;
 }
 
 main .table.theme-blue table tbody tr:first-of-type td {
-    background-color: var(--secondary);
-    color: var(--white);
+  background-color: var(--secondary);
+  color: var(--white);
 }
 
-main .table.highlight-first-column:not(.no-head) tr:not(:first-of-type) td{
-    text-align: center;
+main .table.highlight-first-column:not(.no-head) tr:not(:first-of-type) td {
+  text-align: center;
 }
 
-main .table.highlight-first-column:not(.no-head) tr:first-of-type td{
-    background-color: var(--secondary);
-    color: var(--white);
-    font-weight: var(--font-weight-bold);
+main .table.highlight-first-column:not(.no-head) tr:first-of-type td {
+  background-color: var(--secondary);
+  color: var(--white);
+  font-weight: var(--font-weight-bold);
 }
 
-main .table.highlight-first-column tr.highlight-item td:first-of-type{
-    background-color: var(--transparent-grey-light-color);
-    color: var(--secondary);
-    text-align: center;
+main .table.highlight-first-column tr.highlight-item td:first-of-type {
+  background-color: var(--transparent-grey-light-color);
+  color: var(--secondary);
+  text-align: center;
 }
 
-main .table.first-column-per30 tr.highlight-item td:first-of-type{
-    width: 30%;
+main .table.first-column-per30 tr.highlight-item td:first-of-type {
+  width: 30%;
 }
 
 main .section .table.native-image-size img {
-    width: 100%;
+  width: 100%;
 }
 
 main .table.inner-table table tbody tr:first-of-type {
-    background: var(--transparent-blue-light-color);
+  background: var(--transparent-blue-light-color);
 }
 
 main .table.inner-table.no-head table tbody tr:first-of-type {
@@ -276,19 +276,19 @@ main .table.inner-table.no-head table tbody tr:first-of-type {
 }
 
 main .table.inner-table.lastline-leftalign table tr:last-of-type td {
-    text-align: left;
+  text-align: left;
 }
 
 main .table.block .table-title h4 {
-    color: var(--gray-dark);
+  color: var(--gray-dark);
 }
 
 @media (min-width: 62rem) {
-    main .table.text-table table tr {
-        flex-direction: row;
-    }
+  main .table.text-table table tr {
+    flex-direction: row;
+  }
 
-    main .table.text-table table tr td:first-child {
-        flex-basis: 7.5em;
-    }
+  main .table.text-table table tr td:first-child {
+    flex-basis: 7.5em;
+  }
 }

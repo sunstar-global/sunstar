@@ -2,26 +2,26 @@ import { getMetadata } from '../../scripts/lib-franklin.js';
 import { getLanguage, fetchTagsOrCategories } from '../../scripts/scripts.js';
 
 /**
-* decorates the tags block
-* @param {Element} block The social block element
-*/
+ * decorates the tags block
+ * @param {Element} block The social block element
+ */
 export default async function decorate(block) {
   const metadataTag = getMetadata('article:tag') || [];
   let ids = [];
   const type = getMetadata('type') || '';
 
   if (!block.classList.contains('all') && metadataTag) {
-    ids = metadataTag.toLowerCase().split(',').map((tag) => tag.trim());
+    ids = metadataTag
+      .toLowerCase()
+      .split(',')
+      .map((tag) => tag.trim());
   }
 
   const locale = getLanguage();
   const tags = await fetchTagsOrCategories(ids, 'tags', type, locale);
 
   if (tags.length) {
-    const typeKey = type
-      .toLowerCase().split(' ')
-      .filter(Boolean)
-      .join('-');
+    const typeKey = type.toLowerCase().split(' ').filter(Boolean).join('-');
     tags.forEach((tag) => {
       const prefix = locale === 'en' ? '/' : `/${locale}/`;
       const hrefVal = `${prefix}${typeKey}/tag/${tag.id}`;

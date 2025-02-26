@@ -4,10 +4,7 @@
   position: relative;
 }
 
-main
-  .text-narrow.hero-banner-container
-  .section-container
-  .hero-banner-text-wrapper {
+main .text-narrow.hero-banner-container .section-container .hero-banner-text-wrapper {
   max-width: 54.5rem;
 }
 
@@ -55,7 +52,7 @@ main .block.hero-banner.composite.button a:hover {
 }
 
 .hero-banner.careers {
-  background-image: url("/assets/careers-mobile-top.jpg");
+  background-image: url('/assets/careers-mobile-top.jpg');
 }
 
 .hero-banner .hero-banner-media-section {
@@ -189,7 +186,7 @@ main .block.hero-banner.composite.button a:hover {
 }
 
 .hero-banner .hero-banner-button-container a.button.primary {
-  background-image: url("../../icons/play.svg");
+  background-image: url('../../icons/play.svg');
   height: 3.125rem;
   width: 3.125rem;
   min-width: auto;
@@ -244,7 +241,7 @@ main .block.hero-banner.composite.button a:hover {
 }
 
 .hero-banner.superposition .hero-banner-media-section::after {
-  content: "";
+  content: '';
   background: var(--transparent-grey-color-2);
   position: absolute;
   inset: 0;
@@ -253,7 +250,7 @@ main .block.hero-banner.composite.button a:hover {
 
 @media (min-width: 48rem) {
   .hero-banner .hero-banner-text-container::before:not(.right-text) {
-    content: "";
+    content: '';
     background: var(--primary);
     height: 100%;
     width: 100%;
@@ -396,7 +393,7 @@ main .block.hero-banner.composite.button a:hover {
 
   .hero-banner.careers .hero-banner-media-section::after,
   .hero-banner.superposition .hero-banner-media-section::after {
-    content: "";
+    content: '';
     background: var(--transparent-grey-color-2);
     position: absolute;
     inset: 0;

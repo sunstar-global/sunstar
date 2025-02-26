@@ -19,7 +19,7 @@
   width: 4.375rem;
 }
 
-.block.report-overview .overview-left-details .overview-icon p{
+.block.report-overview .overview-left-details .overview-icon p {
   margin-bottom: unset;
 }
 
@@ -39,10 +39,10 @@
 }
 
 .block.report-overview .desktop-visible {
-  display: none;   
+  display: none;
 }
 
-@media (min-width:62rem) {
+@media (min-width: 62rem) {
   .block.report-overview {
     background-color: var(--transparent-blue-light-color);
     padding: 4rem 2.2rem 4rem 6.25rem;
@@ -51,11 +51,11 @@
     flex-direction: row;
   }
 
-  .block.report-overview .overview-left{
+  .block.report-overview .overview-left {
     min-width: 16.875rem;
   }
-  
-  .block.report-overview .overview-right{
+
+  .block.report-overview .overview-right {
     max-width: 42.5rem;
     margin-left: 5rem;
     margin-right: 2.5rem;
@@ -70,7 +70,7 @@
   }
 }
 
-@media (min-width:77rem) {
+@media (min-width: 77rem) {
   .block.report-overview {
     max-width: 75rem;
   }

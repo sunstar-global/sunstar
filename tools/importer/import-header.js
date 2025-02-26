@@ -31,14 +31,17 @@ function addTopNav(document) {
     const li = document.createElement('li');
     if (el.tagName === 'A') {
       if (el.classList.contains('other-site-menu')) {
-        el.innerHTML = '<a href="https://www.sunstar.com/">Sunstar Group</a><a href="https://www.sunstar.com/"><span>:link-black:</span></a>';
+        el.innerHTML =
+          '<a href="https://www.sunstar.com/">Sunstar Group</a><a href="https://www.sunstar.com/"><span>:link-black:</span></a>';
       }
       li.append(el);
     } else if (el.tagName === 'SPAN' && el.classList.contains('links-social')) {
       li.textContent = '[social]';
       const social = document.createElement('ul');
-      const linkedin = '<li><a class="link" target="_blank" href="https://www.linkedin.com/company/sunstar">:linkedin:</a></li>';
-      const youtube = '<li><a class="link" target="_blank" href="https://www.youtube.com/channel/UCM7etMw7LLy-MlNmk9xPrdQ">:youtube:</a></li>';
+      const linkedin =
+        '<li><a class="link" target="_blank" href="https://www.linkedin.com/company/sunstar">:linkedin:</a></li>';
+      const youtube =
+        '<li><a class="link" target="_blank" href="https://www.youtube.com/channel/UCM7etMw7LLy-MlNmk9xPrdQ">:youtube:</a></li>';
       social.innerHTML = linkedin + youtube;
       li.append(social);
     } else if (el.tagName === 'SPAN' && el.classList.contains('lang-menu')) {
@@ -127,17 +130,16 @@ export default {
    */
   transformDOM: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
     // use helper method to remove header, footer, etc.
-    WebImporter.DOMUtils.remove(main, [
-      'noscript',
-      'main',
-      'footer',
-    ]);
+    WebImporter.DOMUtils.remove(main, ['noscript', 'main', 'footer']);
 
     customImportLogic(document, url);
     // create the metadata block and append it to the main element
@@ -157,6 +159,9 @@ export default {
    */
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '')),
 };

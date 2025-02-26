@@ -2,7 +2,7 @@ name: Compare Folders
 
 on:
   pull_request:
-    types: [ opened, synchronize ]
+    types: [opened, synchronize]
 
 jobs:
   compare-folders:
@@ -32,4 +32,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.number }}
           body: ${{ env.SUMMARY }}
-

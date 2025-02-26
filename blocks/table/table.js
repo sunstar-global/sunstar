@@ -4,8 +4,10 @@ function buildMutipleTables(block) {
   const mainChildren = [...mainContent.children];
   const mainTmp = document.createElement('div');
   for (let i = 0; i < mainChildren.length; i += 1) {
-    if ((mainChildren[i].classList.contains('flat-table') && i === 0)
-      || (mainChildren[i].classList.contains('flat-table') && !mainChildren[i - 1].classList.contains('flat-table'))) {
+    if (
+      (mainChildren[i].classList.contains('flat-table') && i === 0) ||
+      (mainChildren[i].classList.contains('flat-table') && !mainChildren[i - 1].classList.contains('flat-table'))
+    ) {
       const multiTable = document.createElement('div');
       multiTable.classList.add('multiple-table');
       for (let j = i; j < mainChildren.length; j += 1) {
@@ -35,7 +37,9 @@ function buildMutipleTables(block) {
 function innerTableHighlightFirstColumn(block, noHead) {
   const trs = block.querySelectorAll('table tr');
   const tdNumbArray = [];
-  [...trs].forEach((td) => { tdNumbArray.push(td.children.length); });
+  [...trs].forEach((td) => {
+    tdNumbArray.push(td.children.length);
+  });
   const tdNumb = Math.max(...tdNumbArray);
   [...trs].forEach((td, index) => {
     if (noHead && tdNumb === td.children.length) {
@@ -83,8 +87,7 @@ export default async function decorate(block) {
   }
   if (block.classList.contains('flat')) block.parentElement.classList.add('flat-table');
   buildMutipleTables(block);
-  if (block.classList.contains('inner-table')
-   && block.classList.contains('highlight-first-column')) {
+  if (block.classList.contains('inner-table') && block.classList.contains('highlight-first-column')) {
     innerTableHighlightFirstColumn(block, noHead);
   }
 }

@@ -4,13 +4,13 @@ main .embed-container .section-container {
 }
 
 .modal-fragment-container .modal-wrapper {
-  background-color: #000000B2;
+  background-color: #000000b2;
   display: flex;
   position: fixed;
   inset: 0;
   transition: all 0.1s ease-out;
   z-index: -1;
-  opacity: 0; 
+  opacity: 0;
 }
 
 .modal-fragment-container .modal-wrapper.visible {
@@ -18,7 +18,7 @@ main .embed-container .section-container {
   z-index: 1005;
   padding: 1rem;
 }
- 
+
 .modal-fragment-container .modal-fragment .modal {
   margin: 0 auto;
   display: flex;
@@ -48,8 +48,9 @@ main .embed-container .section-container {
   height: 1.25rem;
 }
 
-.modal-fragment-container .modal .modal-close::before, .modal-fragment-container .modal .modal-close::after {
-  content: "";
+.modal-fragment-container .modal .modal-close::before,
+.modal-fragment-container .modal .modal-close::after {
+  content: '';
   height: 1.5rem;
   width: 0.188rem;
   background: var(--white);
@@ -76,7 +77,8 @@ main .embed-container .section-container {
     height: 3rem;
   }
 
-  .modal-fragment-container .modal .modal-close::before, .modal-fragment-container .modal .modal-close::after {
+  .modal-fragment-container .modal .modal-close::before,
+  .modal-fragment-container .modal .modal-close::after {
     height: 3.75rem;
     width: 0.313rem;
   }

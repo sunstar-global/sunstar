@@ -10,7 +10,12 @@ export default function decorate(block) {
     children.forEach((x) => {
       const img = x.querySelector('picture');
       wrapImgsInLinks(x);
-      if (img && img.parentElement && img.parentElement.nextElementSibling && img.parentElement.nextElementSibling.tagName === 'DIV') {
+      if (
+        img &&
+        img.parentElement &&
+        img.parentElement.nextElementSibling &&
+        img.parentElement.nextElementSibling.tagName === 'DIV'
+      ) {
         if (caption) {
           img.parentElement.nextElementSibling.classList.add('image-caption');
         } else if (title) {

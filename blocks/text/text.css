@@ -55,19 +55,18 @@ main .block.text.black p {
   color: var(--light-black);
 }
 
-main .block.text h1, 
-main .block.text h2, 
+main .block.text h1,
+main .block.text h2,
 main .block.text h3 {
-  margin: 0 auto 1rem!important;
+  margin: 0 auto 1rem !important;
 }
 
 main .block.text.highlight {
   margin-top: 5rem;
 }
 
-
 main .block.text.highlight h2 {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   text-align: center;
 }
 
@@ -131,7 +130,7 @@ main .block.text.lead {
 }
 
 main .block.text.colored {
-  color: var(--primary)
+  color: var(--primary);
 }
 
 main .block.text.emphasis {
@@ -152,14 +151,13 @@ main .block.text.text-small p {
   font-size: var(--body-font-size-xs);
 }
 
-
 main .block.text.emphasis > div > div > :first-child,
-main .block.text.light-background  > div > div > :first-child {
+main .block.text.light-background > div > div > :first-child {
   margin-top: 0;
 }
 
 main .block.text.emphasis > div > div > :last-child,
-main .block.text.light-background  > div > div > :last-child {
+main .block.text.light-background > div > div > :last-child {
   margin-bottom: 0;
 }
 
@@ -183,7 +181,7 @@ main .block.text.p-h4 p {
   margin: 1.5em 0 0.5rem;
 }
 
-main .block.text.p-h1 p, 
+main .block.text.p-h1 p,
 main .block.text.p-h2 p,
 main .block.text.p-h3 p,
 main .block.text.p-h4 p {
@@ -195,10 +193,10 @@ main .block.text.p-h4 p {
   text-wrap: balance;
 }
 
-main .block.text.heading-p h1, 
-main .block.text.heading-p h2, 
-main .block.text.heading-p h3, 
-main .block.text.heading-p h4, 
+main .block.text.heading-p h1,
+main .block.text.heading-p h2,
+main .block.text.heading-p h3,
+main .block.text.heading-p h4,
 main .block.text.heading-p h5,
 main .block.text.heading-p h6 {
   line-height: 1.6;
@@ -208,17 +206,16 @@ main .block.text.heading-p h6 {
   font-variant-ligatures: common-ligatures;
   font-style: normal;
   margin: unset;
-}  
+}
 
-main .block.text.heading-small-margin h1, 
+main .block.text.heading-small-margin h1,
 main .block.text.heading-small-margin h2,
-main .block.text.heading-small-margin h3, 
+main .block.text.heading-small-margin h3,
 main .block.text.heading-small-margin h4,
 main .block.text.heading-small-margin.p-h1 p,
 main .block.text.heading-small-margin.p-h2 p,
 main .block.text.heading-small-margin.p-h3 p,
-main .block.text.heading-small-margin.p-h4 p
-{
+main .block.text.heading-small-margin.p-h4 p {
   margin-bottom: 0.5rem;
 }
 
@@ -262,26 +259,25 @@ main .block.text.red-circle > div > div * {
     font-size: var(--h1-font-size-desktop);
     margin: 4.375rem 0 2.5rem;
   }
-  
+
   main .block.text.p-h2 p {
     font-size: var(--h2-font-size-desktop);
     margin: 3.5rem 0 2rem;
   }
-  
+
   main .block.text.p-h3 p {
     font-size: var(--h3-font-size-desktop);
     margin: 2.5rem 0 1rem;
   }
-  
+
   main .block.text.p-h4 p {
     font-size: var(--h4-font-size-desktop);
     margin: 2rem 0 0.5rem;
   }
 
-  main .block.text h1, 
-  main .block.text h2, 
+  main .block.text h1,
+  main .block.text h2,
   main .block.text h3 {
-    margin: 0 auto 1.5rem!important;
+    margin: 0 auto 1.5rem !important;
   }
-
 }

@@ -11,11 +11,9 @@ document.write(await readFile({ path: './career-carousel.plain.html' }));
 describe('Career Carousel', () => {
   before(async () => {
     const mod = await import('../../../blocks/career-carousel/career-carousel.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        scripts[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      scripts[func] = mod[func];
+    });
   });
 
   it('Filter incomplete career data entries', () => {
@@ -23,19 +21,34 @@ describe('Career Carousel', () => {
       foo: 'bar',
       data: [
         {
-          label: 'l1', image: '', 'career-quote': '0', 'career-jobtitle': '0',
+          label: 'l1',
+          image: '',
+          'career-quote': '0',
+          'career-jobtitle': '0',
         },
         {
-          label: 'l2', image: 'img', 'career-quote': 'quote 2', 'career-jobtitle': '0',
+          label: 'l2',
+          image: 'img',
+          'career-quote': 'quote 2',
+          'career-jobtitle': '0',
         },
         {
-          label: 'l3', image: '', 'career-quote': 'quote 3', 'career-jobtitle': 'title',
+          label: 'l3',
+          image: '',
+          'career-quote': 'quote 3',
+          'career-jobtitle': 'title',
         },
         {
-          label: 'l4', image: 'image 4', 'career-quote': 'quote 4', 'career-jobtitle': 'title 4',
+          label: 'l4',
+          image: 'image 4',
+          'career-quote': 'quote 4',
+          'career-jobtitle': 'title 4',
         },
         {
-          label: 'l5', image: 'image 5', 'career-quote': 'quote 5', 'career-jobtitle': 'title 5',
+          label: 'l5',
+          image: 'image 5',
+          'career-quote': 'quote 5',
+          'career-jobtitle': 'title 5',
         },
       ],
     };
@@ -57,7 +70,9 @@ describe('Career Carousel', () => {
     el.classList.els = [];
     el.classList.add = (...s) => el.classList.els.push(...s);
     el.classList.contains = (s) => el.classList.els.includes(s);
-    el.classList.remove = (s) => { el.classList.els = el.classList.els.filter((e) => e !== s); };
+    el.classList.remove = (s) => {
+      el.classList.els = el.classList.els.filter((e) => e !== s);
+    };
   }
 
   it('Can scroll to a specific card', () => {

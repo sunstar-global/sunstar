@@ -92,7 +92,6 @@ main .career-grid .load-more-container {
   }
 }
 
-
 @media (min-width: 62rem) {
   .career-grid {
     grid-template-columns: 1fr 1fr;
@@ -127,6 +126,5 @@ main .career-grid .load-more-container {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 1.5rem;
     padding-inline: 0;
-    
   }
 }

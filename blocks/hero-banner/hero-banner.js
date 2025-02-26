@@ -56,8 +56,6 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
 
   //check if it contains h6 if yes replace it with p and add h6 class
 
- 
-
   if (overlap) {
     if (textDiv.querySelector('p') === null) {
       textDiv = textDiv.nextElementSibling;
@@ -82,8 +80,12 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
     linkedin.appendChild(sprite);
 
     pElement.append(linkedin);
-  } else if (!target.classList.contains('small-box') && pElement && pElement.childElementCount === 1 && pElement.firstElementChild.tagName === 'A') {
-   
+  } else if (
+    !target.classList.contains('small-box') &&
+    pElement &&
+    pElement.childElementCount === 1 &&
+    pElement.firstElementChild.tagName === 'A'
+  ) {
   }
 
   if (textDiv.querySelector('h6') !== null) {

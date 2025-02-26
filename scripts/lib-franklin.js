@@ -121,9 +121,7 @@ export function loadCSS(href, callback) {
  */
 export function getMetadata(name) {
   const attr = name && name.includes(':') ? 'property' : 'name';
-  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)]
-    .map((m) => m.content)
-    .join(', ');
+  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)].map((m) => m.content).join(', ');
   return meta || '';
 }
 
@@ -161,8 +159,7 @@ export async function decorateIcons(element) {
   let svgSprite = document.getElementById('franklin-svg-sprite');
   if (!svgSprite) {
     const div = document.createElement('div');
-    div.innerHTML =
-      '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
+    div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
     svgSprite = div.firstElementChild;
     document.body.append(div.firstElementChild);
   }
@@ -192,10 +189,7 @@ export async function decorateIcons(element) {
                 // rescope ids and references to avoid clashes across icons;
                 .replaceAll(/ id="([^"]+)"/g, (_, id) => ` id="${iconName}-${id}"`)
                 .replaceAll(/="url\(#([^)]+)\)"/g, (_, id) => `="url(#${iconName}-${id})"`)
-                .replaceAll(
-                  / xlink:href="#([^"]+)"/g,
-                  (_, id) => ` xlink:href="#${iconName}-${id}"`
-                ),
+                .replaceAll(/ xlink:href="#([^"]+)"/g, (_, id) => ` xlink:href="#${iconName}-${id}"`),
             };
           } else {
             ICONS_CACHE[iconName] = {
@@ -512,9 +506,7 @@ export async function loadBlock(block) {
  * @returns {String} The true origin
  */
 export function getOrigin() {
-  return window.location.href === 'about:srcdoc'
-    ? window.parent.location.origin
-    : window.location.origin;
+  return window.location.href === 'about:srcdoc' ? window.parent.location.origin : window.location.origin;
 }
 
 /**
@@ -695,11 +687,7 @@ export async function waitForLCP(lcpBlocks, skipBlocks = [], maxCandidates = 1) 
 
   const main = document.querySelector('main');
   [...blocks]
-    .filter(
-      (block) =>
-        !skipBlocks.includes(block?.dataset?.blockName) &&
-        lcpBlocks.includes(block?.dataset?.blockName)
-    ) // eslint-disable-line max-len
+    .filter((block) => !skipBlocks.includes(block?.dataset?.blockName) && lcpBlocks.includes(block?.dataset?.blockName)) // eslint-disable-line max-len
     .slice(0, maxCandidates)
     .forEach(async (block) => {
       await loadBlock(block);
@@ -815,14 +803,9 @@ export function getFormattedDate(date, locale = 'en') {
 
   if (dateLocaleMap[locale]) {
     // eslint-disable-next-line
-    const formattedDate = date.toLocaleDateString(
-      dateLocaleMap[locale].locale,
-      dateLocaleMap[locale].options
-    );
+    const formattedDate = date.toLocaleDateString(dateLocaleMap[locale].locale, dateLocaleMap[locale].options);
     // eslint-disable-next-line
-    return dateLocaleMap[locale].format
-      ? dateLocaleMap[locale].format(formattedDate)
-      : formattedDate;
+    return dateLocaleMap[locale].format ? dateLocaleMap[locale].format(formattedDate) : formattedDate;
   }
   return date;
 }

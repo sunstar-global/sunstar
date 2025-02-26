@@ -22,7 +22,7 @@ indices:
       - '/jp/_drafts/**'
       - '/jp/_tools/**'
       - '/jp/drafts/**'
-      - '/jp/tools/**'      
+      - '/jp/tools/**'
       - '/jp/sidekick/**'
       - '/jp/fragments/**'
       - '/jp/**/fragments/**'

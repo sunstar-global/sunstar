@@ -20,7 +20,7 @@ window.addEventListener('consentmanager', () => {
 
 /**
  * GA Tag
-* */
+ * */
 function loadGAScript(url, callback) {
   const head = document.querySelector('head');
   let script = head.querySelector(`script[src="${url}"]`);
@@ -38,8 +38,15 @@ function loadGAScript(url, callback) {
 async function loadGA() {
   const gaId = 'G-EBP844FZRJ';
   loadGAScript(`https://www.googletagmanager.com/gtag/js?id=${gaId}`, () => {
-  // eslint-disable-next-line
-    window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', gaId); ga('send', 'pageview'); ga('create', gaId, 'auto');
+    // eslint-disable-next-line
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', gaId);
+    ga('send', 'pageview');
+    ga('create', gaId, 'auto');
   });
 }
 

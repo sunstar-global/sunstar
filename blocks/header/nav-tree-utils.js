@@ -52,8 +52,9 @@ function decorateChildNodes(parent, json, level) {
       const children = data.hasChild === 'true' ? decorateChildNodes(data, json, level + 1) : '';
       if (data.link && !children) {
         return `${accumalator} <a class="link" href=${data.link}>${data.category}</a>`;
-      } if (!data.link && children) {
-        return `${accumalator} <div class="menu-level-${level}-item"><h6 class="subtitle">${data.category}</h6>${children}</div>`;
+      }
+      if (!data.link && children) {
+        return `${accumalator} <div class="menu-level-${level}-item"><p class="subtitle h6">${data.category}</p>${children}</div>`;
       }
       return accumalator;
     }
@@ -77,17 +78,14 @@ function decorateNodes(json, level) {
               <div class="left-content">
                 <div class="left-content-container">
                   <div class="main-item-summary">
-                    <a href="${data.link}">
-                      <h2>${data.category}
-                      <span class="icon angle-right"></span>
-                      </h2>
+                    <a href="${data.link}" class="h2-style">
+                      ${data.category}
+                      <span class="icon angle-right"></span>                      
                     </a>
                     <p>${data.description}</p>
                   </div>
                   <nav class="mega-sub-menu">
-                    <h3 class="mobile-menu-header">
-                      <a class="link" href="${data.link}">${data.category}</a>
-                    </h3>
+                    <a class="link mobile-menu-header" href="${data.link}">${data.category}</a> 
                     ${children}
                   </nav>
                 </div>
@@ -100,7 +98,9 @@ function decorateNodes(json, level) {
         addBackdropEventListeners(li);
         addDropdownEventListeners(li.querySelector('a:first-child'));
       } else {
-        li = htmlToElement(`<li class="menu-level-${level}-item"><a class="link" href=${data.link}>${data.category}</a></li>`);
+        li = htmlToElement(
+          `<li class="menu-level-${level}-item"><a class="link" href=${data.link}>${data.category}</a></li>`,
+        );
       }
       ul.appendChild(li);
     }

@@ -17,11 +17,14 @@ function renderBreadcrumb(breadcrumbs) {
   const li = document.createElement('li');
   li.classList.add('breadcrumb-item');
 
-  li.innerHTML = (breadcrumbs.category_url_path || breadcrumbs.url_path) ? `
+  li.innerHTML =
+    breadcrumbs.category_url_path || breadcrumbs.url_path
+      ? `
     <a href="${prependSlash(breadcrumbs.category_url_path ?? breadcrumbs.url_path)}">
         ${breadcrumbs.category_name ?? breadcrumbs.name}
     </a>
-  ` : `${breadcrumbs.category_name ?? breadcrumbs.name}`;
+  `
+      : `${breadcrumbs.category_name ?? breadcrumbs.name}`;
   return li;
 }
 
@@ -32,7 +35,7 @@ async function getTagPageTitle() {
   const feedTags = getTagName();
   let tagPageTitle = '';
   if (feedTags && tags.length) {
-    const tag = tags.find((tagItem) => (feedTags.trim() === tagItem.id));
+    const tag = tags.find((tagItem) => feedTags.trim() === tagItem.id);
     if (tag && tag.name) {
       tagPageTitle = tag.name;
     }
@@ -59,7 +62,13 @@ async function createAutoBreadcrumb(block) {
   const { pathname } = window.location;
   const pathSeparator = '/';
   // eslint-disable-next-line max-len
-  const urlForIndex = (index) => prependSlash(pathname.split(pathSeparator).slice(1, index + 2).join(pathSeparator));
+  const urlForIndex = (index) =>
+    prependSlash(
+      pathname
+        .split(pathSeparator)
+        .slice(1, index + 2)
+        .join(pathSeparator)
+    );
   const pathSplit = pathname.split(pathSeparator);
   const pageType = getMetadata('pagetype');
   let currentTitle = '';
@@ -82,7 +91,10 @@ async function createAutoBreadcrumb(block) {
       // use the placeholders by appending '-title' to the part
       // if no breadcrumb title is found, skip the part (empty string)
       // eslint-disable-next-line max-len
-      name: pageIndex.find((page) => page.path === urlForIndex(index))?.breadcrumbtitle ?? (placeholders[`${part}-title`] ?? ''),
+      name:
+        pageIndex.find((page) => page.path === urlForIndex(index))?.breadcrumbtitle ??
+        placeholders[`${part}-title`] ??
+        '',
       url_path: urlForIndex(index),
     })),
     {

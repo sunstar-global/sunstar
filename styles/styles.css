@@ -12,9 +12,9 @@
 
 /* fallback font for Noto Sans (normal - 400) */
 @font-face {
-  font-family: "noto-sans-normal-400-fallback";
+  font-family: 'noto-sans-normal-400-fallback';
   size-adjust: 105.431%;
-  src: local("Arial");
+  src: local('Arial');
 }
 
 :root {
@@ -88,37 +88,34 @@
   --alpha-1: 100%;
   --alpha-0-5: 50%;
 
-
-
   /* fonts */
 
   --body-font-family: 'Noto Sans', noto-sans-normal-400-fallback, sans-serif;
   --heading-font-family: var(--body-font-family);
-  --fixed-font-family: "Roboto Mono", menlo, consolas, "Liberation Mono",
-    monospace;
+  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* Body sizes */
   --body-font-size-xxl: 1.375rem; /* 22px / 16px = 1.375rem */
-  --body-font-size-xl: 1.25rem;   /* 20px / 16px = 1.25rem */
-  --body-font-size-l: 1.125rem;   /* 18px / 16px = 1.125rem */
-  --body-font-size-m: 1rem;       /* 16px / 16px = 1rem */
-  --body-font-size-s: 0.875rem;   /* 14px / 16px = 0.875rem */
-  --body-font-size-xs: 0.75rem;   /* 12px / 16px = 0.75rem */
+  --body-font-size-xl: 1.25rem; /* 20px / 16px = 1.25rem */
+  --body-font-size-l: 1.125rem; /* 18px / 16px = 1.125rem */
+  --body-font-size-m: 1rem; /* 16px / 16px = 1rem */
+  --body-font-size-s: 0.875rem; /* 14px / 16px = 0.875rem */
+  --body-font-size-xs: 0.75rem; /* 12px / 16px = 0.75rem */
 
   /* Heading sizes */
-  --heading-font-size-xxl: 3rem;       /* 48px / 16px = 3rem */
-  --heading-font-size-xl: 2.625rem;    /* 42px / 16px = 2.625rem */
-  --heading-font-size-xmxl: 2.5rem;    /* 40px / 16px = 2.5rem */
-  --heading-font-size-mxl: 2.25rem;    /* 36px / 16px = 2.25rem */
-  --heading-font-size-l: 2rem;         /* 32px / 16px = 2rem */
-  --heading-font-size-ml: 1.875rem;    /* 30px / 16px = 1.875rem */
-  --heading-font-size-m: 1.75rem;      /* 28px / 16px = 1.75rem */
-  --heading-font-size-s: 1.5rem;       /* 24px / 16px = 1.5rem */
-  --heading-font-size-ms: 1.25rem;     /* 20px / 16px = 1.25rem */
-  --heading-font-size-xs: 1.125rem;    /* 18px / 16px = 1.125rem */
-  --heading-font-size-mxs: 1rem;       /* 16px / 16px = 1rem */
-  --heading-font-size-xxs: 0.875rem;   /* 14px / 16px = 0.875rem */
-  --heading-font-size-xxxs: 0.75rem;   /* 12px / 16px = 0.75rem */
+  --heading-font-size-xxl: 3rem; /* 48px / 16px = 3rem */
+  --heading-font-size-xl: 2.625rem; /* 42px / 16px = 2.625rem */
+  --heading-font-size-xmxl: 2.5rem; /* 40px / 16px = 2.5rem */
+  --heading-font-size-mxl: 2.25rem; /* 36px / 16px = 2.25rem */
+  --heading-font-size-l: 2rem; /* 32px / 16px = 2rem */
+  --heading-font-size-ml: 1.875rem; /* 30px / 16px = 1.875rem */
+  --heading-font-size-m: 1.75rem; /* 28px / 16px = 1.75rem */
+  --heading-font-size-s: 1.5rem; /* 24px / 16px = 1.5rem */
+  --heading-font-size-ms: 1.25rem; /* 20px / 16px = 1.25rem */
+  --heading-font-size-xs: 1.125rem; /* 18px / 16px = 1.125rem */
+  --heading-font-size-mxs: 1rem; /* 16px / 16px = 1rem */
+  --heading-font-size-xxs: 0.875rem; /* 14px / 16px = 0.875rem */
+  --heading-font-size-xxxs: 0.75rem; /* 12px / 16px = 0.75rem */
 
   /* Heading Variables */
   --hero-font-size-desktop: var(--heading-font-size-xxl);
@@ -146,9 +143,7 @@
   --nav-top-height: 0px;
   --nav-middle-height: 60px;
   --nav-bottom-height: 52px;
-  --nav-total-height: calc(
-    var(--nav-top-height) + var(--nav-middle-height) + var(--nav-bottom-height)
-  );
+  --nav-total-height: calc(var(--nav-top-height) + var(--nav-middle-height) + var(--nav-bottom-height));
 
   /* button */
   --button-background-color: var(--secondary);
@@ -163,15 +158,19 @@
   --font-size-xsmall: 12px;
 
   /* Column Split Ratios */
-  --split-firstquarter: 25%:75%;
-  --split-lastquarter: 75%:25%;
-  --split-firstthird: 34%:66%;
-  --split-lastthird: 66%:34%;
-  --split-firsttwothird: 40%:60%;
-  --split-lasttwothird: 60%:40%;
+  --split-firstquarter: 25%: 75%;
+  --split-lastquarter: 75%: 25%;
+  --split-firstthird: 34%: 66%;
+  --split-lastthird: 66%: 34%;
+  --split-firsttwothird: 40%: 60%;
+  --split-lasttwothird: 60%: 40%;
 }
 
-*, *::before, *::after { box-sizing: inherit; }
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
 
 html {
   scroll-behavior: smooth;
@@ -359,33 +358,43 @@ a {
   color: var(--white);
 }
 
-.hero h1, .hero h2, .hero h3, .hero h4 {
+.hero h1,
+.hero h2,
+.hero h3,
+.hero h4 {
   font-size: var(--hero-font-size-mobile);
 }
 
-.h1 h2, .h1 h3, .h1 h4 {
-  font-size: var(--h1-font-size-mobile)
+.h1 h2,
+.h1 h3,
+.h1 h4 {
+  font-size: var(--h1-font-size-mobile);
 }
 
-.h2 h1, .h2 h3, .h2 h4 {
+.h2 h1,
+.h2 h3,
+.h2 h4 {
   font-size: var(--h2-font-size-mobile);
 }
 
-.h3 h1, .h3 h2 .h3 h4 {
+.h3 h1,
+.h3 h2 .h3 h4 {
   font-size: var(--h3-font-size-mobile);
 }
 
-.h4 h1, .h4 h2, .h4 h3 {
+.h4 h1,
+.h4 h2,
+.h4 h3 {
   font-size: var(--h4-font-size-mobile);
 }
 
-main p.h6, 
-main h1.h6, 
+main p.h6,
+main h1.h6,
 main h2.h6 {
   color: var(--hero-strong-color);
   letter-spacing: 0.7px;
-  margin-bottom: 0.75rem!important;
-  margin-top: 0!important;
+  margin-bottom: 0.75rem !important;
+  margin-top: 0 !important;
   text-transform: uppercase;
   font-weight: 700;
   font-size: var(--heading-font-size-xxs);
@@ -406,21 +415,22 @@ main .block.lead p {
 
 /* Mixins carry !important to override the default styles */
 .display-block * {
-  display: block!important;
+  display: block !important;
 }
 
 .no-borders * {
-  border: none!important;
-  box-shadow: none!important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .no-margins,
-.no-margins  * {
-  margin: 0!important;
+.no-margins * {
+  margin: 0 !important;
 }
 
-.no-margin-bottom, .no-margin-bottom * {
-  margin-bottom: 0!important;
+.no-margin-bottom,
+.no-margin-bottom * {
+  margin-bottom: 0 !important;
 }
 
 .half-width {
@@ -428,7 +438,7 @@ main .block.lead p {
 }
 
 .quarter-width {
-  width: 30%!important;
+  width: 30% !important;
 }
 
 .float-left {
@@ -440,7 +450,7 @@ main .block.lead p {
 }
 
 .padded-block {
-  padding: 1rem 0!important;
+  padding: 1rem 0 !important;
 }
 
 .dark h6 {
@@ -503,7 +513,7 @@ main pre {
 .icon.icon-sunstar-logo {
   width: 134px;
   height: 20px;
-  background-image: url("/icons/sunstar-logo.svg");
+  background-image: url('/icons/sunstar-logo.svg');
 }
 
 .icon.brand {
@@ -513,31 +523,31 @@ main pre {
 }
 
 .icon.icon-linkedin {
-  background-image: url("/icons/linkedin.svg");
+  background-image: url('/icons/linkedin.svg');
 }
 
 .icon.icon-spotify {
-  background-image: url("/icons/spotify.svg");
+  background-image: url('/icons/spotify.svg');
   background-size: contain;
 }
 
 .icon.icon-apple-podcasts {
-  background-image: url("/icons/apple-podcasts.svg");
+  background-image: url('/icons/apple-podcasts.svg');
 }
 
 .icon.icon-youtube {
-  background-image: url("/icons/youtube.svg");
+  background-image: url('/icons/youtube.svg');
 }
 
 .icon.icon-link-black {
-  background-image: url("/icons/link-black.svg");
+  background-image: url('/icons/link-black.svg');
   display: inline-flex;
   height: 18px;
   width: 12px;
 }
 
 .icon.icon-angle-white-70 {
-  background-image: url("/icons/angle-white-70.svg");
+  background-image: url('/icons/angle-white-70.svg');
   margin-left: 6px;
   height: 22px;
   width: 14px;
@@ -545,14 +555,14 @@ main pre {
 }
 
 .icon.icon-link-blue {
-  background-image: url("/icons/link-blue.svg");
+  background-image: url('/icons/link-blue.svg');
   width: 1.25rem;
   height: 1.25rem;
   margin-left: 0.3rem;
 }
 
 .icon.icon-angle-left-blue {
-  background-image: url("/icons/angle-left-blue.svg");
+  background-image: url('/icons/angle-left-blue.svg');
   width: 8px;
   height: 12px;
   position: relative;
@@ -561,7 +571,7 @@ main pre {
 
 .icon.icon-angle-right-blue-bg,
 .icon.icon-angle-right-blue {
-  background-image: url("/icons/angle-right-blue.svg");
+  background-image: url('/icons/angle-right-blue.svg');
   vertical-align: middle;
   width: 0.5rem;
   height: 0.75rem;
@@ -596,7 +606,8 @@ main img {
   height: auto;
 }
 
-a:any-link, button {
+a:any-link,
+button {
   color: var(--link-color);
   text-decoration: none;
 }
@@ -619,11 +630,15 @@ button {
   justify-content: center;
   line-height: 1;
   border-radius: 2px;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 }
 
-a.button.primary, button.primary {
+a.button.primary,
+button.primary {
   background: var(--secondary);
   color: var(--white);
 }
@@ -703,12 +718,12 @@ main blockquote {
 }
 
 main blockquote p::before {
-  content: "“";
+  content: '“';
   line-height: 0;
 }
 
 main blockquote p::after {
-  content: "”";
+  content: '”';
   line-height: 0;
 }
 
@@ -738,7 +753,6 @@ main .block.centered {
   text-align: center;
 }
 
-
 /* START Section Styles START */
 
 main .section.flex {
@@ -749,7 +763,7 @@ main .section.hero {
   min-height: 37.5rem;
 }
 
-main .section.dark.hero  {
+main .section.dark.hero {
   padding-block: 3rem;
 }
 
@@ -764,14 +778,14 @@ main .section.auto-top-spacing .section-container {
   margin-top: 4rem !important;
 }
 
-main .section .default-content-wrapper:first-of-type > :first-child, 
-main .section.no-top-margin .default-content-wrapper  {
+main .section .default-content-wrapper:first-of-type > :first-child,
+main .section.no-top-margin .default-content-wrapper {
   margin-top: 0;
 }
 
-main .section.hero  .section-container {
-  margin-top: 0!important;
-  padding: 0!important;
+main .section.hero .section-container {
+  margin-top: 0 !important;
+  padding: 0 !important;
 }
 
 main .section .default-content-wrapper:last-of-type > :last-child {
@@ -854,11 +868,11 @@ main .section.social-media .icon {
 }
 
 main .section.social-media .icon-youtube {
-  background-image: url("../../icons/youtube.svg");
+  background-image: url('../../icons/youtube.svg');
 }
 
 main .section.social-media .icon-linkedin {
-  background-image: url("../../icons/linkedin.svg");
+  background-image: url('../../icons/linkedin.svg');
 }
 
 /* section - spaced */
@@ -995,7 +1009,7 @@ main .section.three-columns-layout .section-container {
   flex-direction: column;
 }
 
-main .section.three-columns-layout .section-container > div  {
+main .section.three-columns-layout .section-container > div {
   max-width: 50%;
 }
 
@@ -1028,7 +1042,7 @@ main .section.no-margin-top {
 }
 
 main .section.no-margin-block .section-container {
-  margin-block: 0!important;
+  margin-block: 0 !important;
 }
 
 /* fixed padding bottom of section-container - 400px */
@@ -1050,7 +1064,6 @@ main .section.dark {
 main .section.dark.dark-secondary {
   background-color: var(--cyan);
 }
-
 
 main .section.bg-gradient {
   background: linear-gradient(135deg, var(--teal-600), var(--primary), var(--indigo-800));
@@ -1131,19 +1144,21 @@ main .block.centered > div {
 }
 
 main .block.download a::after {
-  content: url("../../icons/download.svg");
+  content: url('../../icons/download.svg');
   position: relative;
   left: 0.3rem;
   top: 0.05rem;
 }
 
 /* Section Styles for background images */
-.section.with-background-image, .section.with-static-background-image {
+.section.with-background-image,
+.section.with-static-background-image {
   position: relative;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.section.with-background-image > picture, .section.with-static-background-image > picture {
+.section.with-background-image > picture,
+.section.with-static-background-image > picture {
   display: block;
   width: 100%;
   z-index: -1;
@@ -1155,7 +1170,8 @@ main .section.float-image-right picture {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.section.with-background-image > picture > img, .section.with-static-background-image > picture > img {
+.section.with-background-image > picture > img,
+.section.with-static-background-image > picture > img {
   display: block;
   object-fit: cover;
   width: 100%;
@@ -1193,7 +1209,9 @@ main .section.float-image-right picture {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-main .section.with-background-image.align-top > .section-container, main .section.narrow.with-background-image.align-top > .section-container, main .section.narrower.with-background-image.align-top > .section-container  {
+main .section.with-background-image.align-top > .section-container,
+main .section.narrow.with-background-image.align-top > .section-container,
+main .section.narrower.with-background-image.align-top > .section-container {
   margin-top: 1.5rem;
   top: 0%;
   height: auto;
@@ -1201,7 +1219,7 @@ main .section.with-background-image.align-top > .section-container, main .sectio
   transform: translate(-50%, 0%);
 }
 
-p.button-container, 
+p.button-container,
 *.button-container {
   display: flex;
   flex-wrap: wrap;
@@ -1237,7 +1255,6 @@ p.button-container,
 /* END Keyframes END */
 
 @media (min-width: 62rem) {
-
   :root {
     --nav-top-height: 42px;
     --nav-middle-height: 26px;
@@ -1372,11 +1389,11 @@ p.button-container,
   }
 
   main .section.social-media a::after {
-    content: "";
+    content: '';
     height: 0.625rem;
     width: 0.375rem;
     display: inline;
-    background-image: url("../../icons/arrow-down-gray.svg");
+    background-image: url('../../icons/arrow-down-gray.svg');
     background-size: contain;
     margin-left: 0.5rem;
     margin-top: 0.25rem;
@@ -1422,7 +1439,6 @@ p.button-container,
 }
 
 @media (min-width: 77rem) {
-
   h1 {
     font-size: var(--h1-font-size-desktop);
     margin: 4.375rem 0 2.5rem;
@@ -1443,23 +1459,33 @@ p.button-container,
     margin: 2rem 0 0.5rem;
   }
 
-  .hero h1, .hero h2, .hero h3, .hero h4 {
+  .hero h1,
+  .hero h2,
+  .hero h3,
+  .hero h4 {
     font-size: var(--hero-font-size-desktop);
   }
 
-  .h1 h2, .h1 h3, .h1 h4 {
-    font-size: var(--h1-font-size-desktop)
+  .h1 h2,
+  .h1 h3,
+  .h1 h4 {
+    font-size: var(--h1-font-size-desktop);
   }
 
-  .h2 h1, .h2 h3, .h2 h4 {
+  .h2 h1,
+  .h2 h3,
+  .h2 h4 {
     font-size: var(--h2-font-size-desktop);
   }
 
-  .h3 h1, .h3 h2 .h3 h4 {
+  .h3 h1,
+  .h3 h2 .h3 h4 {
     font-size: var(--h3-font-size-desktop);
   }
 
-  .h4 h1, .h4 h2, .h4 h3 {
+  .h4 h1,
+  .h4 h2,
+  .h4 h3 {
     font-size: var(--h4-font-size-desktop);
   }
 
@@ -1550,7 +1576,7 @@ p.button-container,
     gap: 1rem;
   }
 
-  main .section.dark.hero  {
+  main .section.dark.hero {
     padding-block: 6rem;
   }
 }

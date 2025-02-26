@@ -95,10 +95,7 @@ function buildHeroBlock(main) {
 
 function buildModalFragmentBlock(main) {
   const MODAL_FRAGMENT_BLOCK_NAME = 'modal-fragment';
-  if (
-    main.querySelector(MODAL_FRAGMENTS_ANCHOR_SELECTOR) &&
-    !main.querySelector(MODAL_FRAGMENT_BLOCK_NAME)
-  ) {
+  if (main.querySelector(MODAL_FRAGMENTS_ANCHOR_SELECTOR) && !main.querySelector(MODAL_FRAGMENT_BLOCK_NAME)) {
     const section = document.createElement('div');
     const blockEl = buildBlock(MODAL_FRAGMENT_BLOCK_NAME, { elems: [] });
     section.append(blockEl);
@@ -143,11 +140,7 @@ function buildImageWithCaptionForPicture(parentP, picture, buildBlockFunction) {
   if (enclosingDiv) {
     // The caption could either be right next to, or right before the picture (if on the same line)
     // or it could be in an adjacent sibling element (if 'enter' was pressed between)
-    const captionP = [
-      picture.previousElementSibling,
-      picture.nextElementSibling,
-      parentP.nextElementSibling,
-    ];
+    const captionP = [picture.previousElementSibling, picture.nextElementSibling, parentP.nextElementSibling];
 
     // eslint-disable-next-line no-restricted-syntax
     for (const cp of captionP) {
@@ -316,18 +309,14 @@ export function decorateAnchors(element = document) {
     )
   );
   decorateDownloadableLinks(
-    Array.from(anchors).filter(
-      (a) => a.querySelector('span.icon-download') || a.closest('.download')
-    )
+    Array.from(anchors).filter((a) => a.querySelector('span.icon-download') || a.closest('.download'))
   );
 }
 
 // Function to get the current window size
 export function getWindowSize() {
-  const windowWidth =
-    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  const windowHeight =
-    window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
   return {
     width: windowWidth,
     height: windowHeight,
@@ -457,9 +446,7 @@ export function decorateMain(main) {
 function decoratePageStyles() {
   const pageStyle = getMetadata('page-style');
   if (pageStyle && pageStyle.trim().length > 0) {
-    loadCSS(
-      `${`${window.location.protocol}//${window.location.host}`}/styles/pages/${pageStyle.toLowerCase()}.css`
-    );
+    loadCSS(`${`${window.location.protocol}//${window.location.host}`}/styles/pages/${pageStyle.toLowerCase()}.css`);
     document.body.classList.add(pageStyle.toLowerCase());
   }
 }
@@ -470,8 +457,7 @@ function decoratePageStyles() {
 async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts/fonts.css`);
   try {
-    if (!window.location.hostname.includes('localhost'))
-      sessionStorage.setItem('fonts-loaded', 'true');
+    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
     // do nothing
   }
@@ -827,13 +813,7 @@ export async function queryIndex(sheet) {
  * @param {Document} doc - The current Document
  * @param {Location} curLocation - THe current window.location to use
  */
-export function addPagingWidget(
-  div,
-  curpage,
-  totalPages,
-  doc = document,
-  curLocation = window.location
-) {
+export function addPagingWidget(div, curpage, totalPages, doc = document, curLocation = window.location) {
   const queryParams = new URLSearchParams(curLocation.search);
   const nav = doc.createElement('ul');
   nav.classList.add('pagination');

@@ -41,7 +41,7 @@ export function scrollToAdjacent(spans, slideDivs, slides, next, doc) {
     newActive > 0 ? slideDivs[newActive - 1] : null,
     slides,
     spans[newActive],
-    doc,
+    doc
   );
 }
 
@@ -143,7 +143,7 @@ export default async function decorate(block) {
         ra.onclick();
         break;
       default:
-        // do nothing
+      // do nothing
     }
   };
 }

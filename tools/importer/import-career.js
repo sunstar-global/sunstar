@@ -98,8 +98,9 @@ function eliminateCommonBlocksFromCareerTestimonials(doc) {
     table.after(createSectionMetadata({ Style: 'Narrower, Centered' }, doc));
 
     const p = doc.createElement('p');
-    p.innerHTML = 'Read about the backgrounds, current activities and future goals of '
-      + 'team members contributing to the spirit of Sunstar around the world.';
+    p.innerHTML =
+      'Read about the backgrounds, current activities and future goals of ' +
+      'team members contributing to the spirit of Sunstar around the world.';
     table.after(p);
     const h2 = doc.createElement('h2');
     h2.innerHTML = 'Meet our people';
@@ -199,7 +200,10 @@ export default {
 
   preprocess: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     const schemaDetails = document.querySelector('head script.aioseo-schema');
     const metadataDetails = {};
@@ -232,17 +236,16 @@ export default {
 
   transformDOM: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
     // use helper method to remove header, footer, etc.
-    WebImporter.DOMUtils.remove(main, [
-      'header',
-      'footer',
-      'noscript',
-    ]);
+    WebImporter.DOMUtils.remove(main, ['header', 'footer', 'noscript']);
     const mainImg = customImportLogic(document);
     // create the metadata block and append it to the main element
     createMetadata(main, document, params, mainImg);
@@ -261,7 +264,10 @@ export default {
    */
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     const { pathname } = new URL(url);
     const { preProcessMetadata } = params;
@@ -271,7 +277,9 @@ export default {
     console.log(`pathname: ${pathname} -> initialReplace: ${initialReplace}`);
     // Custom handling for Japanese news pages
     if (pathname.toLowerCase().indexOf('/ja/news/') !== -1 && preProcessMetadata && preProcessMetadata.NewsDate) {
-      return WebImporter.FileUtils.sanitizePath(initialReplace.replace(/\/ja\/news\/.*$/, `/ja/news/${getFomattedDate(preProcessMetadata.NewsDate)}}`));
+      return WebImporter.FileUtils.sanitizePath(
+        initialReplace.replace(/\/ja\/news\/.*$/, `/ja/news/${getFomattedDate(preProcessMetadata.NewsDate)}}`)
+      );
     }
     return WebImporter.FileUtils.sanitizePath(initialReplace);
   },
