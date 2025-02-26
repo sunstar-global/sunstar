@@ -86,7 +86,7 @@ function buildHeroBlock(main) {
     return;
   }
   // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+  if (h1 && picture && h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
@@ -95,8 +95,10 @@ function buildHeroBlock(main) {
 
 function buildModalFragmentBlock(main) {
   const MODAL_FRAGMENT_BLOCK_NAME = 'modal-fragment';
-  if (main.querySelector(MODAL_FRAGMENTS_ANCHOR_SELECTOR)
-    && !main.querySelector(MODAL_FRAGMENT_BLOCK_NAME)) {
+  if (
+    main.querySelector(MODAL_FRAGMENTS_ANCHOR_SELECTOR) &&
+    !main.querySelector(MODAL_FRAGMENT_BLOCK_NAME)
+  ) {
     const section = document.createElement('div');
     const blockEl = buildBlock(MODAL_FRAGMENT_BLOCK_NAME, { elems: [] });
     section.append(blockEl);
@@ -121,7 +123,10 @@ function formatAutoblockedImageCaptionsForColumns(block, enclosingDiv) {
   const blockClassList = block.classList;
   const columnDiv = document.createElement('div');
 
-  if (enclosingDiv.parentElement?.classList?.contains('columns') || enclosingDiv.parentElement?.parentElement?.classList?.contains('columns')) {
+  if (
+    enclosingDiv.parentElement?.classList?.contains('columns') ||
+    enclosingDiv.parentElement?.parentElement?.classList?.contains('columns')
+  ) {
     columnDiv.classList = blockClassList;
     columnDiv.classList.add('img-col');
     columnDiv.appendChild(picture);
@@ -301,26 +306,28 @@ function getUrlExtension(url) {
  */
 export function decorateAnchors(element = document) {
   const anchors = element.getElementsByTagName('a');
-  decorateVideoLinks(Array.from(anchors).filter(
-    (a) => a.href.includes('youtu'),
-  ));
-  decorateExternalAnchors(Array.from(anchors).filter(
-    (a) => a.href && (!a.href.match(`^http[s]*://${window.location.host}/`)
-      || ['pdf'].includes(getUrlExtension(a.href).toLowerCase())),
-  ));
-  decorateDownloadableLinks(Array.from(anchors).filter(
-    (a) => (a.querySelector('span.icon-download') || a.closest('.download')),
-  ));
+  decorateVideoLinks(Array.from(anchors).filter((a) => a.href.includes('youtu')));
+  decorateExternalAnchors(
+    Array.from(anchors).filter(
+      (a) =>
+        a.href &&
+        (!a.href.match(`^http[s]*://${window.location.host}/`) ||
+          ['pdf'].includes(getUrlExtension(a.href).toLowerCase()))
+    )
+  );
+  decorateDownloadableLinks(
+    Array.from(anchors).filter(
+      (a) => a.querySelector('span.icon-download') || a.closest('.download')
+    )
+  );
 }
 
 // Function to get the current window size
 export function getWindowSize() {
-  const windowWidth = window.innerWidth
-    || document.documentElement.clientWidth
-    || document.body.clientWidth;
-  const windowHeight = window.innerHeight
-    || document.documentElement.clientHeight
-    || document.body.clientHeight;
+  const windowWidth =
+    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
   return {
     width: windowWidth,
     height: windowHeight,
@@ -335,9 +342,20 @@ export function getWindowSize() {
  * we break out of the loop to not add spacing to other sections as well.
  */
 export function addTopSpacingStyleToFirstMatchingSection(main) {
-  const excludedClasses = ['static', 'spacer-container', 'feed-container', 'modal-fragment-container',
-    'hero-banner-container', 'hero-career-container', 'breadcrumb-container', 'hero-horizontal-tabs-container',
-    'carousel-container', 'with-background-image', 'report-overview-container', 'no-margin-top'];
+  const excludedClasses = [
+    'static',
+    'spacer-container',
+    'feed-container',
+    'modal-fragment-container',
+    'hero-banner-container',
+    'hero-career-container',
+    'breadcrumb-container',
+    'hero-horizontal-tabs-container',
+    'carousel-container',
+    'with-background-image',
+    'report-overview-container',
+    'no-margin-top',
+  ];
   const sections = [...main.querySelectorAll(':scope > div')];
   let added = false;
 
@@ -392,12 +410,10 @@ function decorateSectionsWithBackgrounds(element) {
 }
 
 function decorateSectionsWithBackgroundColor(element) {
-  element
-    .querySelectorAll('.section[data-bg-color]')
-    .forEach((section) => {
-      const bgColors = section.getAttribute('data-bg-color').replaceAll(' ', '-').toLowerCase();
-      section.classList.add(bgColors);
-    });
+  element.querySelectorAll('.section[data-bg-color]').forEach((section) => {
+    const bgColors = section.getAttribute('data-bg-color').replaceAll(' ', '-').toLowerCase();
+    section.classList.add(bgColors);
+  });
 }
 
 /**
@@ -409,8 +425,9 @@ function wrapDirectDivTextInParagraphs(element) {
   const combinedSelector = classNamesToWrapText.join(', ');
   const divs = element.querySelectorAll(combinedSelector);
   Array.from(divs).forEach((div) => {
-    const hasTextNodes = Array.from(div.childNodes)
-      .some((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
+    const hasTextNodes = Array.from(div.childNodes).some(
+      (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
+    );
     if (hasTextNodes) {
       const pElement = document.createElement('p');
       pElement.innerHTML = div.innerHTML;
@@ -440,7 +457,9 @@ export function decorateMain(main) {
 function decoratePageStyles() {
   const pageStyle = getMetadata('page-style');
   if (pageStyle && pageStyle.trim().length > 0) {
-    loadCSS(`${`${window.location.protocol}//${window.location.host}`}/styles/pages/${pageStyle.toLowerCase()}.css`);
+    loadCSS(
+      `${`${window.location.protocol}//${window.location.host}`}/styles/pages/${pageStyle.toLowerCase()}.css`
+    );
     document.body.classList.add(pageStyle.toLowerCase());
   }
 }
@@ -451,7 +470,8 @@ function decoratePageStyles() {
 async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts/fonts.css`);
   try {
-    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+    if (!window.location.hostname.includes('localhost'))
+      sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
     // do nothing
   }
@@ -470,13 +490,12 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
     // Adding blocks containing hero variant in lcp blocks at runtime
-    document.querySelectorAll('[class*="hero-"]')
-      .forEach((heroBlock) => {
-        const shortBlockName = heroBlock.classList[0];
-        if (LCP_BLOCKS.indexOf(shortBlockName) === -1) {
-          LCP_BLOCKS.push(shortBlockName);
-        }
-      });
+    document.querySelectorAll('[class*="hero-"]').forEach((heroBlock) => {
+      const shortBlockName = heroBlock.classList[0];
+      if (LCP_BLOCKS.indexOf(shortBlockName) === -1) {
+        LCP_BLOCKS.push(shortBlockName);
+      }
+    });
 
     await waitForLCP(LCP_BLOCKS, SKIP_FROM_LCP, MAX_LCP_CANDIDATE_BLOCKS);
     try {
@@ -542,7 +561,7 @@ function setMetaTags(main) {
   const pageType = getMetadata('pagetype');
   if (pageType && pageType.trim().toLowerCase() === 'tagpage') {
     const images = [...main.querySelectorAll('.cards.block > ul > li img')];
-    const imageTag = images.find((image) => (image.src));
+    const imageTag = images.find((image) => image.src);
     if (imageTag && imageTag.src) {
       const imageUrl = imageTag.src;
       const OgTags = ['og:image', 'og:image:secure_url'];
@@ -609,7 +628,7 @@ export async function fetchIndex(indexFile, sheet, pageSize = 1000) {
     const resp = await fetch(`/${indexFile}.json?limit=${pageSize}&offset=${offset}${sheetParam}`);
     const json = await resp.json();
     const newIndex = {
-      complete: (json.limit + json.offset) === json.total,
+      complete: json.limit + json.offset === json.total,
       offset: json.offset + pageSize,
       promise: null,
       data: [...window.index[idxKey].data, ...json.data],
@@ -635,7 +654,7 @@ export async function fetchIndex(indexFile, sheet, pageSize = 1000) {
   }
 
   window.index[idxKey].promise = handleIndex(window.index[idxKey].offset);
-  const newIndex = await (window.index[idxKey].promise);
+  const newIndex = await window.index[idxKey].promise;
   window.index[idxKey] = newIndex;
 
   return newIndex;
@@ -694,13 +713,15 @@ export function htmlToElement(html) {
 export function getNamedValueFromTable(block, name) {
   // This XPath finds the div that has the name. It uses the XPath translate function to make
   // the lookup case-insensitive.
-  return document.evaluate(
-    `//div/text()[translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz') = '${name.toLowerCase()}']/parent::div/parent::div/div[2]`,
-    block,
-    null,
-    XPathResult.ANY_TYPE,
-    null,
-  ).iterateNext();
+  return document
+    .evaluate(
+      `//div/text()[translate(.,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz') = '${name.toLowerCase()}']/parent::div/parent::div/div[2]`,
+      block,
+      null,
+      XPathResult.ANY_TYPE,
+      null
+    )
+    .iterateNext();
 }
 
 function getSearchWidgetHTML(placeholders, initialVal, searchbox, lang) {
@@ -724,8 +745,8 @@ export function getSearchWidget(placeholders, initialVal, searchbox, lang = getL
 }
 
 /*
-  * Returns the environment type based on the hostname.
-*/
+ * Returns the environment type based on the hostname.
+ */
 export function getEnvType(hostname = window.location.hostname) {
   const fqdnToEnvType = {
     'sunstar.com': 'live',
@@ -811,7 +832,7 @@ export function addPagingWidget(
   curpage,
   totalPages,
   doc = document,
-  curLocation = window.location,
+  curLocation = window.location
 ) {
   const queryParams = new URLSearchParams(curLocation.search);
   const nav = doc.createElement('ul');
@@ -883,9 +904,14 @@ export async function fetchTagsOrCategories(ids = [], sheet = 'tags', type = '',
         })
         .then((results) => {
           // eslint-disable-next-line max-len
-          window.tagsCategories[sheetKey] = results.data.map((ele) => ({ id: ele.Key, type: ele.Type, name: placeholders[ele.Key] }));
+          window.tagsCategories[sheetKey] = results.data.map((ele) => ({
+            id: ele.Key,
+            type: ele.Type,
+            name: placeholders[ele.Key],
+          }));
           resolve();
-        }).catch((error) => {
+        })
+        .catch((error) => {
           // Error While Loading tagsCategories
           window.tagsCategories[sheetKey] = {};
           reject(error);
@@ -898,8 +924,9 @@ export async function fetchTagsOrCategories(ids = [], sheet = 'tags', type = '',
   }
 
   await window.tagsCategories[`${sheetKey}-loaded`];
-  return window.tagsCategories[sheetKey]
-    .filter((ele) => (!ids.length || ids.indexOf(ele.id) > -1) && (!type || ele.type === type));
+  return window.tagsCategories[sheetKey].filter(
+    (ele) => (!ids.length || ids.indexOf(ele.id) > -1) && (!type || ele.type === type)
+  );
 }
 
 export function wrapImgsInLinks(container) {
@@ -980,4 +1007,6 @@ export function cropString(inputString, maxLength) {
   return croppedString;
 }
 
-if (!window.noload) { loadPage(); }
+if (!window.noload) {
+  loadPage();
+}

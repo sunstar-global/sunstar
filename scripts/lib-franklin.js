@@ -18,42 +18,57 @@
 export function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
-    sampleRUM[fnname] = sampleRUM[fnname]
-      || ((...args) => sampleRUM.defer.push({ fnname, args }));
+    sampleRUM[fnname] = sampleRUM[fnname] || ((...args) => sampleRUM.defer.push({ fnname, args }));
   };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
+  sampleRUM.drain =
+    sampleRUM.drain ||
+    ((dfnname, fn) => {
       sampleRUM[dfnname] = fn;
       sampleRUM.defer
         .filter(({ fnname }) => dfnname === fnname)
         .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
     });
-  sampleRUM.on = (chkpnt, fn) => { sampleRUM.cases[chkpnt] = fn; };
+  sampleRUM.on = (chkpnt, fn) => {
+    sampleRUM.cases[chkpnt] = fn;
+  };
   defer('observe');
   defer('cwv');
   try {
     window.hlx = window.hlx || {};
     if (!window.hlx.rum) {
       const usp = new URLSearchParams(window.location.search);
-      const weight = (usp.get('rum') === 'on') ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
+      const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
       // eslint-disable-next-line no-bitwise
-      const hashCode = (s) => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
+      const hashCode = (s) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
       const id = `${hashCode(window.location.href)}-${new Date().getTime()}-${Math.random().toString(16).substr(2, 14)}`;
       const random = Math.random();
-      const isSelected = (random * weight < 1);
+      const isSelected = random * weight < 1;
       const urlSanitizers = {
         full: () => window.location.href,
         origin: () => window.location.origin,
         path: () => window.location.href.replace(/\?.*$/, ''),
       };
       // eslint-disable-next-line object-curly-newline, max-len
-      window.hlx.rum = { weight, id, random, isSelected, sampleRUM, sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'] };
+      window.hlx.rum = {
+        weight,
+        id,
+        random,
+        isSelected,
+        sampleRUM,
+        sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'],
+      };
     }
     const { weight, id } = window.hlx.rum;
     if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
       const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify({ weight, id, referer: window.hlx.rum.sanitizeURL(), checkpoint, ...data });
+        const body = JSON.stringify({
+          weight,
+          id,
+          referer: window.hlx.rum.sanitizeURL(),
+          checkpoint,
+          ...data,
+        });
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);
@@ -71,7 +86,9 @@ export function sampleRUM(checkpoint, data = {}) {
         },
       };
       sendPing(data);
-      if (sampleRUM.cases[checkpoint]) { sampleRUM.cases[checkpoint](); }
+      if (sampleRUM.cases[checkpoint]) {
+        sampleRUM.cases[checkpoint]();
+      }
     }
   } catch (error) {
     // something went wrong
@@ -104,7 +121,9 @@ export function loadCSS(href, callback) {
  */
 export function getMetadata(name) {
   const attr = name && name.includes(':') ? 'property' : 'name';
-  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)].map((m) => m.content).join(', ');
+  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)]
+    .map((m) => m.content)
+    .join(', ');
   return meta || '';
 }
 
@@ -115,7 +134,11 @@ export function getMetadata(name) {
  */
 export function toClassName(name) {
   return typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+    ? name
+        .toLowerCase()
+        .replace(/[^0-9a-z]/gi, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
     : '';
 }
 
@@ -138,54 +161,62 @@ export async function decorateIcons(element) {
   let svgSprite = document.getElementById('franklin-svg-sprite');
   if (!svgSprite) {
     const div = document.createElement('div');
-    div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
+    div.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
     svgSprite = div.firstElementChild;
     document.body.append(div.firstElementChild);
   }
 
   // Download all new icons
   const icons = [...element.querySelectorAll('span.icon')];
-  await Promise.all(icons.map(async (span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
-    if (!ICONS_CACHE[iconName]) {
-      ICONS_CACHE[iconName] = true;
-      try {
-        const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
-        if (!response.ok) {
+  await Promise.all(
+    icons.map(async (span) => {
+      const iconName = Array.from(span.classList)
+        .find((c) => c.startsWith('icon-'))
+        .substring(5);
+      if (!ICONS_CACHE[iconName]) {
+        ICONS_CACHE[iconName] = true;
+        try {
+          const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
+          if (!response.ok) {
+            ICONS_CACHE[iconName] = false;
+            return;
+          }
+          // Styled icons don't play nice with the sprite approach because of shadow dom isolation
+          // and same for internal references
+          const svg = await response.text();
+          if (svg.match(/(<style | class=|url\(#| xlink:href="#)/)) {
+            ICONS_CACHE[iconName] = {
+              styled: true,
+              html: svg
+                // rescope ids and references to avoid clashes across icons;
+                .replaceAll(/ id="([^"]+)"/g, (_, id) => ` id="${iconName}-${id}"`)
+                .replaceAll(/="url\(#([^)]+)\)"/g, (_, id) => `="url(#${iconName}-${id})"`)
+                .replaceAll(
+                  / xlink:href="#([^"]+)"/g,
+                  (_, id) => ` xlink:href="#${iconName}-${id}"`
+                ),
+            };
+          } else {
+            ICONS_CACHE[iconName] = {
+              html: svg
+                .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
+                .replace(/ width=".*?"/, '')
+                .replace(/ height=".*?"/, '')
+                .replace('</svg>', '</symbol>'),
+            };
+          }
+        } catch (error) {
           ICONS_CACHE[iconName] = false;
-          return;
+          // eslint-disable-next-line no-console
+          console.error(error);
         }
-        // Styled icons don't play nice with the sprite approach because of shadow dom isolation
-        // and same for internal references
-        const svg = await response.text();
-        if (svg.match(/(<style | class=|url\(#| xlink:href="#)/)) {
-          ICONS_CACHE[iconName] = {
-            styled: true,
-            html: svg
-              // rescope ids and references to avoid clashes across icons;
-              .replaceAll(/ id="([^"]+)"/g, (_, id) => ` id="${iconName}-${id}"`)
-              .replaceAll(/="url\(#([^)]+)\)"/g, (_, id) => `="url(#${iconName}-${id})"`)
-              .replaceAll(/ xlink:href="#([^"]+)"/g, (_, id) => ` xlink:href="#${iconName}-${id}"`),
-          };
-        } else {
-          ICONS_CACHE[iconName] = {
-            html: svg
-              .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-              .replace(/ width=".*?"/, '')
-              .replace(/ height=".*?"/, '')
-              .replace('</svg>', '</symbol>'),
-          };
-        }
-      } catch (error) {
-        ICONS_CACHE[iconName] = false;
-        // eslint-disable-next-line no-console
-        console.error(error);
       }
-    }
-  }));
+    })
+  );
 
-  const symbols = Object
-    .keys(ICONS_CACHE).filter((k) => !svgSprite.querySelector(`#icons-sprite-${k}`))
+  const symbols = Object.keys(ICONS_CACHE)
+    .filter((k) => !svgSprite.querySelector(`#icons-sprite-${k}`))
     .map((k) => ICONS_CACHE[k])
     .filter((v) => !v.styled)
     .map((v) => v.html)
@@ -193,7 +224,9 @@ export async function decorateIcons(element) {
   svgSprite.innerHTML += symbols;
 
   icons.forEach((span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
+    const iconName = Array.from(span.classList)
+      .find((c) => c.startsWith('icon-'))
+      .substring(5);
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
     // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
     if (ICONS_CACHE[iconName].styled) {
@@ -243,7 +276,8 @@ export async function fetchPlaceholders(locale = 'en') {
 
           window.placeholders[TRANSLATION_KEY] = placeholders;
           resolve();
-        }).catch((error) => {
+        })
+        .catch((error) => {
           // Error While Loading Placeholders
           window.placeholders[TRANSLATION_KEY] = {};
           reject(error);
@@ -342,9 +376,20 @@ export function decorateSections(main) {
     const sectionMeta = section.querySelector('div.section-metadata');
     if (sectionMeta) {
       const meta = readBlockConfig(sectionMeta);
+
       Object.keys(meta).forEach((key) => {
         if (key === 'style') {
+          const currentDevice = Viewport.getDeviceType(); // Get the current device type
           const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
+          const allowedStyles = ['mobile', 'tablet', 'desktop'];
+
+          const hasDeviceSpecificStyle = styles.some((style) => allowedStyles.includes(style));
+
+          if (hasDeviceSpecificStyle && !styles.includes(currentDevice.toLowerCase())) {
+            section.remove();
+            return;
+          }
+
           styles.forEach((style) => section.classList.add(style));
         } else if (key === 'id') {
           section.id = meta[key];
@@ -372,7 +417,9 @@ export function updateSectionsStatus(main) {
     const section = sections[i];
     const status = section.dataset.sectionStatus;
     if (status !== 'loaded') {
-      const loadingBlock = section.querySelector('.block[data-block-status="initialized"], .block[data-block-status="loading"]');
+      const loadingBlock = section.querySelector(
+        '.block[data-block-status="initialized"], .block[data-block-status="loading"]'
+      );
       if (loadingBlock) {
         section.dataset.sectionStatus = 'loading';
         break;
@@ -389,9 +436,7 @@ export function updateSectionsStatus(main) {
  * @param {Element} main The container element
  */
 export function decorateBlocks(main) {
-  main
-    .querySelectorAll('div.section-container > div > div')
-    .forEach(decorateBlock);
+  main.querySelectorAll('div.section-container > div > div').forEach(decorateBlock);
 }
 
 /**
@@ -422,7 +467,7 @@ export function buildBlock(blockName, content) {
     });
     blockEl.appendChild(rowEl);
   });
-  return (blockEl);
+  return blockEl;
 }
 
 /**
@@ -467,7 +512,9 @@ export async function loadBlock(block) {
  * @returns {String} The true origin
  */
 export function getOrigin() {
-  return window.location.href === 'about:srcdoc' ? window.parent.location.origin : window.location.origin;
+  return window.location.href === 'about:srcdoc'
+    ? window.parent.location.origin
+    : window.location.origin;
 }
 
 /**
@@ -505,7 +552,12 @@ export async function loadBlocks(main) {
  * @param {Array} [breakpoints] Breakpoints and corresponding params (eg. width)
  * @returns {Element} The picture element
  */
-export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
+export function createOptimizedPicture(
+  src,
+  alt = '',
+  eager = false,
+  breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]
+) {
   const url = new URL(src, getHref());
   const picture = document.createElement('picture');
   const { pathname } = url;
@@ -598,13 +650,21 @@ export function decorateButtons(element) {
             a.className = 'button primary'; // default
             up.classList.add('button-container');
           }
-          if (up.childNodes.length === 1 && up.tagName === 'STRONG'
-            && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
+          if (
+            up.childNodes.length === 1 &&
+            up.tagName === 'STRONG' &&
+            twoup.childNodes.length === 1 &&
+            twoup.tagName === 'P'
+          ) {
             a.className = 'button primary';
             twoup.classList.add('button-container');
           }
-          if (up.childNodes.length === 1 && up.tagName === 'EM'
-            && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
+          if (
+            up.childNodes.length === 1 &&
+            up.tagName === 'EM' &&
+            twoup.childNodes.length === 1 &&
+            twoup.tagName === 'P'
+          ) {
             a.className = 'button secondary';
             twoup.classList.add('button-container');
           }
@@ -635,7 +695,11 @@ export async function waitForLCP(lcpBlocks, skipBlocks = [], maxCandidates = 1) 
 
   const main = document.querySelector('main');
   [...blocks]
-    .filter((block) => !skipBlocks.includes(block?.dataset?.blockName) && lcpBlocks.includes(block?.dataset?.blockName)) // eslint-disable-line max-len
+    .filter(
+      (block) =>
+        !skipBlocks.includes(block?.dataset?.blockName) &&
+        lcpBlocks.includes(block?.dataset?.blockName)
+    ) // eslint-disable-line max-len
     .slice(0, maxCandidates)
     .forEach(async (block) => {
       await loadBlock(block);
@@ -751,9 +815,14 @@ export function getFormattedDate(date, locale = 'en') {
 
   if (dateLocaleMap[locale]) {
     // eslint-disable-next-line
-    const formattedDate = date.toLocaleDateString(dateLocaleMap[locale].locale, dateLocaleMap[locale].options);
+    const formattedDate = date.toLocaleDateString(
+      dateLocaleMap[locale].locale,
+      dateLocaleMap[locale].options
+    );
     // eslint-disable-next-line
-    return dateLocaleMap[locale].format ? dateLocaleMap[locale].format(formattedDate) : formattedDate;
+    return dateLocaleMap[locale].format
+      ? dateLocaleMap[locale].format(formattedDate)
+      : formattedDate;
   }
   return date;
 }
@@ -766,8 +835,10 @@ export function decorateRenderHints(block) {
   [...block.children].forEach((row) => {
     const typeHintEl = row.querySelector('div:first-child');
     const typeHints = typeHintEl?.textContent
-      ?.trim()?.toLowerCase()
-      ?.split(',')?.map((type) => type.trim());
+      ?.trim()
+      ?.toLowerCase()
+      ?.split(',')
+      ?.map((type) => type.trim());
     if (typeHints?.length) {
       row.classList.add(...typeHints);
       typeHintEl.remove();
@@ -817,7 +888,7 @@ const Viewport = (function initializeViewport() {
   return {
     getDeviceType,
   };
-}());
+})();
 
 // for initial page load
 window.deviceType = Viewport.getDeviceType();
