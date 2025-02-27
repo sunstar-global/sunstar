@@ -30,7 +30,7 @@ footer .footer-top-item:last-of-type {
   margin-bottom: 2rem;
 }
 
-footer .footer-top h6 {
+footer .footer-top p.h6-style {
   display: none;
 }
 
@@ -46,12 +46,13 @@ footer .footer-top-item:last-of-type li {
   margin-bottom: 1.5rem;
 }
 
-footer .footer-top h5 {
+footer .footer-top a.h5-style {
+  display: block;
   font-size: var(--body-font-size-m);
   margin-bottom: 1.5rem;
 }
 
-footer .footer-top-item:last-of-type h5 {
+footer .footer-top-item:last-of-type a.h5-style {
   color: var(--white);
   font-weight: var(--font-weight-bold);
 }
@@ -116,14 +117,19 @@ footer .icon-link-white {
     margin-right: auto;
   }
 
-  footer .footer-top h6 {
+  footer .footer-top p.h6-style {
     text-transform: uppercase;
     color: #89d1e1;
     display: block;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--body-font-size-s);
+    margin-bottom: 0.5rem;
   }
 
-  footer .footer-top h5 {
+  footer .footer-top a.h5-style {
+    display: block;
     font-weight: var(--font-weight-bold);
+    margin-bottom: 0.5rem;
   }
 
   footer .footer-bottom > div > div {
