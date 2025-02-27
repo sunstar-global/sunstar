@@ -16,7 +16,8 @@ main .block.cards {
   gap: 1.5rem;
 }
 
-.cards.grid-3-cols > ul, .cards.grid-4-cols > ul {
+.cards.grid-3-cols > ul,
+.cards.grid-4-cols > ul {
   display: grid;
   grid-template-columns: 1fr;
 }
@@ -37,13 +38,13 @@ main .block.cards {
 .cards.no-shadow > ul > li {
   padding: 0;
   box-sizing: border-box;
-  box-shadow: none!important;
+  box-shadow: none !important;
   border: none;
   margin: 0;
   align-items: center;
   text-align: left;
   flex: 1;
-  background-color: unset!important;
+  background-color: unset !important;
 }
 
 .cards > ul > li .date {
@@ -110,7 +111,7 @@ main .block.cards {
   text-wrap: balance;
 }
 
-.cards .cards-card-body >:last-child {
+.cards .cards-card-body > :last-child {
   margin-bottom: 0;
 }
 
@@ -122,12 +123,12 @@ main .block.cards {
   text-align: center;
 }
 
-.cards .cards-card-body h2, 
-.cards .cards-card-body h3, 
-.cards .cards-card-body h4, 
+.cards .cards-card-body h2,
+.cards .cards-card-body h3,
+.cards .cards-card-body h4,
 .cards .cards-card-body h5 {
-  margin-bottom: 1rem!important;
-  margin-top: 0!important;
+  margin-bottom: 1rem !important;
+  margin-top: 0 !important;
 }
 
 .cards .cards-card-body .title {
@@ -289,11 +290,10 @@ main .cards.machine-parts .cards-card-image {
 }
 
 main .cards .cards-card-image span.icon.icon-scientific-literature-1 {
-  background-image: url("/icons/scientific-literature-1.svg");
+  background-image: url('/icons/scientific-literature-1.svg');
   width: 84px;
   height: 84px;
 }
-
 
 main .cards.machine-parts .cards-card-body {
   width: auto;
@@ -382,7 +382,7 @@ main .nolink .cards > ul > li .cards-card-image {
 }
 
 main .cards.text-center > ul > li .cards-card-body {
-  text-align: center!important;
+  text-align: center !important;
 }
 
 main .nolink .cards.info-points > ul > li .cards-card-image {
@@ -446,7 +446,7 @@ main .cards-wrapper .light-background .cards-card-body h3 {
   }
 
   .section.cards-container h2 {
-    margin:0;
+    margin: 0;
   }
 
   main .block.cards {
@@ -461,7 +461,8 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     grid-gap: 2rem;
   }
 
-  .cards.grid-4-cols > ul, .cards.grid-3-cols > ul {
+  .cards.grid-4-cols > ul,
+  .cards.grid-3-cols > ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
@@ -495,14 +496,13 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     font-size: 14px;
     color: var(--transparent-grey-color-2);
   }
-
 }
 
 @media screen and (max-width: 77rem) {
   main .block.cards.machine-parts > ul > li {
-     flex-direction: column;
-     text-align: center;
-     gap: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
   }
 
   main .cards.machine-parts .cards-card-image {
@@ -524,7 +524,6 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     font-size: var(--heading-font-size-l);
   }
 }
-
 
 @media screen and (min-width: 77rem) {
   .cards.grid > ul {
@@ -619,7 +618,4 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     line-height: 1.5;
     align-self: flex-start;
   }
-
-  
-
 }

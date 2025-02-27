@@ -2,10 +2,9 @@ import { Page, test } from '@playwright/test';
 import { getComparator } from 'playwright-core/lib/utils';
 import { unlink, writeFile } from 'fs/promises';
 
-
 function getScreenshotPath(testPath: string, suffix) {
   const title = testPath.replace(/[/]/g, '-');
-  return `./screenshots/${(title.toLowerCase())}-${suffix}.png`;
+  return `./screenshots/${title.toLowerCase()}-${suffix}.png`;
 }
 
 /**
@@ -25,17 +24,16 @@ async function allImagesLoaded(page, timeout = 15 * 1000, tickrate = 250) {
   const startTime = new Date().getTime();
 
   return new Promise((resolve, reject) => {
-
     function checkImages() {
       const currentTime = new Date().getTime();
 
       if (currentTime - startTime > timeout) {
         reject({
-          message: `CheckImgReadyTimeoutException: images taking to loong to load.`
+          message: `CheckImgReadyTimeoutException: images taking to loong to load.`,
         });
       }
 
-      if (images.every(img => img.evaluate(el => el.complete))) {
+      if (images.every((img) => img.evaluate((el) => el.complete))) {
         resolve(images);
       } else {
         setTimeout(checkImages, tickrate);
@@ -50,7 +48,7 @@ async function loadAndScreenshot(page: Page, url: string, testPath: string, suff
   // load page and wait for network to be idle
   await page.goto(url, { waitUntil: 'networkidle' });
   // just to be sure, wait until footer is loaded
-  if(!url.includes('/sidekick/blocks')) {
+  if (!url.includes('/sidekick/blocks')) {
     await page.locator('footer div.footer.block[data-block-status="loaded"]').waitFor();
   }
 
@@ -62,10 +60,9 @@ async function loadAndScreenshot(page: Page, url: string, testPath: string, suff
     fullPage: true,
 
     // The career carousel is shuffled so exclude from the compare
-    mask: [page.locator('div.career-carousel > div.career-slider')]
+    mask: [page.locator('div.career-carousel > div.career-slider')],
   });
 }
-
 
 for (let testPath of process.env.TEST_PATHS.split(/\s+/g)) {
   testPath = testPath.trim();
@@ -75,8 +72,8 @@ for (let testPath of process.env.TEST_PATHS.split(/\s+/g)) {
     const urlMain = `https://${process.env.DOMAIN_MAIN}${testPath}`;
     const urlBranch = `https://${process.env.DOMAIN_BRANCH}${testPath}`;
 
-    const beforeImage = await loadAndScreenshot(page, urlMain, testPath, "main");
-    const afterImage = await loadAndScreenshot(page, urlBranch, testPath, "branch");
+    const beforeImage = await loadAndScreenshot(page, urlMain, testPath, 'main');
+    const afterImage = await loadAndScreenshot(page, urlBranch, testPath, 'branch');
 
     const comparator = getComparator('image/png');
     const result = comparator(beforeImage, afterImage, {
@@ -92,7 +89,7 @@ for (let testPath of process.env.TEST_PATHS.split(/\s+/g)) {
       testInfo.attachments.push({
         name: getScreenshotPath(testPath, 'diff'),
         contentType: `image/png`,
-        path: getScreenshotPath(testPath, 'diff')
+        path: getScreenshotPath(testPath, 'diff'),
       });
       throw new Error(markdownSummary);
     } else {
@@ -100,6 +97,5 @@ for (let testPath of process.env.TEST_PATHS.split(/\s+/g)) {
       await unlink(getScreenshotPath(testPath, 'main'));
       await unlink(getScreenshotPath(testPath, 'branch'));
     }
-  })
-
+  });
 }

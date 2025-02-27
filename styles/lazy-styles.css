@@ -1,7 +1,7 @@
 /* below the fold CSS goes here */
 
 .icon-ang-white {
-  background-image: url("../icons/angle-right-white.svg");
+  background-image: url('../icons/angle-right-white.svg');
   height: 0.675rem;
   width: 0.625rem;
   background-size: contain;
@@ -9,7 +9,7 @@
 }
 
 .icon-angle-left {
-  background-image: url("../icons/angle-left.svg");
+  background-image: url('../icons/angle-left.svg');
   display: inline-flex;
   width: 10px;
   height: 15px;

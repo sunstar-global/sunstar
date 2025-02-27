@@ -3,14 +3,14 @@
   padding-inline: 1rem;
 }
 
-.section.tags-container>.section-container {
+.section.tags-container > .section-container {
   border-top: 1px solid #3c465033;
   padding-top: 1.75rem;
   gap: 2rem;
   margin-bottom: 5rem;
 }
 
-.section.tags-container>.section-container.para-present {
+.section.tags-container > .section-container.para-present {
   display: flex;
   padding: 1rem 0 0;
 }

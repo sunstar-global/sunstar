@@ -29,7 +29,7 @@
 export function createElement(tagName, classes, props) {
   const elem = document.createElement(tagName);
   if (classes) {
-    const classesArr = (typeof classes === 'string') ? [classes] : classes;
+    const classesArr = typeof classes === 'string' ? [classes] : classes;
     elem.classList.add(...classesArr);
   }
   if (props) {

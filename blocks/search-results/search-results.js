@@ -60,9 +60,11 @@ async function searchPages(placeholders, term, page) {
   const resultsPerPage = 10;
   const startResult = page * resultsPerPage;
 
-  const result = json.data
-    .filter((entry) => `${entry.description} ${entry.pagename} ${entry.breadcrumbtitle} ${entry.title}`.toLowerCase()
-      .includes(saniterm.toLowerCase()));
+  const result = json.data.filter((entry) =>
+    `${entry.description} ${entry.pagename} ${entry.breadcrumbtitle} ${entry.title}`
+      .toLowerCase()
+      .includes(saniterm.toLowerCase())
+  );
 
   const div = document.createElement('div');
 
@@ -164,18 +166,21 @@ async function searchPages(placeholders, term, page) {
     firstElement.after(threeDotsBefore);
     lastElement.before(threeDotsAfter);
 
-    if (page < (paginationLimit - 1)) {
+    if (page < paginationLimit - 1) {
       firstElement.nextElementSibling.classList.add('notvisible');
       const currentElement = paginationblock.querySelector('.active');
       // eslint-disable-next-line max-len
-      elementForward = (page === 0) ? currentElement.nextElementSibling.nextElementSibling.nextElementSibling : currentElement.nextElementSibling.nextElementSibling;
+      elementForward =
+        page === 0
+          ? currentElement.nextElementSibling.nextElementSibling.nextElementSibling
+          : currentElement.nextElementSibling.nextElementSibling;
       while (elementForward) {
         elementForward.classList.add('notvisible');
         elementForward = elementForward.nextElementSibling;
         if (elementForward.innerText === '...') break;
       }
     }
-    if (page > (paginationLimit - 2) && (page < (totalPages - 3))) {
+    if (page > paginationLimit - 2 && page < totalPages - 3) {
       const currentElement = paginationblock.querySelector('.active');
       elementForward = currentElement.nextElementSibling.nextElementSibling;
       while (elementForward) {
@@ -190,7 +195,7 @@ async function searchPages(placeholders, term, page) {
         elementBefore = elementBefore.previousElementSibling;
         if (elementBefore.innerText === '...') break;
       }
-    } else if (page > (totalPages - 4)) {
+    } else if (page > totalPages - 4) {
       const currentElement = paginationblock.querySelector('.active');
       lastElement.previousElementSibling.classList.add('notvisible');
       // eslint-disable-next-line max-len
@@ -209,16 +214,9 @@ async function searchPages(placeholders, term, page) {
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
-export default async function decorate(
-  block,
-  curLocation = window.location,
-  resetLanguageCache = false,
-) {
+export default async function decorate(block, curLocation = window.location, resetLanguageCache = false) {
   const { searchTerm, curPage } = getSearchParams(curLocation.search);
-  const placeholders = await fetchPlaceholders(getLanguage(
-    curLocation.pathname,
-    resetLanguageCache,
-  ));
+  const placeholders = await fetchPlaceholders(getLanguage(curLocation.pathname, resetLanguageCache));
   block.innerHTML = '';
   block.append(getSearchWidget(placeholders, searchTerm, true));
 

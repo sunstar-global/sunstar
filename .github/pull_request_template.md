@@ -5,9 +5,11 @@ Please always provide the [GitHub issue(s)](../issues) your PR is for, as well a
 Fixes #<gh-issue-id>
 
 ## Changelog:
+
 _Please enter each change as a new bullet point_
 
 ## Test URLs:
+
 - Original: https://www.sunstar.com/<path>
 - Before: https://main--sunstar--sunstar-global.aem.live/<path>
 - After: https://$branch--sunstar--sunstar-global.aem.live/<path>
@@ -16,14 +18,13 @@ _Please enter each change as a new bullet point_
 
 - [ ] New Blocks introduced in this PR
       If yes, please provide details below
-**Block Name** : For e.g. _cards_
+      **Block Name** : For e.g. _cards_
 - [ ] Documented in sidekick library
 
-
 - [ ] New variations introduced in this PR
-**Variation Name** :  For e.g. _cards (grid)_
+      **Variation Name** : For e.g. _cards (grid)_
 - [ ] Documented in sidekick library
 
 - [ ] New mixins introduced in this PR
-**Mixin Name** :  For e.g. _compact, white_
+      **Mixin Name** : For e.g. _compact, white_
 - [ ] Documented in sidekick library

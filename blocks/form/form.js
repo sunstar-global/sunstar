@@ -424,7 +424,7 @@ async function createForm(formURL) {
     form.append(fieldWrapper);
   }
   validateForm(form);
-  return (form);
+  return form;
 }
 
 export default async function decorate(block) {

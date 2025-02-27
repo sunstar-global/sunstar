@@ -15,15 +15,17 @@ async function processIcons(pageBlock, path) {
   const icons = {};
   const { host } = new URL(path);
   const iconElements = [...pageBlock.querySelectorAll('span.icon')];
-  await Promise.all(iconElements.map(async (icon) => {
-    const iconText = icon.parentElement.nextElementSibling.textContent;
-    const iconName = Array.from(icon.classList)
-      .find((c) => c.startsWith('icon-'))
-      .substring(5);
-    const response = await fetch(`https://${host}/icons/${iconName}.svg`);
-    const svg = await response.text();
-    icons[iconText] = { label: iconText, name: iconName, svg };
-  }));
+  await Promise.all(
+    iconElements.map(async (icon) => {
+      const iconText = icon.parentElement.nextElementSibling.textContent;
+      const iconName = Array.from(icon.classList)
+        .find((c) => c.startsWith('icon-'))
+        .substring(5);
+      const response = await fetch(`https://${host}/icons/${iconName}.svg`);
+      const svg = await response.text();
+      icons[iconText] = { label: iconText, name: iconName, svg };
+    })
+  );
   return icons;
 }
 

@@ -52,7 +52,7 @@ main .embed .embed-placeholder-play button {
 }
 
 main .embed .embed-placeholder-play button::before {
-  content: "";
+  content: '';
   display: block;
   box-sizing: border-box;
   position: absolute;

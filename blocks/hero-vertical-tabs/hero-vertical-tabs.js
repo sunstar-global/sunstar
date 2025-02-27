@@ -10,8 +10,7 @@ function buildTaglist(taglist, ul, tagTitle) {
   });
 
   document.addEventListener('click', (evt) => {
-    if (!evt.target.classList.contains('hero-vertical-tabs-taglist-vertical')
-      && ul.classList.contains('visible')) {
+    if (!evt.target.classList.contains('hero-vertical-tabs-taglist-vertical') && ul.classList.contains('visible')) {
       ul.classList.remove('visible');
       taglist.classList.remove('visible');
     }

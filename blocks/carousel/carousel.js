@@ -33,9 +33,9 @@ function commonOnClick(block, newIndex) {
   if (window.screen.width >= 992 && activeEleWidth) {
     // Have to add screen width check because for large screen and
     // for small screen carousel behaves differently
-    swiperWrapper.style.transform = `translate3d(-${(newIndex) * activeEleWidth}px, 0, 0)`;
+    swiperWrapper.style.transform = `translate3d(-${newIndex * activeEleWidth}px, 0, 0)`;
   } else {
-    swiperWrapper.style.transform = `translate3d(-${(newIndex) * window.screen.width}px, 0, 0)`;
+    swiperWrapper.style.transform = `translate3d(-${newIndex * window.screen.width}px, 0, 0)`;
   }
 }
 
@@ -53,9 +53,9 @@ function getPrevOrNextSwip(swipType, block, totalLength) {
     const activeEle = activeEles[0];
     if (activeEle) {
       const index = Number(activeEle.getAttribute('index'));
-      let newIndex = ((index + 1) >= totalLength ? 0 : (index + 1));
+      let newIndex = index + 1 >= totalLength ? 0 : index + 1;
       if (swipType === 'left') {
-        newIndex = ((index - 1) < 0 ? (totalLength - 1) : (index - 1));
+        newIndex = index - 1 < 0 ? totalLength - 1 : index - 1;
       }
       commonOnClick(block, newIndex);
       clearInterval(timer);
@@ -111,29 +111,37 @@ function addSwipeCapability(block) {
   let touchStartX = 0;
   let touchStartY = 0;
 
-  block.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  }, { passive: true });
+  block.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    },
+    { passive: true }
+  );
 
-  block.addEventListener('touchend', (e) => {
-    const touchEndX = e.changedTouches[0].screenX;
-    const touchEndY = e.changedTouches[0].screenY;
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
+  block.addEventListener(
+    'touchend',
+    (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
 
-    if (Math.abs(deltaY) > Math.abs(deltaX)) {
-      return;
-    }
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        return;
+      }
 
-    if (deltaX > 0) {
-      const leftSwip = block.querySelector('.swip-left');
-      leftSwip.click();
-    } else if (deltaX < 0) {
-      const rightSwip = block.querySelector('.swip-right');
-      rightSwip.click();
-    }
-  }, { passive: true });
+      if (deltaX > 0) {
+        const leftSwip = block.querySelector('.swip-left');
+        leftSwip.click();
+      } else if (deltaX < 0) {
+        const rightSwip = block.querySelector('.swip-right');
+        rightSwip.click();
+      }
+    },
+    { passive: true }
+  );
 }
 
 export default async function decorate(block) {

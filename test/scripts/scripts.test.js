@@ -23,11 +23,9 @@ function mockElement(name) {
 describe('Scripts', () => {
   before(async () => {
     const mod = await import('../../scripts/scripts.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        scripts[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      scripts[func] = mod[func];
+    });
   });
 
   it('Converts HTML to an element', () => {
@@ -49,8 +47,9 @@ describe('Scripts', () => {
     expect(it[0].type).to.equal('text');
     expect(it[0].value).to.equal('');
     expect(it[0].placeholder).to.equal('MySearch');
-    expect(it[0].oninvalid.toString().replace(/(\r\n|\n|\r)/gm, ''))
-      .to.equal('function oninvalid(event) {this.setCustomValidity(\'Cannot be empty\')}');
+    expect(it[0].oninvalid.toString().replace(/(\r\n|\n|\r)/gm, '')).to.equal(
+      "function oninvalid(event) {this.setCustomValidity('Cannot be empty')}"
+    );
   });
 
   it('Creates the Search widget with value', () => {
@@ -256,10 +255,8 @@ describe('Scripts', () => {
     expect(blockObj.elems[0]).to.equal(picture);
     expect(blockObj.elems[1].children[1].localName).to.equal('p');
 
-    expect(enclosingDiv.lastChild.localName).to
-      .equal('myblock', 'Should have appended the block to the section');
-    expect(newChild.classList.contains('boxy-col-1')).to
-      .be.true;
+    expect(enclosingDiv.lastChild.localName).to.equal('myblock', 'Should have appended the block to the section');
+    expect(newChild.classList.contains('boxy-col-1')).to.be.true;
   });
 
   it('Handles Image Collage autoblock with directly following <em>', async () => {
@@ -300,8 +297,7 @@ describe('Scripts', () => {
     scripts.buildImageWithCaptionBlocks(mockdoc, mockBBFunction);
 
     expect(blockName).to.equal('image-collage');
-    expect(newChild.classList.contains('boxy-col-1')).to
-      .be.true;
+    expect(newChild.classList.contains('boxy-col-1')).to.be.true;
     const [actualPic, actualCaption] = blockObj.elems;
     expect(actualPic).to.equal(picture);
     expect(actualCaption).to.equal(em);

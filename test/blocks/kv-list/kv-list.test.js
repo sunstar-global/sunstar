@@ -11,11 +11,9 @@ document.write(await readFile({ path: './kv-list.plain.html' }));
 describe('KV-list', () => {
   before(async () => {
     const mod = await import('../../../blocks/kv-list/kv-list.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        scripts[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      scripts[func] = mod[func];
+    });
   });
 
   it('Block rendering', async () => {

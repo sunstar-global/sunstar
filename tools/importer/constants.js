@@ -1,4 +1,3 @@
-const urls = {
-};
+const urls = {};
 
 export default urls;

@@ -1,4 +1,4 @@
-div.kv-list  {
+div.kv-list {
   margin-top: 3.375rem;
   margin-bottom: 10.75rem;
   padding-left: 1rem;
@@ -22,7 +22,7 @@ div.kv-list  {
 }
 
 @media (min-width: 62rem) {
-  div.kv-list  {
+  div.kv-list {
     padding-left: 0;
   }
 

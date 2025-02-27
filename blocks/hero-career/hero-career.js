@@ -1,9 +1,4 @@
-import {
-  createOptimizedPicture,
-  fetchPlaceholders,
-  getMetadata,
-  readBlockConfig,
-} from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, fetchPlaceholders, getMetadata, readBlockConfig } from '../../scripts/lib-franklin.js';
 import { getLanguage } from '../../scripts/scripts.js';
 
 function deleteConfigBlock(block, firstNonCfgEl) {

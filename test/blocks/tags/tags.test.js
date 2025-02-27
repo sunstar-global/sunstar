@@ -13,11 +13,9 @@ document.write(await readFile({ path: './tags.plain.html' }));
 describe('Tags Block', () => {
   before(async () => {
     const mod = await import('../../../blocks/tags/tags.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        scripts[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      scripts[func] = mod[func];
+    });
   });
 
   beforeEach(async () => {
@@ -32,7 +30,10 @@ describe('Tags Block', () => {
       return {
         ok: false,
         json: () => ({
-          limit: 0, offset: 0, total: 0, data: [],
+          limit: 0,
+          offset: 0,
+          total: 0,
+          data: [],
         }),
         text: () => '',
       };

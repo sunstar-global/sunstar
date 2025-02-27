@@ -21,7 +21,7 @@
 }
 
 .block.quote::before {
-  content: "“";
+  content: '“';
   font-family: var(--font-family-body);
   font-size: 5.5rem;
   line-height: 1;
@@ -31,7 +31,7 @@
 }
 
 .block.quote::after {
-  content: "”";
+  content: '”';
   font-family: var(--font-family-body);
   font-size: 5.5rem;
   line-height: 1;
@@ -58,7 +58,8 @@
   margin-bottom: 32px;
 }
 
-.block.quote.column::before , .block.quote.column::after {
+.block.quote.column::before,
+.block.quote.column::after {
   content: none;
 }
 
@@ -66,7 +67,8 @@
   position: relative;
 }
 
-.block.quote.column .quote-content::before, .block.quote.column .quote-content::after {
+.block.quote.column .quote-content::before,
+.block.quote.column .quote-content::after {
   width: 47px;
   height: 36px;
   content: '';
@@ -77,25 +79,25 @@
 }
 
 .block.quote.column .quote-content::before {
-  background-image: url("/assets/quate-top-2x.png");
+  background-image: url('/assets/quate-top-2x.png');
   top: 0;
   left: -32px;
 }
 
 .block.quote.column .quote-content::after {
-  background-image: url("/assets/quate-bottom-2x.png");
+  background-image: url('/assets/quate-bottom-2x.png');
   bottom: 0;
   right: 0;
 }
 
 .block.quote.column.gray-icon .quote-content::before {
-  background-image: url("/assets/quate-top-gray-2x.png");
+  background-image: url('/assets/quate-top-gray-2x.png');
   top: 0;
   left: -32px;
 }
 
 .block.quote.column.gray-icon .quote-content::after {
-  background-image: url("/assets/quate-bottom-gray-2x.png");
+  background-image: url('/assets/quate-bottom-gray-2x.png');
   bottom: 0;
   right: 0;
 }
