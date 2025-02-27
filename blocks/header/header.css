@@ -284,7 +284,7 @@ header.fixed nav.nav-middle {
   display: none;
 }
 
-header nav.nav-middle > h4 {
+header nav.nav-middle > p.h6-style {
   font-size: var(--heading-font-size-mxs);
   font-weight: var(--font-weight-small);
   color: var(--primary);
@@ -743,7 +743,7 @@ header .mega-dropdown.fixed {
     display: flex;
   }
 
-  header nav.nav-middle > h4 {
+  header nav.nav-middle > p.h6-style {
     font-size: var(--heading-font-size-m);
   }
 

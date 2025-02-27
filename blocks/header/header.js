@@ -267,6 +267,8 @@ const addRemoveFixedClass = (navBottom) => {
  */
 export default async function decorate(block) {
   // fetch nav content
+
+  console.log(block);
   const navMeta = getMetadata('nav');
   const navPath = navMeta || (getLanguage() === 'en' ? '/nav' : `/${getLanguage()}/nav`);
   const resp = await fetch(`${navPath}.plain.html`);
@@ -279,10 +281,19 @@ export default async function decorate(block) {
     const fetchedNav = document.createElement('div');
     fetchedNav.innerHTML = html;
     const navClasses = ['nav-top', 'nav-middle'];
-    navClasses.forEach((navClass, idx) => {
+    navClasses.forEach((navClass, index) => {
       const nav = document.createElement('nav');
       nav.classList.add(navClass);
-      nav.innerHTML = fetchedNav.querySelectorAll(':scope>div')[idx].innerHTML;
+      nav.innerHTML = fetchedNav.querySelectorAll(':scope>div')[index].innerHTML;
+      if (navClass === 'nav-middle') {
+        //find h6 and conert it to p with h6 class
+        nav.querySelectorAll('h6').forEach((h6) => {
+          const p = document.createElement('p');
+          p.classList.add('h6-style');
+          p.innerHTML = h6.innerHTML;
+          h6.replaceWith(p);
+        });
+      }
       navDecorators[navClass](nav, placeholders);
       block.appendChild(nav);
     });
