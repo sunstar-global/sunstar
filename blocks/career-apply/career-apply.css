@@ -40,10 +40,6 @@
   flex-direction: column;
 }
 
-.career-apply a {
-  margin: 0.5rem 0;
-}
-
 .career-apply a.button.primary.linkedin {
   background-color: var(--primary);
   border: 1px solid white;

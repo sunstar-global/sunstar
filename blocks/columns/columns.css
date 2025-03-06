@@ -6,6 +6,11 @@
   margin: 1.25rem 0;
 }
 
+.columns.no-margin, .columns.no-margin > div {
+  margin: 0;
+}
+
+
 .columns p,
 .columns dl,
 .columns ol,
@@ -61,6 +66,12 @@
   font-weight: var(--font-weight-medium);
   line-height: 1.3em;
   margin: 0 auto 1rem;
+}
+
+.columns.no-margin-headings h2,
+.columns.no-margin-headings h3,
+.columns.no-margin-headings h4 {
+  margin: 0!important;
 }
 
 .columns.heading-divider h2,
