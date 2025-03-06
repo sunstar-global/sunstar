@@ -16,7 +16,63 @@
       "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?rail=false",
       "isPalette": true,
       "includePaths": ["**.docx**"],
-      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:800px; height: calc(100vh - 60px)"
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:800px; height: calc(100vh - 60px)",
+
+      "filterSchema": [
+        {
+          "header": "File Type",
+          "groupKey": "TopGroup",
+          "fields": [
+            {
+              "element": "checkbox",
+              "name": "type",
+              "options": [
+                {
+                  "label": "Images",
+                  "value": "image/jpeg,image/png,image/gif,image/tiff,image/bmp,image/webp"
+                },
+                {
+                  "label": "Videos",
+                  "value": "video/mp4,video/avi,video/mpeg,video/webm,model/vnd.mts,application/mxf"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "header": "Mime Types",
+          "groupKey": "MimeTypeGroup",
+          "fields": [
+            {
+              "element": "checkbox",
+              "name": "type",
+              "options": [
+                { "label": "JPG", "value": "image/jpeg" },
+                { "label": "PNG", "value": "image/png" },
+                { "label": "TIFF", "value": "image/tiff" },
+                { "label": "GIF", "value": "image/gif" },
+                { "label": "MP4", "value": "video/mp4" }
+              ],
+              "columns": 3
+            }
+          ]
+        },
+        {
+          "header": "Food Category",
+          "groupKey": "FoodCategoryGroup",
+          "fields": [
+            {
+              "element": "checkbox",
+              "name": "property=metadata.application.xcm:keywords.value",
+              "options": [
+                { "label": "Fruits", "value": "fruits" },
+                { "label": "Vegetables", "value": "vegetables" }
+              ],
+              "columns": 3
+            }
+          ]
+        }
+      ]
     }
   ]
 }
