@@ -13,7 +13,7 @@
       "id": "asset-library",
       "title": "DAM",
       "environments": ["edit"],
-      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?rail=false&?extConfigUrl=https://www.sunstar.com/tools/assets-selector/config.json",
+      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?rail=false&extConfigUrl=https://www.sunstar.com/tools/assets-selector/config.json",
       "isPalette": true,
       "includePaths": ["**.docx**"],
       "passConfig": true,
