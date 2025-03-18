@@ -309,6 +309,10 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
     height: 32.5rem;
   }
 
+  main .hero-horizontal-tabs.image-cover .hero-horiz-tabs-img picture {
+    height: 100%;
+  }
+
   main .hero-horiz-tabs-img video {
     max-height: 35.5rem;
   }
