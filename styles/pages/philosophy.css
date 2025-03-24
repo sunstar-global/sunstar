@@ -62,7 +62,13 @@ body.philosophy main .section.narrower.section.with-background-image a .icon.ico
 
 body.philosophy main .section.narrower.section.with-background-image .link.block > div:nth-child(2) a {
   background: #007cad;
-  width: 85%;
+  width: 100%;
+  min-width: 85%;
+}
+
+body.philosophy main .section.narrower.section.with-background-image .link.block > div:nth-child(1) div.button-container,
+body.philosophy main .section.narrower.section.with-background-image .link.block > div:nth-child(2) div.button-container {
+  min-width: 85%;
 }
 
 @media (min-width: 48rem) {
