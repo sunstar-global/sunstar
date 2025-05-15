@@ -710,7 +710,7 @@ export function getNamedValueFromTable(block, name) {
     .iterateNext();
 }
 
-function getSearchWidgetHTML(placeholders, initialVal, searchbox, lang) {
+export function getSearchWidget(placeholders, initialVal, searchbox, lang = getLanguage()) {
   const langPrefix = lang === 'en' ? '' : `/${lang}`;
   const searchType = searchbox ? 'search' : 'text';
 
@@ -736,10 +736,6 @@ function getSearchWidgetHTML(placeholders, initialVal, searchbox, lang) {
   });
 
   return searchWidget;
-}
-
-export function getSearchWidget(placeholders, initialVal, searchbox, lang = getLanguage()) {
-  return getSearchWidgetHTML(placeholders, initialVal, searchbox, lang);
 }
 
 /*

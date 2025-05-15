@@ -41,7 +41,7 @@ function setResultValue(el, value, term) {
 
 function formatSearchResultCount(num, placeholders, term, lang) {
   if (lang === 'jp' || lang === 'ja') {
-    return `「<strong>${term}</strong>」 ${placeholders.resultstext_prefix} ${num}${placeholders.resultstext_postfix}`;
+    return `<strong>${term}</strong>」 ${placeholders.resultstext_prefix} ${num}${placeholders.resultstext_postfix}`;
   }
   if (lang === 'cn') {
     return `"<strong>${term}</strong>" ${placeholders.resultstext_prefix} ${num}${placeholders.resultstext_postfix}`;
