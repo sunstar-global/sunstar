@@ -714,20 +714,32 @@ function getSearchWidgetHTML(placeholders, initialVal, searchbox, lang) {
   const langPrefix = lang === 'en' ? '' : `/${lang}`;
   const searchType = searchbox ? 'search' : 'text';
 
-  return `
-    <form method="get" class="search" action="${langPrefix}/search">
+  const searchWidget = htmlToElement(`
+    <form method="get" class="search">
       <div>
-        <input type="${searchType}" name="s" value="${initialVal ?? ''}" class="search-text"
-          placeholder="${placeholders.searchtext}" required="true" oninput="this.setCustomValidity('')"
-          oninvalid="this.setCustomValidity('${placeholders.emptysearchtext}')">
+        <input name="s" class="search-text" required="true">
         <button class="icon search-icon" aria-label="Search"></button>
       </div>
-    </form>`;
+    </form>`);
+
+  searchWidget.action = `${langPrefix}/search`;
+
+  const input = searchWidget.querySelector('input');
+  input.type = searchType;
+  input.value = initialVal ?? '';
+  input.placeholder = placeholders.searchtext;
+  input.addEventListener('input', () => {
+    input.setCustomValidity('');
+  });
+  input.addEventListener('invalid', () => {
+    input.setCustomValidity(placeholders.emptysearchtext);
+  });
+
+  return searchWidget;
 }
 
 export function getSearchWidget(placeholders, initialVal, searchbox, lang = getLanguage()) {
-  const widget = getSearchWidgetHTML(placeholders, initialVal, searchbox, lang);
-  return htmlToElement(widget);
+  return getSearchWidgetHTML(placeholders, initialVal, searchbox, lang);
 }
 
 /*
