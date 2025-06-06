@@ -8,20 +8,40 @@ function deleteConfigBlock(block, firstNonCfgEl) {
 }
 
 function addTextEl(tag, txt, parent, ...classes) {
-  const newDiv = document.createElement(tag);
-	newDiv.textContent = txt;
-//check if txt is an array and if so create 2 elements
-  if (Array.isArray(txt)) {
-	txt.forEach((t) => {
-	  const el = document.createElement(tag);
-	  el.textContent = t;
-	  classes.forEach((c) => el.classList.add(c));
-	  parent.appendChild(el);
-	});
-	return;
-  }
-  classes.forEach((c) => newDiv.classList.add(c));
-  parent.appendChild(newDiv);
+	if (tag === 'p') {
+	  const wrapper = document.createElement('div');
+	  classes.forEach((c) => wrapper.classList.add(c));
+  
+	  if (Array.isArray(txt)) {
+		txt.forEach((t) => {
+		  const p = document.createElement('p');
+		  p.textContent = t;
+		  wrapper.appendChild(p);
+		});
+	  } else {
+		const p = document.createElement('p');
+		p.textContent = txt;
+		wrapper.appendChild(p);
+	  }
+  
+	  parent.appendChild(wrapper);
+	  return;
+	}
+  
+	if (Array.isArray(txt)) {
+	  txt.forEach((t) => {
+		const el = document.createElement(tag);
+		el.textContent = t;
+		classes.forEach((c) => el.classList.add(c));
+		parent.appendChild(el);
+	  });
+	  return;
+	}
+  
+	const el = document.createElement(tag);
+	el.textContent = txt;
+	classes.forEach((c) => el.classList.add(c));
+	parent.appendChild(el);
 }
 
 export default async function decorate(block) {
@@ -34,7 +54,23 @@ export default async function decorate(block) {
 	block.appendChild(title);
 	addTextEl('h1', cfg.jobtitle, title, 'hero-career-name');
 	addTextEl('p', cfg.jobdescription, title, 'hero-career-description');
+	
+	if (cfg.linkedin && cfg.linkedin !== '') {
+		//wrap in p.button-container
+		const buttonContainer = document.createElement('p');
+		buttonContainer.classList.add('button-container');
+		title.appendChild(buttonContainer);
+		const linkedinLink = document.createElement('a');
+		linkedinLink.target = '_blank';
+		linkedinLink.rel = 'noopener noreferrer';
+		linkedinLink.classList.add('button', 'primary');
+		linkedinLink.setAttribute('aria-label', 'Apply on LinkedIn');
+		linkedinLink.href = cfg.linkedin;
+		linkedinLink.textContent = "Apply on LinkedIn";
+		linkedinLink.classList.add('hero-career-linkedin');
+		buttonContainer.appendChild(linkedinLink);
+	}
+
 	deleteConfigBlock(block, heroDiv);
-	//append the title to the block
 
 }
