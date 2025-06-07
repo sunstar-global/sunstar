@@ -317,7 +317,7 @@ p {
   text-wrap: balance;
 }
 
-p.lead {
+div.lead p, p.lead {
   font-size: var(--body-font-size-xl);
 }
 
@@ -1521,7 +1521,8 @@ p.button-container,
   }
 
   main .block.lead p,
-  p.lead {
+  p.lead,
+  div.lead p {
     font-size: var(--body-font-size-xxl);
   }
 

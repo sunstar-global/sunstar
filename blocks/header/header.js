@@ -221,6 +221,7 @@ function getNavbarToggler() {
       body.classList.add('fixed');
     }
   });
+  console.log(navbarToggl);
   return navbarToggl;
 }
 
@@ -257,12 +258,16 @@ function attachWindowResizeListeners(nav) {
 }
 
 function decorateBottomNav(nav, placeholders, navTreeJson) {
+  
   const navTree = buildNavTree(navTreeJson);
+  
   nav.append(getNavbarToggler());
   nav.append(navTree);
   nav.append(getSearchWidget(placeholders));
+  
   const otherItemsEl = document.createElement('li');
   decorateOtherItems(otherItemsEl);
+  
   nav.querySelector(':scope .menu-level-1').append(otherItemsEl);
   attachWindowResizeListeners(nav);
 }
