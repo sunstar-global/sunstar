@@ -91,7 +91,7 @@ indices:
       workmode:
         select: main .job-posting
         value: match(el, '.*?\n?WorkMode\n([^\n]+)')  
-      employementtype:
+      employmenttype:
         select: main .job-posting
         value: match(el, '.*?\n?EmploymentType\n([^\n]+)')
       jobtitle:
@@ -99,7 +99,7 @@ indices:
         value: match(el, '.*?\n?JobTitle\n([^\n]+)')
       jobdescription:
         select: main .job-posting
-        value: match(el, '.*?\n?JobDescription\n([^\n]+)')
+        value: match(el, '.*?\n?JobDescription\n((?:.*\n)*?)\n(?:Region|Country|City|WorkMode|EmploymentType|JobID|LinkedIn)')
       linkedin:
         select: main .job-posting
-        value: match(el, '.*?\n?LinkedIn\n([^\n]+)')
+        value: match(el, '.*?\n?LinkedIn\n(?:\\[.*?\\]\\()?(https?://[^\s)]+)')
