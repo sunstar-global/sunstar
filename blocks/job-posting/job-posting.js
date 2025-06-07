@@ -46,17 +46,44 @@ function addTextEl(tag, txt, parent, ...classes) {
 
 export default async function decorate(block) {
 	//remove the html
+	
 	const placeholders = await fetchPlaceholders(getLanguage());
 	const cfg = readBlockConfig(block);
-	console.log(cfg);
+	
+	const container = document.createElement('div');
+	container.classList.add('section', 'hero-career-container');
 	const title = document.createElement('div');
 	title.classList.add('hero-career-title');
-	block.appendChild(title);
-	addTextEl('h1', cfg.jobtitle, title, 'hero-career-name');
+	const titleContainer = document.createElement('div');
+	titleContainer.classList.add('hero-career-title-container');
+	block.appendChild(container);
+	container.appendChild(title);
+	title.appendChild(titleContainer);
+	addTextEl('h1', cfg.jobtitle, titleContainer, 'hero-career-name');
+
+	const infoWrapper = document.createElement('div');
+	infoWrapper.classList.add('hero-career-info');
+	title.appendChild(infoWrapper);
+
+	// 1. Location
+	const location = [cfg.region, cfg.country, cfg.city].filter(Boolean).join(', ');
+	if (location) {
+		addTextEl('p', location, infoWrapper, 'hero-career-location');
+	}
+
+	// 2. Work mode
+	if (cfg.workmode) {
+		addTextEl('p', cfg.workmode, infoWrapper, 'hero-career-workmode');
+	}
+
+	// 3. Employment type
+	if (cfg.employementtype) {
+		addTextEl('p', cfg.employementtype, infoWrapper, 'hero-career-employmenttype');
+	}
+
 	addTextEl('p', cfg.jobdescription, title, 'hero-career-description');
 	
 	if (cfg.linkedin && cfg.linkedin !== '') {
-		//wrap in p.button-container
 		const buttonContainer = document.createElement('p');
 		buttonContainer.classList.add('button-container');
 		title.appendChild(buttonContainer);
@@ -71,6 +98,6 @@ export default async function decorate(block) {
 		buttonContainer.appendChild(linkedinLink);
 	}
 
-	deleteConfigBlock(block, heroDiv);
+	deleteConfigBlock(block, container);
 
 }

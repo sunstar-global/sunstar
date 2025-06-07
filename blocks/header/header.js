@@ -1,6 +1,6 @@
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import buildNavTree from './nav-tree-utils.js';
-import { getLanguage, getSearchWidget, fetchIndex, decorateAnchors, htmlToElement } from '../../scripts/scripts.js';
+import { getLanguage, getSearchWidget, fetchIndex, decorateAnchors, htmlToElement, LANGUAGES } from '../../scripts/scripts.js';
 
 function decorateSocial(social) {
   social.classList.add('social');
@@ -159,9 +159,39 @@ function decorateTopNav(nav) {
   });
 }
 
-function decorateMiddleNav(nav) {
-  const a = nav.querySelector('a');
-  a.setAttribute('aria-label', 'Sunstar Home');
+function decorateMiddleNav(nav, placeholders) {
+  const firstP = nav.querySelector('p');
+  const logoLink = firstP?.querySelector('a');
+
+  if (!logoLink) return;
+
+  // Create the <div> to replace <p> on all pages
+  const div = document.createElement('div');
+  div.classList.add('logo-container');
+
+  // Move the <a> into the new <div>
+  div.appendChild(logoLink);
+
+  // Replace <p> with <div>
+  firstP.replaceWith(div);
+
+  // If homepage of any language, add an <h1> for accessibility
+  const path = window.location.pathname;
+  const isHomepage = [...LANGUAGES].some((lang) => {
+    const base = lang === 'en' ? '/' : `/${lang}/`;
+    return path === base || path === `${base}index.html`;
+  });
+ 
+  if (isHomepage) {
+    const h1 = document.createElement('h1');
+    h1.classList.add('sr-only');
+    h1.textContent = placeholders['homepage-h1'];
+    nav.insertBefore(h1, div);
+  }
+
+  // Set accessibility attributes on the logo link
+  logoLink.setAttribute('aria-label', 'Sunstar Home');
+  logoLink.setAttribute('title', 'A global company with Japanese roots');
 }
 
 function getNavbarToggler() {
@@ -268,7 +298,6 @@ const addRemoveFixedClass = (navBottom) => {
 export default async function decorate(block) {
   // fetch nav content
 
-  console.log(block);
   const navMeta = getMetadata('nav');
   const navPath = navMeta || (getLanguage() === 'en' ? '/nav' : `/${getLanguage()}/nav`);
   const resp = await fetch(`${navPath}.plain.html`);

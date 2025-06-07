@@ -20,6 +20,10 @@ header .block {
   margin: auto;
 }
 
+header h1.nav-title {
+  margin: 0;
+}
+
 header nav > ul {
   display: flex;
   flex-direction: row;
