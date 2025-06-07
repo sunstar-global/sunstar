@@ -196,12 +196,12 @@ function decorateMiddleNav(nav, placeholders) {
 
 function getNavbarToggler() {
   const navbarToggl = htmlToElement(`<button class="navbar-toggler" aria-label="Menu">
-  <span class="mobile-icon">
+  <div class="mobile-icon">
     <i></i>
     <i></i>
     <i></i>
     <i></i>
-  </span>
+  </div>
   </button>`);
 
   if (window.deviceType !== 'Desktop' && window.deviceType !== 'Tablet') {
