@@ -82,6 +82,9 @@ indices:
       pagetype:
         select: head > meta[name="pagetype"]
         value: attribute(el, "content")
+      city:
+        select: main .job-posting
+        value: match(el, '.*?\n?City\n([^\n]+)')
       region:
         select: main .job-posting
         value: match(el, '.*?\n?Region\n([^\n]+)')
@@ -102,4 +105,4 @@ indices:
         value: match(el, '.*?\n?JobDescription\n((?:.*\n)*?)\n(?:Region|Country|City|WorkMode|EmploymentType|JobID|LinkedIn)')
       linkedin:
         select: main .job-posting
-        value: match(el, '.*?\n?LinkedIn\n(?:\\[.*?\\]\\()?(https?://[^\s)]+)')
+        value: match(el, '.*?\n?Linkedin\n(?:\\[.*?\\]\\()?(https?://[^\s)]+)')
