@@ -88,6 +88,18 @@ indices:
       country:
         select: main .job-posting
         value: match(el, '.*?\n?Country\n([^\n]+)')
+      workmode:
+        select: main .job-posting
+        value: match(el, '.*?\n?WorkMode\n([^\n]+)')  
+      employementtype:
+        select: main .job-posting
+        value: match(el, '.*?\n?EmploymentType\n([^\n]+)')
+      jobtitle:
+        select: main .job-posting
+        value: match(el, '.*?\n?JobTitle\n([^\n]+)')
+      jobdescription:
+        select: main .job-posting
+        value: match(el, '.*?\n?JobDescription\n([^\n]+)')
       linkedin:
         select: main .job-posting
         value: match(el, '.*?\n?LinkedIn\n([^\n]+)')

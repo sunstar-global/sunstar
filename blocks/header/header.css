@@ -294,7 +294,6 @@ header nav.nav-middle > p.h6-style {
   color: var(--primary);
   line-height: 1;
   margin-bottom: 0;
-  margin-top: 0.3rem;
 }
 
 header nav.nav-bottom {
@@ -399,8 +398,8 @@ header .nav-bottom .mobile-icon {
   transform: rotate(0deg);
   transition: 0.5s ease-in-out;
   cursor: pointer;
-  display: inline;
-  margin: 13px 0;
+  width: 24px;
+  height: 24px;
 }
 
 header .nav-bottom .mobile-icon > i {
@@ -654,17 +653,16 @@ header .nav-bottom > .navbar-toggler {
 
 header .nav-bottom > .navbar-toggler.visible {
   display: inline-block;
-  padding: 13px;
+  padding: 0;
   position: relative;
-  left: 0;
   border: none;
   outline: 0;
   font-size: var(--body-font-size-xl);
   line-height: 1;
   background-color: transparent;
-  border-radius: 2px;
-  min-width: unset;
-  margin-bottom: 1.25rem;
+  min-width: 48px;
+  padding-left: 6px;
+  margin-left: 10px;
 }
 
 header form.search input.search-text::placeholder {
@@ -876,7 +874,6 @@ header .mega-dropdown.fixed {
     display: block;
     width: 24.5rem;
     color: var(--muted-text);
-    margin-right: 4rem;
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
@@ -931,8 +928,10 @@ header .mega-dropdown.fixed {
   }
 
   .header .mega-container .left-content-container {
-    width: 47.5rem;
+    max-width: 47.5rem;
     margin: 0 0 0 auto;
+    padding-left: 16px;
+    gap: 4rem;
   }
 
   header .mega-dropdown {
@@ -992,5 +991,10 @@ header .mega-dropdown.fixed {
   header nav.nav-top,
   header nav.nav-middle {
     padding-inline: 0;
+  }
+
+  .header .mega-container .left-content-container {
+    padding-left: 0;
+    gap: 4rem;
   }
 }
