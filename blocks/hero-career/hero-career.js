@@ -15,13 +15,15 @@ function addTextEl(tag, txt, parent, ...classes) {
 }
 
 export default async function decorate(block) {
+
+  
   const placeholders = await fetchPlaceholders(getLanguage());
 
   const section = document.querySelector('.section.hero-career-container');
   if (section) {
     section.classList.add('full-width');
   }
-
+  
   const cfg = readBlockConfig(block);
 
   const bgimg = cfg['hero-background'];
@@ -39,7 +41,7 @@ export default async function decorate(block) {
   const photoURL = getMetadata('og:image');
   const pic = createOptimizedPicture(photoURL, cfg.name);
   heroLeft.append(pic);
-  addTextEl('h6', cfg.name, heroLeft, 'hero-career-name');
+  addTextEl('h1', cfg.name, heroLeft, 'hero-career-name');
   addTextEl('p', cfg.title, heroLeft, 'hero-career-title');
 
   const heroRight = document.createElement('div');
