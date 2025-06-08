@@ -1,10 +1,10 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { htmlToElement } from '../../scripts/scripts.js';
 
-function getBackButton() {
+function getBackButton (placeholders) {
   const backButton = htmlToElement(`<div class="menu-back-btn">
     <span class="icon icon-angle-left"></span>
-    <a>Back To Menu</a>
+    <a>${placeholders['back-to-menu']}</a>
   </div>`);
   return backButton;
 }
@@ -18,12 +18,12 @@ function attachBackButtonEventListeners(backButton, element) {
   });
 }
 
-function addDropdownEventListeners(element) {
+function addDropdownEventListeners(element, placeholders) {
   const widerScreenWidth = window.matchMedia('(min-width: 77rem)');
   element.addEventListener('click', (evt) => {
     if (element !== evt.target) return;
     if (!widerScreenWidth.matches) {
-      const backButton = getBackButton();
+      const backButton = getBackButton(placeholders);
       attachBackButtonEventListeners(backButton, element);
       evt.preventDefault();
       evt.stopPropagation();
@@ -63,7 +63,7 @@ function decorateChildNodes(parent, json, level) {
   return `<div class="menu-level-${level}">${nodes}</div>`;
 }
 
-function decorateNodes(json, level) {
+function decorateNodes(json, level, placeholders) {
   const ul = htmlToElement(`<ul class=menu-level-${level}></ul>`);
   json.forEach((data) => {
     if (!data.parent || data.parent === '') {
@@ -95,8 +95,8 @@ function decorateNodes(json, level) {
             </div>
           </div>
         </li>`);
-        addBackdropEventListeners(li);
-        addDropdownEventListeners(li.querySelector('a:first-child'));
+        addBackdropEventListeners(li, placeholders);
+        addDropdownEventListeners(li.querySelector('a:first-child'), placeholders);
       } else {
         li = htmlToElement(
           `<li class="menu-level-${level}-item"><a class="link" href=${data.link}>${data.category}</a></li>`,
@@ -108,6 +108,7 @@ function decorateNodes(json, level) {
   return ul;
 }
 
-export default function buildNavTree(navTreeJson) {
-  return decorateNodes(navTreeJson.data, 1);
+export default function buildNavTree(navTreeJson, placeholders) {
+
+  return decorateNodes(navTreeJson.data, 1, placeholders);
 }

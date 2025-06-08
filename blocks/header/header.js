@@ -259,7 +259,7 @@ function attachWindowResizeListeners(nav) {
 
 function decorateBottomNav(nav, placeholders, navTreeJson) {
   
-  const navTree = buildNavTree(navTreeJson);
+  const navTree = buildNavTree(navTreeJson, placeholders);
   
   nav.append(getNavbarToggler());
   nav.append(navTree);
