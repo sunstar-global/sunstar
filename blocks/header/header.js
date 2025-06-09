@@ -191,7 +191,7 @@ function decorateMiddleNav(nav, placeholders) {
 
   // Set accessibility attributes on the logo link
   logoLink.setAttribute('aria-label', 'Sunstar Home');
-  logoLink.setAttribute('title', 'A global company with Japanese roots');
+  logoLink.setAttribute('title', placeholders['homepage-h1']);
 }
 
 function getNavbarToggler() {
@@ -221,7 +221,7 @@ function getNavbarToggler() {
       body.classList.add('fixed');
     }
   });
-  console.log(navbarToggl);
+
   return navbarToggl;
 }
 
