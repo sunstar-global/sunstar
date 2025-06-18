@@ -191,7 +191,7 @@ function decorateMiddleNav(nav, placeholders) {
 
   // Set accessibility attributes on the logo link
   logoLink.setAttribute('aria-label', 'Sunstar Home');
-  logoLink.setAttribute('title', 'A global company with Japanese roots');
+  logoLink.setAttribute('title', placeholders['homepage-h1']);
 }
 
 function getNavbarToggler() {
@@ -221,6 +221,7 @@ function getNavbarToggler() {
       body.classList.add('fixed');
     }
   });
+
   return navbarToggl;
 }
 
@@ -257,12 +258,16 @@ function attachWindowResizeListeners(nav) {
 }
 
 function decorateBottomNav(nav, placeholders, navTreeJson) {
-  const navTree = buildNavTree(navTreeJson);
+  
+  const navTree = buildNavTree(navTreeJson, placeholders);
+  
   nav.append(getNavbarToggler());
   nav.append(navTree);
   nav.append(getSearchWidget(placeholders));
+  
   const otherItemsEl = document.createElement('li');
   decorateOtherItems(otherItemsEl);
+  
   nav.querySelector(':scope .menu-level-1').append(otherItemsEl);
   attachWindowResizeListeners(nav);
 }

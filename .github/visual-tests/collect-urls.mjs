@@ -11,12 +11,12 @@ if (!process.env.DOMAIN_MAIN || !process.env.TEST_PATHS || !process.env.TEST_PAT
 
 const paths = process.env.TEST_PATHS.split(' ').map((path) => path.trim());
 
-console.log(process.env.TEST_PATHS_INDEXES);
+
 for (const index of process.env.TEST_PATHS_INDEXES.split(' ')) {
   if (!index.trim().length) continue;
 
   const indexUrl = `https://${process.env.DOMAIN_MAIN}${index}`;
-  console.log(`fetching from ${indexUrl}`);
+
   const response = await fetch(indexUrl);
   const json = await response.json();
   paths.push(

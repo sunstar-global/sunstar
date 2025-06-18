@@ -722,12 +722,17 @@ header .mega-container .left-content-container .mega-sub-menu a.mobile-menu-head
 
 header .mega-dropdown.fixed {
   left: calc((100vw - 75rem) / -2);
-  width: 100vw;
+  width: 100%;
 }
 
 @media (min-width: 62rem) {
   header {
     border-bottom: 1px solid var(--transparent-grey-light-color);
+  }
+
+  header .mega-dropdown.fixed {
+    left: 0;
+    width: 100%;
   }
 
   header nav.nav-bottom,
@@ -991,6 +996,11 @@ header .mega-dropdown.fixed {
   header nav.nav-top,
   header nav.nav-middle {
     padding-inline: 0;
+  }
+
+  header .mega-dropdown.fixed {
+    left: calc((100vw - 75rem) / -2);
+    width: 100vw;
   }
 
   .header .mega-container .left-content-container {
