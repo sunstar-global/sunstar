@@ -58,17 +58,10 @@ function loadResults(container, data, startIndex, chunkSize) {
 	  const contentDiv = document.createElement('div');
 	  contentDiv.classList.add('job-card-content', 'h-full');
   
-	  const bqc = document.createElement('div');
-	  bqc.classList.add('job-card-bqc');
   
-	  const bq = document.createElement('blockquote');
-	  bq.textContent = data[i]['jobtitle'];
-	  bqc.append(bq);
-	  contentDiv.append(bqc);
-  
-	  const nm = document.createElement('h2');
-	  nm.textContent = data[i].pagename;
-	  contentDiv.append(nm);
+	  const jobTitle = document.createElement('h2');
+	  jobTitle.textContent = data[i]['jobtitle'];
+	  contentDiv.append(jobTitle);
   
 	  const role = document.createElement('p');
 	  role.textContent = data[i]['jobdescription'] || 'No job description available';
