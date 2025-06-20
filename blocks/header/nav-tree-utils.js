@@ -70,7 +70,7 @@ function decorateNodes(json, level, placeholders) {
       const children = data.hasChild === 'true' ? decorateChildNodes(data, json, level + 1) : '';
       let li;
       if (children) {
-        const picture = createOptimizedPicture(data.image, '', false, [{ width: '800' }]);
+        const picture = createOptimizedPicture(data.image, data.altText ? data.altText : '', false, [{ width: '800' }]);
         li = htmlToElement(`<li class="drop menu-level-${level}-item"> 
           <a class="link" href=${data.link}>${data.category}</a>
           <div class="mega mega-dropdown">
