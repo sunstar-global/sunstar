@@ -585,6 +585,7 @@ async function loadLazy(doc) {
     sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
     sampleRUM.observe(main.querySelectorAll('picture > img'));
   }
+  import('../tools/sidekick/aem-sites-optimizer-preflight.js');
 }
 
 /**
