@@ -62,7 +62,10 @@ export function getLanguageFromPath(pathname, resetCache = false) {
   return language;
 }
 
-export function getLanguage(curPath = window.location.pathname, resetCache = false) {
+export function getLanguage(
+  curPath = window.location.pathname,
+  resetCache = false
+) {
   return getLanguageFromPath(curPath, resetCache);
 }
 
@@ -86,7 +89,11 @@ function buildHeroBlock(main) {
     return;
   }
   // eslint-disable-next-line no-bitwise
-  if (h1 && picture && h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
+  if (
+    h1 &&
+    picture &&
+    h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING
+  ) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
@@ -95,7 +102,10 @@ function buildHeroBlock(main) {
 
 function buildModalFragmentBlock(main) {
   const MODAL_FRAGMENT_BLOCK_NAME = 'modal-fragment';
-  if (main.querySelector(MODAL_FRAGMENTS_ANCHOR_SELECTOR) && !main.querySelector(MODAL_FRAGMENT_BLOCK_NAME)) {
+  if (
+    main.querySelector(MODAL_FRAGMENTS_ANCHOR_SELECTOR) &&
+    !main.querySelector(MODAL_FRAGMENT_BLOCK_NAME)
+  ) {
     const section = document.createElement('div');
     const blockEl = buildBlock(MODAL_FRAGMENT_BLOCK_NAME, { elems: [] });
     section.append(blockEl);
@@ -109,7 +119,9 @@ function buildImageCollageForPicture(picture, caption, buildBlockFunction) {
   captionP.innerHTML = captionText;
   captionP.classList.add('image-caption');
   caption.remove();
-  const newBlock = buildBlockFunction('image-collage', { elems: [picture, captionP] });
+  const newBlock = buildBlockFunction('image-collage', {
+    elems: [picture, captionP],
+  });
   newBlock.classList.add('boxy-col-1');
   return newBlock;
 }
@@ -140,7 +152,11 @@ function buildImageWithCaptionForPicture(parentP, picture, buildBlockFunction) {
   if (enclosingDiv) {
     // The caption could either be right next to, or right before the picture (if on the same line)
     // or it could be in an adjacent sibling element (if 'enter' was pressed between)
-    const captionP = [picture.previousElementSibling, picture.nextElementSibling, parentP.nextElementSibling];
+    const captionP = [
+      picture.previousElementSibling,
+      picture.nextElementSibling,
+      parentP.nextElementSibling,
+    ];
 
     // eslint-disable-next-line no-restricted-syntax
     for (const cp of captionP) {
@@ -151,7 +167,11 @@ function buildImageWithCaptionForPicture(parentP, picture, buildBlockFunction) {
 
       if (cp.localName === 'em') {
         // It's on the same line
-        const newBlock = buildImageCollageForPicture(picture, cp, buildBlockFunction);
+        const newBlock = buildImageCollageForPicture(
+          picture,
+          cp,
+          buildBlockFunction
+        );
         newBlock.classList.add('autoblocked');
         // caption before picture
         if (cp === captionP[0]) {
@@ -174,7 +194,11 @@ function buildImageWithCaptionForPicture(parentP, picture, buildBlockFunction) {
       }
 
       if (hasEMChild) {
-        const newBlock = buildImageCollageForPicture(picture, cp, buildBlockFunction);
+        const newBlock = buildImageCollageForPicture(
+          picture,
+          cp,
+          buildBlockFunction
+        );
         newBlock.classList.add('autoblocked');
         enclosingDiv.replaceChild(newBlock, parentP);
         formatAutoblockedImageCaptionsForColumns(newBlock, enclosingDiv);
@@ -205,7 +229,11 @@ export function buildBreadcrumbBlock(main) {
   const noBreadcrumb = getMetadata('nobreadcrumb');
   const alreadyBreadcrumb = document.querySelector('.breadcrumb');
 
-  if ((!noBreadcrumb || noBreadcrumb === 'false') && !alreadyBreadcrumb && !isInternalPage()) {
+  if (
+    (!noBreadcrumb || noBreadcrumb === 'false') &&
+    !alreadyBreadcrumb &&
+    !isInternalPage()
+  ) {
     const section = document.createElement('div');
     const blockEl = buildBlock('breadcrumb', { elems: [] });
     section.append(blockEl);
@@ -299,7 +327,9 @@ function getUrlExtension(url) {
  */
 export function decorateAnchors(element = document) {
   const anchors = element.getElementsByTagName('a');
-  decorateVideoLinks(Array.from(anchors).filter((a) => a.href.includes('youtu')));
+  decorateVideoLinks(
+    Array.from(anchors).filter((a) => a.href.includes('youtu'))
+  );
   decorateExternalAnchors(
     Array.from(anchors).filter(
       (a) =>
@@ -309,14 +339,22 @@ export function decorateAnchors(element = document) {
     )
   );
   decorateDownloadableLinks(
-    Array.from(anchors).filter((a) => a.querySelector('span.icon-download') || a.closest('.download'))
+    Array.from(anchors).filter(
+      (a) => a.querySelector('span.icon-download') || a.closest('.download')
+    )
   );
 }
 
 // Function to get the current window size
 export function getWindowSize() {
-  const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  const windowWidth =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+  const windowHeight =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight;
   return {
     width: windowWidth,
     height: windowHeight,
@@ -349,9 +387,15 @@ export function addTopSpacingStyleToFirstMatchingSection(main) {
   let added = false;
 
   sections.every((section) => {
-    if (added || sections.indexOf(section) === LAST_POSSIBLE_TOP_SPACING_SECTION) return false;
+    if (
+      added ||
+      sections.indexOf(section) === LAST_POSSIBLE_TOP_SPACING_SECTION
+    )
+      return false;
     const sectionClasses = [...section.classList];
-    const matchesExcluded = excludedClasses.filter((excluded) => sectionClasses.includes(excluded));
+    const matchesExcluded = excludedClasses.filter((excluded) =>
+      sectionClasses.includes(excluded)
+    );
     const incompatible = matchesExcluded.length > 0;
     if (!incompatible) {
       section.classList.add('auto-top-spacing');
@@ -376,13 +420,16 @@ function decorateSectionsWithBackgrounds(element) {
     let background;
     switch (viewPort) {
       case 'Mobile':
-        background = bgImageMobile || bgImageTablet || bgImageDesktop || bgImage;
+        background =
+          bgImageMobile || bgImageTablet || bgImageDesktop || bgImage;
         break;
       case 'Tablet':
-        background = bgImageTablet || bgImageDesktop || bgImage || bgImageMobile;
+        background =
+          bgImageTablet || bgImageDesktop || bgImage || bgImageMobile;
         break;
       default:
-        background = bgImageDesktop || bgImage || bgImageTablet || bgImageMobile;
+        background =
+          bgImageDesktop || bgImage || bgImageTablet || bgImageMobile;
         break;
     }
     if (background) {
@@ -400,7 +447,10 @@ function decorateSectionsWithBackgrounds(element) {
 
 function decorateSectionsWithBackgroundColor(element) {
   element.querySelectorAll('.section[data-bg-color]').forEach((section) => {
-    const bgColors = section.getAttribute('data-bg-color').replaceAll(' ', '-').toLowerCase();
+    const bgColors = section
+      .getAttribute('data-bg-color')
+      .replaceAll(' ', '-')
+      .toLowerCase();
     section.classList.add(bgColors);
   });
 }
@@ -415,7 +465,8 @@ function wrapDirectDivTextInParagraphs(element) {
   const divs = element.querySelectorAll(combinedSelector);
   Array.from(divs).forEach((div) => {
     const hasTextNodes = Array.from(div.childNodes).some(
-      (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
+      (node) =>
+        node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
     );
     if (hasTextNodes) {
       const pElement = document.createElement('p');
@@ -446,7 +497,9 @@ export function decorateMain(main) {
 function decoratePageStyles() {
   const pageStyle = getMetadata('page-style');
   if (pageStyle && pageStyle.trim().length > 0) {
-    loadCSS(`${`${window.location.protocol}//${window.location.host}`}/styles/pages/${pageStyle.toLowerCase()}.css`);
+    loadCSS(
+      `${`${window.location.protocol}//${window.location.host}`}/styles/pages/${pageStyle.toLowerCase()}.css`
+    );
     document.body.classList.add(pageStyle.toLowerCase());
   }
 }
@@ -457,7 +510,8 @@ function decoratePageStyles() {
 async function loadFonts() {
   await loadCSS(`${window.hlx.codeBasePath}/styles/fonts/fonts.css`);
   try {
-    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+    if (!window.location.hostname.includes('localhost'))
+      sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
     // do nothing
   }
@@ -516,7 +570,9 @@ export function addFavIcon(href) {
  * Function to set head meta tags.
  */
 export function setMetaTag(tagType, propertyKey, propertyValue, url) {
-  const tag = document.querySelector(`${tagType}[${propertyKey}='${propertyValue}']`);
+  const tag = document.querySelector(
+    `${tagType}[${propertyKey}='${propertyValue}']`
+  );
   if (tag) {
     if (tagType === 'link') {
       tag.href = url;
@@ -571,7 +627,9 @@ async function loadLazy(doc) {
   wrapDirectDivTextInParagraphs(main);
 
   const { hash } = window.location;
-  const element = hash ? doc.getElementById(decodeURIComponent(hash.substring(1))) : null;
+  const element = hash
+    ? doc.getElementById(decodeURIComponent(hash.substring(1)))
+    : null;
   if (hash && element) element.scrollIntoView();
   if (!isInternalPage()) {
     loadHeader(doc.querySelector('header'));
@@ -586,6 +644,7 @@ async function loadLazy(doc) {
     sampleRUM.observe(main.querySelectorAll('picture > img'));
   }
   import('../tools/sidekick/aem-sites-optimizer-preflight.js');
+  import('../tools/sidekick/aem-genai-variations.js');
 }
 
 /**
@@ -612,7 +671,9 @@ export async function fetchIndex(indexFile, sheet, pageSize = 1000) {
   const handleIndex = async (offset) => {
     const sheetParam = sheet ? `&sheet=${sheet}` : '';
 
-    const resp = await fetch(`/${indexFile}.json?limit=${pageSize}&offset=${offset}${sheetParam}`);
+    const resp = await fetch(
+      `/${indexFile}.json?limit=${pageSize}&offset=${offset}${sheetParam}`
+    );
     const json = await resp.json();
     const newIndex = {
       complete: json.limit + json.offset === json.total,
@@ -711,7 +772,12 @@ export function getNamedValueFromTable(block, name) {
     .iterateNext();
 }
 
-export function getSearchWidget(placeholders, initialVal, searchbox, lang = getLanguage()) {
+export function getSearchWidget(
+  placeholders,
+  initialVal,
+  searchbox,
+  lang = getLanguage()
+) {
   const langPrefix = lang === 'en' ? '' : `/${lang}`;
   const searchType = searchbox ? 'search' : 'text';
 
@@ -822,7 +888,13 @@ export async function queryIndex(sheet) {
  * @param {Document} doc - The current Document
  * @param {Location} curLocation - THe current window.location to use
  */
-export function addPagingWidget(div, curpage, totalPages, doc = document, curLocation = window.location) {
+export function addPagingWidget(
+  div,
+  curpage,
+  totalPages,
+  doc = document,
+  curLocation = window.location
+) {
   const queryParams = new URLSearchParams(curLocation.search);
   const nav = doc.createElement('ul');
   nav.classList.add('pagination');
@@ -875,7 +947,12 @@ export function addPagingWidget(div, curpage, totalPages, doc = document, curLoc
   div.appendChild(nav);
 }
 
-export async function fetchTagsOrCategories(ids = [], sheet = 'tags', type = '', locale = 'en') {
+export async function fetchTagsOrCategories(
+  ids = [],
+  sheet = 'tags',
+  type = '',
+  locale = 'en'
+) {
   window.tagsCategories = window.tagsCategories || {};
   const sheetKey = sheet;
   const loaded = window.tagsCategories[`${sheetKey}-loaded`];
@@ -883,29 +960,31 @@ export async function fetchTagsOrCategories(ids = [], sheet = 'tags', type = '',
   if (!loaded) {
     const placeholders = await fetchPlaceholders(locale);
     const sheetName = sheet ? `sheet=${sheet}` : '';
-    window.tagsCategories[`${sheetKey}-loaded`] = new Promise((resolve, reject) => {
-      fetch(`/tags-categories.json?${sheetName}`)
-        .then((resp) => {
-          if (resp.ok) {
-            return resp.json();
-          }
-          throw new Error(`${resp.status}: ${resp.statusText}`);
-        })
-        .then((results) => {
-          // eslint-disable-next-line max-len
-          window.tagsCategories[sheetKey] = results.data.map((ele) => ({
-            id: ele.Key,
-            type: ele.Type,
-            name: placeholders[ele.Key],
-          }));
-          resolve();
-        })
-        .catch((error) => {
-          // Error While Loading tagsCategories
-          window.tagsCategories[sheetKey] = {};
-          reject(error);
-        });
-    });
+    window.tagsCategories[`${sheetKey}-loaded`] = new Promise(
+      (resolve, reject) => {
+        fetch(`/tags-categories.json?${sheetName}`)
+          .then((resp) => {
+            if (resp.ok) {
+              return resp.json();
+            }
+            throw new Error(`${resp.status}: ${resp.statusText}`);
+          })
+          .then((results) => {
+            // eslint-disable-next-line max-len
+            window.tagsCategories[sheetKey] = results.data.map((ele) => ({
+              id: ele.Key,
+              type: ele.Type,
+              name: placeholders[ele.Key],
+            }));
+            resolve();
+          })
+          .catch((error) => {
+            // Error While Loading tagsCategories
+            window.tagsCategories[sheetKey] = {};
+            reject(error);
+          });
+      }
+    );
   }
 
   if (!window.jslinq) {
@@ -914,7 +993,8 @@ export async function fetchTagsOrCategories(ids = [], sheet = 'tags', type = '',
 
   await window.tagsCategories[`${sheetKey}-loaded`];
   return window.tagsCategories[sheetKey].filter(
-    (ele) => (!ids.length || ids.indexOf(ele.id) > -1) && (!type || ele.type === type)
+    (ele) =>
+      (!ids.length || ids.indexOf(ele.id) > -1) && (!type || ele.type === type)
   );
 }
 
@@ -948,8 +1028,13 @@ export async function loadConsentManager() {
   }
 
   await Promise.all([
-    loadScript('https://app.usercentrics.eu/browser-ui/latest/loader.js', ccmConfig),
-    loadScript('https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js'),
+    loadScript(
+      'https://app.usercentrics.eu/browser-ui/latest/loader.js',
+      ccmConfig
+    ),
+    loadScript(
+      'https://privacy-proxy.usercentrics.eu/latest/uc-block.bundle.js'
+    ),
   ]);
   window.dispatchEvent(new CustomEvent('consentmanager'));
 }

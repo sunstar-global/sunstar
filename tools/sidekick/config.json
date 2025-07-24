@@ -24,10 +24,17 @@
       "titleI18n": {
         "en": "Preflight"
       },
-      "environments": [
-        "preview"
-      ],
+      "environments": ["preview"],
       "event": "preflight"
+    },
+    {
+      "id": "aem-genai-variations",
+      "titleI18n": {
+        "en": "Generate with AI"
+      },
+      "environments": ["preview"],
+      "includePaths": ["**.docx**"],
+      "event": "aem-genai-variations-sidekick"
     }
   ]
 }
