@@ -16,15 +16,11 @@ _Please enter each change as a new bullet point_
 
 ## Library
 
-- [ ] New Blocks introduced in this PR
-      If yes, please provide details below
-      **Block Name** : For e.g. _cards_
+- [ ] New Blocks introduced in this PR If yes, please provide details below **Block Name** : For e.g. _cards_
 - [ ] Documented in sidekick library
 
-- [ ] New variations introduced in this PR
-      **Variation Name** : For e.g. _cards (grid)_
+- [ ] New variations introduced in this PR **Variation Name** : For e.g. _cards (grid)_
 - [ ] Documented in sidekick library
 
-- [ ] New mixins introduced in this PR
-      **Mixin Name** : For e.g. _compact, white_
+- [ ] New mixins introduced in this PR **Mixin Name** : For e.g. _compact, white_
 - [ ] Documented in sidekick library

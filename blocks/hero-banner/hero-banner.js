@@ -1,6 +1,7 @@
+/* eslint-disable no-empty */
 import { getLanguage } from '../../scripts/scripts.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import { decorateButtons } from '../../blocks/text/text.js';
+import { decorateButtons } from '../text/text.js';
 
 /* eslint-disable no-console */
 
@@ -54,7 +55,7 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
   let textDiv = headingRow.querySelector('div');
   const heroBannerWrapper = document.createElement('div');
 
-  //check if it contains h6 if yes replace it with p and add h6 class
+  // check if it contains h6 if yes replace it with p and add h6 class
 
   if (overlap) {
     if (textDiv.querySelector('p') === null) {

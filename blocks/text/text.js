@@ -1,9 +1,3 @@
-export default function decorate(block) {
-  //check if the section has class button and add the button class to a tag check if it has button-secondary class and add secondary class to a tag, check if section has button-branded and check the a href to map the brand (fro example apple.com add icon <span class="icon icon-apple"></span> after the text in a)
-  //section is the first div with classes on the the first div
-  decorateButtons(block);
-}
-
 export function decorateButtons(block) {
   const isButton =
     block.classList.contains('button') ||
@@ -51,4 +45,10 @@ export function decorateButtons(block) {
       });
     }
   }
+}
+
+export default function decorate(block) {
+  // check if the section has class button and add the button class to a tag check if it has button-secondary class and add secondary class to a tag, check if section has button-branded and check the a href to map the brand (fro example apple.com add icon <span class="icon icon-apple"></span> after the text in a)
+  // section is the first div with classes on the the first div
+  decorateButtons(block);
 }

@@ -8,16 +8,16 @@ export default function decorate(block) {
   const isDisabledButton = block.classList.contains('disabled');
 
   if (isDisabledButton) {
-    //find the h7 and create a button with disabled class
+    // find the h7 and create a button with disabled class
     const h6 = block.querySelectorAll('h6');
 
     if (h6) {
       h6.forEach((el) => {
-        //if h6 is last child then add create button with disabled class
-        //add several classes to the button
+        // if h6 is last child then add create button with disabled class
+        // add several classes to the button
 
         if (el.nextElementSibling === null) {
-          //create button-container
+          // create button-container
           const p = document.createElement('p');
           p.classList.add('button-container');
           el.parentElement.append(p);
@@ -85,7 +85,7 @@ export default function decorate(block) {
     ul.append(li);
   });
   ul.querySelectorAll('img').forEach((img) =>
-    img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, isHero, [{ width: '750' }])),
+    img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, isHero, [{ width: '750' }]))
   );
   if (
     ul.querySelector('a') === null &&

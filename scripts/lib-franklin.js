@@ -39,7 +39,9 @@ export function sampleRUM(checkpoint, data = {}) {
       const usp = new URLSearchParams(window.location.search);
       const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
       // eslint-disable-next-line no-bitwise
-      const hashCode = (s) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
+      const hashCode = (s) =>
+        // eslint-disable-next-line no-bitwise
+        s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
       const id = `${hashCode(window.location.href)}-${new Date().getTime()}-${Math.random().toString(16).substr(2, 14)}`;
       const random = Math.random();
       const isSelected = random * weight < 1;
@@ -341,64 +343,6 @@ export function readBlockConfig(block) {
     }
   });
   return config;
-}
-
-/**
- * Decorates all sections in a container element.
- * @param {Element} main The container element
- */
-export function decorateSections(main) {
-  main.querySelectorAll(':scope > div').forEach((section) => {
-    const wrappers = [];
-    let defaultContent = false;
-    [...section.children].forEach((e) => {
-      if (e.tagName === 'DIV' || !defaultContent) {
-        const wrapper = document.createElement('div');
-        wrappers.push(wrapper);
-        defaultContent = e.tagName !== 'DIV';
-        if (defaultContent) wrapper.classList.add('default-content-wrapper');
-      }
-      wrappers[wrappers.length - 1].append(e);
-    });
-    wrappers.forEach((wrapper) => section.append(wrapper));
-    section.classList.add('section');
-    section.dataset.sectionStatus = 'initialized';
-    section.style.display = 'none';
-
-    /* process section metadata */
-    /* logic for anchor links has been added by Dejan Eric 12.07.2024 */
-    const sectionMeta = section.querySelector('div.section-metadata');
-    if (sectionMeta) {
-      const meta = readBlockConfig(sectionMeta);
-
-      Object.keys(meta).forEach((key) => {
-        if (key === 'style') {
-          const currentDevice = Viewport.getDeviceType(); // Get the current device type
-          const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
-          const allowedStyles = ['mobile', 'tablet', 'desktop'];
-
-          const hasDeviceSpecificStyle = styles.some((style) => allowedStyles.includes(style));
-
-          if (hasDeviceSpecificStyle && !styles.includes(currentDevice.toLowerCase())) {
-            section.remove();
-            return;
-          }
-
-          styles.forEach((style) => section.classList.add(style));
-        } else if (key === 'id') {
-          section.id = meta[key];
-        } else {
-          section.dataset[toCamelCase(key)] = meta[key];
-        }
-      });
-      sectionMeta.parentNode.remove();
-    }
-
-    const sectionContainer = document.createElement('div');
-    sectionContainer.classList.add('section-container');
-    sectionContainer.append(...section.children);
-    section.append(sectionContainer);
-  });
 }
 
 /**
@@ -753,8 +697,16 @@ export function setup() {
 }
 
 export function getFormattedDate(date, locale = 'en') {
-  const defaultLocaleOption = { year: 'numeric', month: 'short', day: 'numeric' };
-  const default2DigitDayLocaleOption = { year: 'numeric', month: 'long', day: '2-digit' };
+  const defaultLocaleOption = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
+  const default2DigitDayLocaleOption = {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+  };
 
   const dateLocaleMap = {
     en: {
@@ -881,6 +833,64 @@ window.addEventListener('viewportResize', (event) => {
 });
 
 /**
+ * Decorates all sections in a container element.
+ * @param {Element} main The container element
+ */
+export function decorateSections(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
+    const wrappers = [];
+    let defaultContent = false;
+    [...section.children].forEach((e) => {
+      if (e.tagName === 'DIV' || !defaultContent) {
+        const wrapper = document.createElement('div');
+        wrappers.push(wrapper);
+        defaultContent = e.tagName !== 'DIV';
+        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+      }
+      wrappers[wrappers.length - 1].append(e);
+    });
+    wrappers.forEach((wrapper) => section.append(wrapper));
+    section.classList.add('section');
+    section.dataset.sectionStatus = 'initialized';
+    section.style.display = 'none';
+
+    /* process section metadata */
+    /* logic for anchor links has been added by Dejan Eric 12.07.2024 */
+    const sectionMeta = section.querySelector('div.section-metadata');
+    if (sectionMeta) {
+      const meta = readBlockConfig(sectionMeta);
+
+      Object.keys(meta).forEach((key) => {
+        if (key === 'style') {
+          const currentDevice = Viewport.getDeviceType(); // Get the current device type
+          const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
+          const allowedStyles = ['mobile', 'tablet', 'desktop'];
+
+          const hasDeviceSpecificStyle = styles.some((style) => allowedStyles.includes(style));
+
+          if (hasDeviceSpecificStyle && !styles.includes(currentDevice.toLowerCase())) {
+            section.remove();
+            return;
+          }
+
+          styles.forEach((style) => section.classList.add(style));
+        } else if (key === 'id') {
+          section.id = meta[key];
+        } else {
+          section.dataset[toCamelCase(key)] = meta[key];
+        }
+      });
+      sectionMeta.parentNode.remove();
+    }
+
+    const sectionContainer = document.createElement('div');
+    sectionContainer.classList.add('section-container');
+    sectionContainer.append(...section.children);
+    section.append(sectionContainer);
+  });
+}
+
+/**
  * Auto initializiation.
  */
 function init() {
@@ -894,7 +904,10 @@ function init() {
     window.addEventListener('load', () => sampleRUM('load'));
 
     window.addEventListener('unhandledrejection', (event) => {
-      sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
+      sampleRUM('error', {
+        source: event.reason.sourceURL,
+        target: event.reason.line,
+      });
     });
 
     window.addEventListener('error', (event) => {

@@ -21,10 +21,7 @@
   const sidekick = document.querySelector('helix-sidekick');
   if (sidekick) {
     // sidekick already loaded
-    sidekick.addEventListener(
-      'custom:aem-genai-variations-sidekick',
-      handlePluginButtonClick
-    );
+    sidekick.addEventListener('custom:aem-genai-variations-sidekick', handlePluginButtonClick);
   } else {
     // wait for sidekick to be loaded
     document.addEventListener(
@@ -32,10 +29,7 @@
       () => {
         document
           .querySelector('helix-sidekick')
-          .addEventListener(
-            'custom:aem-genai-variations-sidekick',
-            handlePluginButtonClick
-          );
+          .addEventListener('custom:aem-genai-variations-sidekick', handlePluginButtonClick);
       },
       { once: true }
     );
@@ -44,10 +38,7 @@
   const sidekickV2 = document.querySelector('aem-sidekick');
   if (sidekickV2) {
     // sidekick already loaded
-    sidekickV2.addEventListener(
-      'custom:aem-genai-variations-sidekick',
-      handlePluginButtonClick
-    );
+    sidekickV2.addEventListener('custom:aem-genai-variations-sidekick', handlePluginButtonClick);
   } else {
     // wait for sidekick to be loaded
     document.addEventListener(
@@ -55,10 +46,7 @@
       () => {
         document
           .querySelector('aem-sidekick')
-          .addEventListener(
-            'custom:aem-genai-variations-sidekick',
-            handlePluginButtonClick
-          );
+          .addEventListener('custom:aem-genai-variations-sidekick', handlePluginButtonClick);
       },
       { once: true }
     );

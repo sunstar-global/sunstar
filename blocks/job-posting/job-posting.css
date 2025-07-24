@@ -6,15 +6,15 @@
 }
 
 .job-posting .has-icon p {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .job-posting .icon {
-	display: inline-block;
-	width: 1.5rem;
-	height: 1.5rem;
-	background-size: cover;
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-size: cover;
 }
 
 .job-posting span.icon-globe {

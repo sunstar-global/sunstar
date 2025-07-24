@@ -4,6 +4,13 @@
   position: relative;
 }
 
+
+.hero-banner .hero-banner-text-wrapper {
+  flex-basis: 100%;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
 main .text-narrow.hero-banner-container .section-container .hero-banner-text-wrapper {
   max-width: 54.5rem;
 }
@@ -56,8 +63,8 @@ main .block.hero-banner.composite.button a:hover {
 }
 
 .hero-banner .hero-banner-media-section {
-  height: 14.75rem;
-  position: relative;
+  height: 32rem;
+  position: absolute;
   width: 100%;
   background-position: center;
   background-size: cover;
@@ -74,11 +81,6 @@ main .block.hero-banner.composite.button a:hover {
 
 .hero-banner.careers .hero-banner-media-section {
   display: none;
-}
-
-.hero-banner .hero-banner-media-section {
-  height: 32rem;
-  position: absolute;
 }
 
 .hero-banner.superposition .hero-banner-media-section {
@@ -204,12 +206,6 @@ main .block.hero-banner.composite.button a:hover {
   place-content: center left;
   display: inline-flex;
   flex-wrap: wrap;
-}
-
-.hero-banner .hero-banner-text-wrapper {
-  flex-basis: 100%;
-  width: 100%;
-  margin-bottom: 1.5rem;
 }
 
 .hero-banner .button-container {

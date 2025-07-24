@@ -1,50 +1,51 @@
 .job-posting-card {
-	background-color: var(--white);
-	padding: 1.5rem;
+  background-color: var(--white);
+  padding: 1.5rem;
 }
 
-.job-posting-card a, .job-posting-card a:hover {
-	text-decoration: none;
-	color: unset;
+.job-posting-card a,
+.job-posting-card a:hover {
+  text-decoration: none;
+  color: unset;
 }
 
 .job-posting-card h2 {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 .job-posting-card .has-icon {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
 }
-  
+
 .job-posting-card .has-icon p {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .job-posting-card .icon {
-	display: inline-block;
-	width: 1.5rem;
-	height: 1.5rem;
-	background-size: cover;
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-size: cover;
 }
 
 .job-posting-card span.icon-globe {
-	background-image: url('/icons/globe.svg');
+  background-image: url('/icons/globe.svg');
 }
-  
+
 .job-posting-card span.icon-work {
-	background-image: url('/icons/work.svg');
+  background-image: url('/icons/work.svg');
 }
 
 .job-posting-card span.icon-time {
-	background-image: url('/icons/time.svg');
+  background-image: url('/icons/time.svg');
 }
 
 .job-card-info {
-	display: flex;
-	gap: 3rem;
-	flex-wrap: wrap;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
 }

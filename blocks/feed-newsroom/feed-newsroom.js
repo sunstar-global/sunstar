@@ -219,14 +219,16 @@ export default async function decorate(block) {
   );
   // eslint-disable-next-line
   const yroptions = uniqYears.reduce((accum, current) => {
-    accum += "<option value='" + current + "'>" + current + '</option>';
+    // eslint-disable-next-line
+    accum += `<option value='${current}'>${current}</option>`;
     return accum;
   }, '');
   filterDiv.querySelector('#news_year').innerHTML = filterDiv.querySelector('#news_year').innerHTML + yroptions;
   const categoryDetails = await fetchTagsOrCategories('', 'categories', 'newsroom', locale);
   // eslint-disable-next-line
   const categoryOptions = categoryDetails.reduce((accum, current) => {
-    accum += "<option value='" + current.id + "'>" + current.name + '</option>';
+    // eslint-disable-next-line
+    accum += `<option value='${current.id}'>${current.name}</option>`;
     return accum;
   }, '');
   filterDiv.querySelector('#news_category').innerHTML =

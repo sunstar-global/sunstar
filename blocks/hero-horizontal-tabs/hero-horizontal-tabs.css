@@ -70,7 +70,6 @@ main .hero-horiz-tabs-text > h2 {
 
 main .hero-horiz-tabs-text > p.h6 {
   color: var(--hero-strong-color);
-  font-size: var(--heading-font-size-xxxs);
   letter-spacing: 0.7px;
   margin-bottom: 0.75rem;
   text-transform: uppercase;
@@ -309,6 +308,10 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
     height: 32.5rem;
   }
 
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img picture {
+    height: 33.75rem;
+  }
+
   main .hero-horizontal-tabs.image-cover .hero-horiz-tabs-img picture {
     height: 100%;
   }
@@ -320,8 +323,7 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text {
     padding-top: 3.5rem;
   }
-
-  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img picture,
+ 
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-img video {
     height: 33.75rem;
   }

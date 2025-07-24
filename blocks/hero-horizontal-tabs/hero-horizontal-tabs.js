@@ -12,7 +12,7 @@
 
 import { getNamedValueFromTable } from '../../scripts/scripts.js';
 import { createTabs, addTabs } from '../../scripts/blocks-utils.js';
-import { decorateButtons } from '../../blocks/text/text.js';
+import { decorateButtons } from '../text/text.js';
 
 /* eslint-disable no-console */
 

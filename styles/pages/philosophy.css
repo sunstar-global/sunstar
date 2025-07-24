@@ -66,8 +66,18 @@ body.philosophy main .section.narrower.section.with-background-image .link.block
   min-width: 85%;
 }
 
-body.philosophy main .section.narrower.section.with-background-image .link.block > div:nth-child(1) div.button-container,
-body.philosophy main .section.narrower.section.with-background-image .link.block > div:nth-child(2) div.button-container {
+body.philosophy
+  main
+  .section.narrower.section.with-background-image
+  .link.block
+  > div:nth-child(1)
+  div.button-container,
+body.philosophy
+  main
+  .section.narrower.section.with-background-image
+  .link.block
+  > div:nth-child(2)
+  div.button-container {
   min-width: 85%;
 }
 

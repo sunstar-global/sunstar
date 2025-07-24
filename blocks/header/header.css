@@ -606,6 +606,10 @@ header .mega-container .left-content-container .mega-sub-menu a.link:last-child 
 header .mega-container .left-content-container .mega-sub-menu a.mobile-menu-header {
   color: var(--white);
   padding: 0 1rem;
+  display: inline-block;
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 header .mega-container .left-content-container .mega-sub-menu .menu-level-2 a.link {
@@ -710,14 +714,6 @@ header .mega-container .left-content-container .mega-sub-menu {
   padding-bottom: 8.5rem;
   padding-left: 0;
   align-items: flex-start;
-}
-
-header .mega-container .left-content-container .mega-sub-menu a.mobile-menu-header {
-  display: inline-block;
-  font-size: 2rem;
-  margin-top: 2rem;
-  margin-bottom: 1.5rem;
-  color: var(--white);
 }
 
 header .mega-dropdown.fixed {

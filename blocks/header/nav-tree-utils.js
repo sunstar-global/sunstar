@@ -1,7 +1,7 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { htmlToElement } from '../../scripts/scripts.js';
 
-function getBackButton (placeholders) {
+function getBackButton(placeholders) {
   const backButton = htmlToElement(`<div class="menu-back-btn">
     <span class="icon icon-angle-left"></span>
     <a>${placeholders['back-to-menu']}</a>
@@ -99,7 +99,7 @@ function decorateNodes(json, level, placeholders) {
         addDropdownEventListeners(li.querySelector('a:first-child'), placeholders);
       } else {
         li = htmlToElement(
-          `<li class="menu-level-${level}-item"><a class="link" href=${data.link}>${data.category}</a></li>`,
+          `<li class="menu-level-${level}-item"><a class="link" href=${data.link}>${data.category}</a></li>`
         );
       }
       ul.appendChild(li);
@@ -109,6 +109,5 @@ function decorateNodes(json, level, placeholders) {
 }
 
 export default function buildNavTree(navTreeJson, placeholders) {
-
   return decorateNodes(navTreeJson.data, 1, placeholders);
 }

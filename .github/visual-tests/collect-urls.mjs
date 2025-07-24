@@ -11,7 +11,6 @@ if (!process.env.DOMAIN_MAIN || !process.env.TEST_PATHS || !process.env.TEST_PAT
 
 const paths = process.env.TEST_PATHS.split(' ').map((path) => path.trim());
 
-
 for (const index of process.env.TEST_PATHS_INDEXES.split(' ')) {
   if (!index.trim().length) continue;
 

@@ -15,15 +15,13 @@ function addTextEl(tag, txt, parent, ...classes) {
 }
 
 export default async function decorate(block) {
-
-  
   const placeholders = await fetchPlaceholders(getLanguage());
 
   const section = document.querySelector('.section.hero-career-container');
   if (section) {
     section.classList.add('full-width');
   }
-  
+
   const cfg = readBlockConfig(block);
 
   const bgimg = cfg['hero-background'];

@@ -5,48 +5,6 @@ export function filterIncompleteEntries(json) {
   return json.data.filter((e) => e.image !== '' && e['career-quote'] !== '0' && e['career-jobtitle'] !== '0');
 }
 
-export default async function decorate(block) {
-  const blockCfg = readBlockConfig(block);
-  const chunkSize = parseInt(blockCfg.chunk, 10) || 8; // Set chunk size
-  block.innerHTML = '';
-  const lang = getLanguage();
-  const idxPrefix = lang === 'en' ? '' : `${lang}-`;
-
-  const json = await fetchIndex('query-index', `${idxPrefix}career-testimonials`);
-  const data = filterIncompleteEntries(json);
-  let currentResults = 0; // Track number of loaded results
-
-  const careerGrid = document.createElement('div');
-  careerGrid.classList.add('career-grid');
-
-  // **Load Initial Results**
-  loadResults(careerGrid, data, currentResults, chunkSize);
-  currentResults += chunkSize;
-
-  // **Load More Button**
-  if (currentResults < data.length) {
-    const loadMoreContainer = document.createElement('div');
-    loadMoreContainer.classList.add('load-more-container');
-
-    const loadMoreButton = document.createElement('button');
-    loadMoreButton.classList.add('primary');
-    loadMoreButton.classList.add('button');
-    loadMoreButton.textContent = 'Load More';
-    loadMoreButton.addEventListener('click', async () => {
-      await loadMoreResults(careerGrid, data, currentResults, chunkSize, loadMoreButton);
-      currentResults += chunkSize;
-      if (currentResults >= data.length) {
-        loadMoreButton.remove(); // Hide button when all data is loaded
-      }
-    });
-
-    loadMoreContainer.append(loadMoreButton);
-    careerGrid.append(loadMoreContainer);
-  }
-
-  block.append(careerGrid);
-}
-
 // **Load Specific Results**
 function loadResults(container, data, startIndex, chunkSize) {
   for (let i = startIndex; i < Math.min(startIndex + chunkSize, data.length); i += 1) {
@@ -87,6 +45,49 @@ function loadResults(container, data, startIndex, chunkSize) {
 }
 
 // **Load More Results**
-async function loadMoreResults(container, data, currentResults, chunkSize, button) {
+async function loadMoreResults(container, data, currentResults, chunkSize) {
   loadResults(container, data, currentResults, chunkSize);
+}
+
+export default async function decorate(block) {
+  const blockCfg = readBlockConfig(block);
+  const chunkSize = parseInt(blockCfg.chunk, 10) || 8; // Set chunk size
+  block.innerHTML = '';
+  const lang = getLanguage();
+  const idxPrefix = lang === 'en' ? '' : `${lang}-`;
+
+  const json = await fetchIndex('query-index', `${idxPrefix}career-testimonials`);
+  const data = filterIncompleteEntries(json);
+  let currentResults = 0; // Track number of loaded results
+
+  const careerGrid = document.createElement('div');
+  careerGrid.classList.add('career-grid');
+
+  // **Load Initial Results**
+  // eslint-disable-next-line no-use-before-define
+  loadResults(careerGrid, data, currentResults, chunkSize);
+  currentResults += chunkSize;
+
+  // **Load More Button**
+  if (currentResults < data.length) {
+    const loadMoreContainer = document.createElement('div');
+    loadMoreContainer.classList.add('load-more-container');
+
+    const loadMoreButton = document.createElement('button');
+    loadMoreButton.classList.add('primary');
+    loadMoreButton.classList.add('button');
+    loadMoreButton.textContent = 'Load More';
+    loadMoreButton.addEventListener('click', async () => {
+      await loadMoreResults(careerGrid, data, currentResults, chunkSize, loadMoreButton);
+      currentResults += chunkSize;
+      if (currentResults >= data.length) {
+        loadMoreButton.remove(); // Hide button when all data is loaded
+      }
+    });
+
+    loadMoreContainer.append(loadMoreButton);
+    careerGrid.append(loadMoreContainer);
+  }
+
+  block.append(careerGrid);
 }

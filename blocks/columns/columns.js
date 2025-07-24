@@ -1,4 +1,4 @@
-import { embedYoutube, loadEmbed } from '../embed/embed.js';
+import { loadEmbed } from '../embed/embed.js';
 import { decorateButtons } from '../text/text.js';
 
 export function applySplitPercentages(block) {
@@ -185,13 +185,12 @@ export default function decorate(block) {
   // stylize anchors unless block has no-buttons class or the anchor is a youtube link which has embed-yt class
   if (!block.classList.contains('no-buttons')) {
     if (block.classList.contains('button')) {
-   
       decorateButtons(block);
     } else {
       [...block.firstElementChild.children].forEach((row) => {
         [...row.children].forEach((col) => {
           const anchors = col.querySelectorAll('a');
-          //check if contains button
+          // check if contains button
 
           if (anchors.length) {
             [...anchors].forEach((a) => {

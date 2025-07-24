@@ -10,7 +10,6 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
   },
-  plugins: ['prettier'],
   rules: {
     // allow reassigning param
     'no-param-reassign': [2, { props: false }],
@@ -21,6 +20,5 @@ module.exports = {
         js: 'always',
       },
     ],
-    'prettier/prettier': 'error',
   },
 };

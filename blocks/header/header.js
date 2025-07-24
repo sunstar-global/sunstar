@@ -1,6 +1,13 @@
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import buildNavTree from './nav-tree-utils.js';
-import { getLanguage, getSearchWidget, fetchIndex, decorateAnchors, htmlToElement, LANGUAGES } from '../../scripts/scripts.js';
+import {
+  getLanguage,
+  getSearchWidget,
+  fetchIndex,
+  decorateAnchors,
+  htmlToElement,
+  LANGUAGES,
+} from '../../scripts/scripts.js';
 
 function decorateSocial(social) {
   social.classList.add('social');
@@ -181,7 +188,7 @@ function decorateMiddleNav(nav, placeholders) {
     const base = lang === 'en' ? '/' : `/${lang}/`;
     return path === base || path === `${base}index.html`;
   });
- 
+
   if (isHomepage) {
     const h1 = document.createElement('h1');
     h1.classList.add('sr-only');
@@ -253,21 +260,20 @@ function attachWindowResizeListeners(nav) {
         toggler.classList.add('visible');
       }
     },
-    true,
+    true
   );
 }
 
 function decorateBottomNav(nav, placeholders, navTreeJson) {
-  
   const navTree = buildNavTree(navTreeJson, placeholders);
-  
+
   nav.append(getNavbarToggler());
   nav.append(navTree);
   nav.append(getSearchWidget(placeholders));
-  
+
   const otherItemsEl = document.createElement('li');
   decorateOtherItems(otherItemsEl);
-  
+
   nav.querySelector(':scope .menu-level-1').append(otherItemsEl);
   attachWindowResizeListeners(nav);
 }
@@ -320,7 +326,7 @@ export default async function decorate(block) {
       nav.classList.add(navClass);
       nav.innerHTML = fetchedNav.querySelectorAll(':scope>div')[index].innerHTML;
       if (navClass === 'nav-middle') {
-        //find h6 and conert it to p with h6 class
+        // find h6 and conert it to p with h6 class
         nav.querySelectorAll('h6').forEach((h6) => {
           const p = document.createElement('p');
           p.classList.add('h6-style');

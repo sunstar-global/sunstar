@@ -93,7 +93,7 @@ indices:
         value: match(el, '.*?\n?Country\n([^\n]+)')
       workmode:
         select: main .job-posting
-        value: match(el, '.*?\n?WorkMode\n([^\n]+)')  
+        value: match(el, '.*?\n?WorkMode\n([^\n]+)')
       employmenttype:
         select: main .job-posting
         value: match(el, '.*?\n?EmploymentType\n([^\n]+)')

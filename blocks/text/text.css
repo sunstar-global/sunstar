@@ -33,16 +33,10 @@ main .block.text.narrower {
   margin-bottom: 3.5rem;
 }
 
-main .block.text.left-aligned h1,
-main .block.text.left-aligned h2,
-main .block.text.left-aligned h3,
-main .block.text.left-aligned h4,
-main .block.text.left-aligned h5,
-main .block.text.left-aligned h6,
-main .block.text.left-aligned p,
-main .block.text.left-aligned div {
-  text-align: left;
-  margin-left: 0;
+main .block.text h1,
+main .block.text h2,
+main .block.text h3 {
+  margin: 0 auto 1rem !important;
 }
 
 main .block.text.black h1,
@@ -55,10 +49,16 @@ main .block.text.black p {
   color: var(--light-black);
 }
 
-main .block.text h1,
-main .block.text h2,
-main .block.text h3 {
-  margin: 0 auto 1rem !important;
+main .block.text.left-aligned h1,
+main .block.text.left-aligned h2,
+main .block.text.left-aligned h3,
+main .block.text.left-aligned h4,
+main .block.text.left-aligned h5,
+main .block.text.left-aligned h6,
+main .block.text.left-aligned p,
+main .block.text.left-aligned div {
+  text-align: left;
+  margin-left: 0;
 }
 
 main .block.text.highlight {
