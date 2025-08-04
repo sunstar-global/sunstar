@@ -210,20 +210,25 @@ function loadResults(container, data, startIndex, chunkSize) {
       addTextEl('p', data[i].employmenttype, infoWrapper, 'icon-time', 'job-employmenttype');
     }
 
+    if (data[i].jobdescription && data[i].jobdescription !== '') {
+      const jobDescription = document.createElement('p');
+      jobDescription.textContent = data[i].jobdescription;
+      contentDiv.append(jobDescription);
+    }
+
+    const buttonContainer = document.createElement('p');
+    buttonContainer.classList.add('button-container');
+    contentDiv.appendChild(buttonContainer);
+    const applyNowLink = document.createElement('a');
+    applyNowLink.target = '_blank';
+    applyNowLink.rel = 'noopener noreferrer';
+    applyNowLink.classList.add('button', 'primary', 'hero-career-applynow');
+    applyNowLink.setAttribute('aria-label', 'Apply now');
+    applyNowLink.href = data[i].path;
+
+    // Add the link text as a text node (do NOT use textContent here)
+    applyNowLink.appendChild(document.createTextNode('Apply now'));
     if (data[i].linkedin && data[i].linkedin !== '') {
-      const buttonContainer = document.createElement('p');
-      buttonContainer.classList.add('button-container');
-      contentDiv.appendChild(buttonContainer);
-      const applyNowLink = document.createElement('a');
-      applyNowLink.target = '_blank';
-      applyNowLink.rel = 'noopener noreferrer';
-      applyNowLink.classList.add('button', 'primary', 'hero-career-applynow');
-      applyNowLink.setAttribute('aria-label', 'Apply now');
-      applyNowLink.href = data[i].path;
-
-      // Add the link text as a text node (do NOT use textContent here)
-      applyNowLink.appendChild(document.createTextNode('Apply now'));
-
       buttonContainer.appendChild(applyNowLink);
       const linkedinLink = document.createElement('a');
       linkedinLink.target = '_blank';
