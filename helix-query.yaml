@@ -102,7 +102,7 @@ indices:
         value: match(el, '.*?\n?JobTitle\n([^\n]+)')
       jobdescription:
         select: main .job-posting
-        value: match(el, '.*?\n?JobDescription\n((?:.*\n)*?)\n(?:Region|Country|City|WorkMode|EmploymentType|JobID|LinkedIn)')
+        value: match(el, '.*?\n?JobDescription\n([^\n]+)')
       linkedin:
         select: main .job-posting
         value: match(el, '.*?\n?Linkedin\n(?:\\[.*?\\]\\()?(https?://[^\s)]+)')

@@ -9,4 +9,12 @@ module.exports = {
   arrowParens: 'always', // always use parens for arrow functions
   endOfLine: 'lf', // match ESLint linebreak-style rule
   proseWrap: 'never', // prevent wrapping long comment or Markdown lines
+  overrides: [
+    {
+      files: ['*.js'],
+      options: {
+        parser: 'babel',
+      },
+    },
+  ],
 };

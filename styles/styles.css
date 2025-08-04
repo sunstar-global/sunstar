@@ -257,7 +257,6 @@ h4 {
   margin: 1.5em 0 0.5rem;
 }
 
-
 p {
   font-weight: var(--font-weight-medium);
   font-size: var(--body-font-size-m);
@@ -338,24 +337,29 @@ h6 + h3 {
 
 .h1 h2,
 .h1 h3,
-.h1 h4 {
+.h1 h4,
+.h1 {
   font-size: var(--h1-font-size-mobile);
 }
 
 .h2 h1,
 .h2 h3,
-.h2 h4 {
+.h2 h4,
+.h2 {
   font-size: var(--h2-font-size-mobile);
 }
 
 .h3 h1,
-.h3 h2 .h3 h4 {
+.h3 h2,
+.h3 h4,
+.h3 {
   font-size: var(--h3-font-size-mobile);
 }
 
 .h4 h1,
 .h4 h2,
-.h4 h3 {
+.h4 h3,
+.h4 {
   font-size: var(--h4-font-size-mobile);
 }
 
@@ -373,7 +377,6 @@ p.h6 + h3 {
 .balance p {
   text-wrap: balance;
 }
-
 
 .text-small,
 .text-small p {
@@ -815,7 +818,6 @@ main .section .default-content-wrapper:last-of-type > :last-child {
   margin-bottom: 0;
 }
 
-
 /* section - bold headings */
 
 main .section.bold-headings h1,
@@ -1064,7 +1066,6 @@ main .section.no-margin-bottom {
 main .section.no-margin-top {
   margin-top: 0;
 }
-
 
 /* fixed padding bottom of section-container - 400px */
 /* stylelint-disable-next-line no-descending-specificity */
@@ -1489,24 +1490,28 @@ p.button-container,
 
   .h1 h2,
   .h1 h3,
-  .h1 h4 {
+  .h1 h4,
+  .h1 {
     font-size: var(--h1-font-size-desktop);
   }
 
   .h2 h1,
   .h2 h3,
-  .h2 h4 {
+  .h2 h4,
+  .h2 {
     font-size: var(--h2-font-size-desktop);
   }
 
   .h3 h1,
-  .h3 h2 .h3 h4 {
+  .h3 h2,
+  .h3 h4,
+  .h3 {
     font-size: var(--h3-font-size-desktop);
   }
 
   .h4 h1,
   .h4 h2,
-  .h4 h3 {
+  .h4 h3 .h4 {
     font-size: var(--h4-font-size-desktop);
   }
 

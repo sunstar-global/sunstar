@@ -6,7 +6,6 @@
   margin: 1.25rem 0;
 }
 
-
 .columns p,
 .columns dl,
 .columns ol,
@@ -771,8 +770,6 @@ div.img-col > video {
   .columns:not(.no-padding, .history) > div > div:not(.columns-img-col) div:not(.img-col) {
     padding: 1rem 0;
   }
-
-
 }
 
 @media (min-width: 77rem) {

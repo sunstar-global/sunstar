@@ -13,83 +13,120 @@ export default async function decorate(block) {
 
   const unique = (arr) => [...new Set(arr.filter(Boolean))];
 
-  const locations = unique(data.map((item) => item.country));
+  const countries = unique(data.map((item) => item.country));
   const regions = unique(data.map((item) => item.region));
+  const cities = unique(data.map((item) => item.city));
 
   // eslint-disable-next-line no-unused-vars
   const employmentTypes = unique(data.map((item) => item.employmenttype));
   const workModes = unique(data.map((item) => item.workmode));
 
   const wrapper = document.createElement('div');
-  wrapper.style.display = 'flex';
-  wrapper.style.gap = '2rem';
+  wrapper.classList.add('job-opportunities-page-wrapper');
 
   // Sidebar filter (2/5)
   const sidebar = document.createElement('aside');
-  sidebar.style.width = '40%';
   sidebar.style.position = 'sticky';
   sidebar.style.top = '1rem'; // adjust if needed
   sidebar.style.alignSelf = 'flex-start'; // needed for sticky to work
   sidebar.classList.add('job-filter-sidebar');
 
   sidebar.innerHTML = `
+    <h2 class="h3">Refine your search</h2>
 		<div class="filter-group">
-		<h3>Region</h3>
-		<ul>
-			${regions
-        .map(
-          (region) => `
-			<li>
-				<label>
-				<input type="checkbox" class="filter-checkbox" data-filter-type="region" value="${region}">
-				${region}
-				</label>
-			</li>
-			`
-        )
-        .join('')}
-		</ul>
+      <div class="accordion-header">
+        <h3>Region</h3>
+        <span class="icon icon-chevron-down"></span>
+      </div>
+      <div class="accordion-body">
+        <ul>
+          ${regions
+            .map(
+              (region) => `
+          <li>
+            <label>
+            <input type="checkbox" name="region" class="filter-checkbox" data-filter-type="region" value="${region}">
+            ${region}
+            </label>
+          </li>
+          `
+            )
+            .join('')}
+        </ul>
+      </div>
+		</div>
+    <div class="filter-group">
+      <div class="accordion-header">
+        <h3>Country</h3>
+        <span class="icon icon-chevron-down"></span>
+      </div>
+      <div class="accordion-body">
+        <ul>
+          ${countries
+            .map(
+              (country) => `
+          <li>
+            <label>
+            <input type="checkbox" name="country" class="filter-checkbox" data-filter-type="country" value="${country}">
+            ${country}
+            </label>
+          </li>
+          `
+            )
+            .join('')}
+        </ul>
+      </div>
 		</div>
 		<div class="filter-group">
-		<h3>Location</h3>
-		<ul>
-			${locations
-        .map(
-          (location) => `
-			<li>
-				<label>
-				<input type="checkbox" class="filter-checkbox" data-filter-type="country" value="${location}">
-				${location}
-				</label>
-			</li>
-			`
-        )
-        .join('')}
-		</ul>
+      <div class="accordion-header">
+        <h3>City</h3>
+        <span class="icon icon-chevron-down"></span>
+      </div>
+      <div class="accordion-body">
+        <ul>
+          ${cities
+            .map(
+              (city) => `
+          <li>
+            <label>
+            <input type="checkbox" name="city" class="filter-checkbox" data-filter-type="city" value="${city}">
+            ${city}
+            </label>
+          </li>
+          `
+            )
+            .join('')}
+        </ul>
+      </div>
 		</div>
 		<div class="filter-group">
-		<h3>Location</h3>
-		<ul>
-			${workModes
-        .map(
-          (workMode) => `
-			<li>
-				<label>
-				<input type="checkbox" class="filter-checkbox" data-filter-type="workMode" value="${workMode}">
-				${workMode}
-				</label>
-			</li>
-			`
-        )
-        .join('')}
-		</ul>
-		</div>
+      <div class="accordion-header">
+        <h3>Work Mode</h3>
+        <span class="icon icon-chevron-down"></span>
+      </div>
+      <div class="accordion-body">
+        <ul>
+          ${workModes
+            .map(
+              (workMode) => `
+          <li>
+            <label>
+            <input type="checkbox" name="workmode" class="filter-checkbox" data-filter-type="workmode" value="${workMode}">
+            ${workMode}
+            </label>
+          </li>
+          `
+            )
+            .join('')}
+        </ul>
+      </div>
+    </div>
 	`;
 
   // Job list container (3/5)
   const jobList = document.createElement('div');
   jobList.classList.add('job-list');
-  jobList.style.width = '60%';
+  jobList.style.width = '68%';
 
   // eslint-disable-next-line no-use-before-define
   loadResults(jobList, data, currentResults, chunkSize);
@@ -126,6 +163,14 @@ export default async function decorate(block) {
     // eslint-disable-next-line no-use-before-define
     cb.addEventListener('change', applyFilters);
   });
+
+  document.querySelectorAll('.accordion-header').forEach((header) => {
+    header.addEventListener('click', () => {
+      const body = header.nextElementSibling;
+      body.classList.toggle('open');
+      header.classList.toggle('active');
+    });
+  });
 }
 
 function loadResults(container, data, startIndex, chunkSize) {
@@ -136,12 +181,8 @@ function loadResults(container, data, startIndex, chunkSize) {
     div.dataset.workmode = data[i].workmode || '';
     div.dataset.employmenttype = data[i].employmenttype || '';
     div.dataset.region = data[i].region || '';
-    div.dataset.location = data[i].country || '';
+    div.dataset.country = data[i].country || '';
     div.dataset.city = data[i].city || '';
-
-    const a = document.createElement('a');
-    a.href = data[i].path;
-    a.classList.add('job-card-link');
 
     const contentDiv = document.createElement('div');
     contentDiv.classList.add('job-card-content', 'h-full');
@@ -169,9 +210,41 @@ function loadResults(container, data, startIndex, chunkSize) {
       addTextEl('p', data[i].employmenttype, infoWrapper, 'icon-time', 'job-employmenttype');
     }
 
-    a.append(contentDiv);
-    div.append(a);
-    container.insertBefore(div, container.lastChild); // Ensure it inserts before "Load More"
+    if (data[i].linkedin && data[i].linkedin !== '') {
+      const buttonContainer = document.createElement('p');
+      buttonContainer.classList.add('button-container');
+      contentDiv.appendChild(buttonContainer);
+      const applyNowLink = document.createElement('a');
+      applyNowLink.target = '_blank';
+      applyNowLink.rel = 'noopener noreferrer';
+      applyNowLink.classList.add('button', 'primary', 'hero-career-applynow');
+      applyNowLink.setAttribute('aria-label', 'Apply now');
+      applyNowLink.href = data[i].path;
+
+      // Add the link text as a text node (do NOT use textContent here)
+      applyNowLink.appendChild(document.createTextNode('Apply now'));
+
+      buttonContainer.appendChild(applyNowLink);
+      const linkedinLink = document.createElement('a');
+      linkedinLink.target = '_blank';
+      linkedinLink.rel = 'noopener noreferrer';
+      linkedinLink.classList.add('button', 'primary', 'linkedin', 'hero-career-linkedin');
+      linkedinLink.setAttribute('aria-label', 'Apply on LinkedIn');
+      linkedinLink.href = data[i].linkedin;
+
+      // Add the icon span
+      const linkedinIcon = document.createElement('span');
+      linkedinIcon.classList.add('icon', 'icon-linkedin');
+
+      // Add the link text as a text node (do NOT use textContent here)
+      linkedinLink.appendChild(document.createTextNode('Apply on LinkedIn'));
+      linkedinLink.append(linkedinIcon);
+
+      buttonContainer.appendChild(linkedinLink);
+    }
+
+    div.append(contentDiv);
+    container.insertBefore(div, container.lastChild);
   }
 }
 
@@ -184,6 +257,10 @@ function applyFilters() {
   const selected = {
     category: [],
     country: [],
+    city: [],
+    region: [],
+    workmode: [],
+    employmenttype: [],
   };
 
   document.querySelectorAll('.filter-checkbox:checked').forEach((cb) => {
@@ -194,6 +271,15 @@ function applyFilters() {
   document.querySelectorAll('.job-posting-card').forEach((card) => {
     const matchCategory = selected.category.length === 0 || selected.category.includes(card.dataset.category);
     const matchCountry = selected.country.length === 0 || selected.country.includes(card.dataset.country);
-    card.style.display = matchCategory && matchCountry ? 'block' : 'none';
+    const matchCity = selected.city.length === 0 || selected.city.includes(card.dataset.city);
+    const matchRegion = selected.region.length === 0 || selected.region.includes(card.dataset.region);
+    const matchWorkMode = selected.workmode.length === 0 || selected.workmode.includes(card.dataset.workmode);
+    const matchEmploymentType =
+      selected.employmenttype.length === 0 || selected.employmenttype.includes(card.dataset.employmenttype);
+
+    card.style.display =
+      matchCategory && matchCountry && matchCity && matchRegion && matchWorkMode && matchEmploymentType
+        ? 'block'
+        : 'none';
   });
 }
