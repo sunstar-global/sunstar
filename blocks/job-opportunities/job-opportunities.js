@@ -3,7 +3,7 @@ import { addTextEl } from '../../scripts/blocks-utils.js';
 
 export default async function decorate(block) {
   // const blockCfg = readBlockConfig(block);
-  const chunkSize = 8; // Set chunk size
+  const chunkSize = 6; // Set chunk size
   block.innerHTML = '';
   const lang = getLanguage();
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
@@ -34,11 +34,11 @@ export default async function decorate(block) {
   sidebar.innerHTML = `
     <h2 class="h3">Refine your search</h2>
 		<div class="filter-group">
-      <div class="accordion-header">
+      <div class="accordion-header active">
         <h3>Region</h3>
         <span class="icon icon-chevron-down"></span>
       </div>
-      <div class="accordion-body">
+      <div class="accordion-body open">
         <ul>
           ${regions
             .map(
@@ -56,11 +56,11 @@ export default async function decorate(block) {
       </div>
 		</div>
     <div class="filter-group">
-      <div class="accordion-header">
+      <div class="accordion-header active">
         <h3>Country</h3>
         <span class="icon icon-chevron-down"></span>
       </div>
-      <div class="accordion-body">
+      <div class="accordion-body open">
         <ul>
           ${countries
             .map(
@@ -78,11 +78,11 @@ export default async function decorate(block) {
       </div>
 		</div>
 		<div class="filter-group">
-      <div class="accordion-header">
+      <div class="accordion-header active">
         <h3>City</h3>
         <span class="icon icon-chevron-down"></span>
       </div>
-      <div class="accordion-body">
+      <div class="accordion-body open">
         <ul>
           ${cities
             .map(
@@ -100,11 +100,11 @@ export default async function decorate(block) {
       </div>
 		</div>
 		<div class="filter-group">
-      <div class="accordion-header">
+      <div class="accordion-header active">
         <h3>Work Mode</h3>
         <span class="icon icon-chevron-down"></span>
       </div>
-      <div class="accordion-body">
+      <div class="accordion-body open">
         <ul>
           ${workModes
             .map(
@@ -113,6 +113,28 @@ export default async function decorate(block) {
             <label>
             <input type="checkbox" name="workmode" class="filter-checkbox" data-filter-type="workmode" value="${workMode}">
             ${workMode}
+            </label>
+          </li>
+          `
+            )
+            .join('')}
+        </ul>
+      </div>
+    </div>
+    <div class="filter-group">
+      <div class="accordion-header active">
+        <h3>Employment Type</h3> 
+        <span class="icon icon-chevron-down"></span>
+      </div>
+      <div class="accordion-body open">
+        <ul>
+          ${employmentTypes
+            .map(
+              (employmentType) => `
+          <li>
+            <label>
+            <input type="checkbox" name="employmenttype" class="filter-checkbox" data-filter-type="employmenttype" value="${employmentType}">
+            ${employmentType}
             </label>
           </li>
           `
@@ -153,6 +175,15 @@ export default async function decorate(block) {
     loadMoreContainer.append(loadMoreButton);
     jobList.append(loadMoreContainer);
   }
+
+  const selectedFiltersContainer = document.createElement('div');
+  selectedFiltersContainer.classList.add('selected-filters');
+  jobList.prepend(selectedFiltersContainer);
+
+  const title = document.createElement('h2');
+  title.classList.add('h1', 'main-title');
+  title.textContent = 'Job Opportunities';
+  jobList.prepend(title);
 
   // Append layout
   wrapper.append(sidebar, jobList);
@@ -253,9 +284,57 @@ function loadResults(container, data, startIndex, chunkSize) {
   }
 }
 
-// **Load More Results**
 async function loadMoreResults(container, data, currentResults, chunkSize) {
   loadResults(container, data, currentResults, chunkSize);
+}
+
+function updateSelectedFiltersUI(selected) {
+  const container = document.querySelector('.selected-filters');
+  container.innerHTML = '';
+
+  if (Object.values(selected).some((values) => values.length > 0)) {
+    container.classList.add('active');
+  } else {
+    container.classList.remove('active');
+  }
+
+  Object.entries(selected).forEach(([type, values]) => {
+    values.forEach((value) => {
+      const tag = document.createElement('span');
+      tag.classList.add('filter-tag');
+      tag.textContent = value;
+
+      const closeBtn = document.createElement('button');
+      closeBtn.classList.add('remove-filter');
+      closeBtn.innerHTML = '<span class="icon icon-close" aria-hidden="true"></span><span class="sr-only">Close</span>';
+      closeBtn.setAttribute('aria-label', `Remove filter ${value}`);
+
+      closeBtn.addEventListener('click', () => {
+        document.querySelectorAll(`.filter-checkbox[data-filter-type="${type}"]`).forEach((cb) => {
+          if (cb.value === value) cb.checked = false;
+        });
+        // eslint-disable-next-line no-use-before-define
+        applyFilters();
+      });
+
+      tag.appendChild(closeBtn);
+      container.appendChild(tag);
+    });
+  });
+
+  if (container.innerHTML.trim() !== '') {
+    const clearAll = document.createElement('button');
+    clearAll.classList.add('clear-all-filters');
+    clearAll.textContent = 'Clear all';
+    clearAll.addEventListener('click', () => {
+      document.querySelectorAll('.filter-checkbox').forEach((cb) => {
+        cb.checked = false;
+      });
+      // eslint-disable-next-line no-use-before-define
+      applyFilters();
+    });
+    container.appendChild(clearAll);
+  }
 }
 
 function applyFilters() {
@@ -272,6 +351,8 @@ function applyFilters() {
     const type = cb.dataset.filterType;
     selected[type].push(cb.value);
   });
+
+  updateSelectedFiltersUI(selected);
 
   document.querySelectorAll('.job-posting-card').forEach((card) => {
     const matchCategory = selected.category.length === 0 || selected.category.includes(card.dataset.category);
