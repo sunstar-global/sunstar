@@ -350,6 +350,7 @@ export function readBlockConfig(block) {
  * @param {Element} main The container element
  */
 export function updateSectionsStatus(main) {
+  if (!main) return;
   const sections = [...main.querySelectorAll(':scope > div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
