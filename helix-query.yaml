@@ -109,3 +109,6 @@ indices:
       jobid:
         select: main .job-posting
         value: match(el, '.*?\n?JobID\n([^\n]+)')
+      department:
+        select: main .job-posting
+        value: match(el, '.*?\n?Department\n([^\n]+)')

@@ -241,6 +241,10 @@ function loadResults(container, data, startIndex, chunkSize) {
       addTextEl('p', data[i].employmenttype, infoWrapper, 'icon-time', 'job-employmenttype');
     }
 
+    if (data[i].jobid && data[i].jobid !== 0 && data[i].jobid !== '0') {
+      addTextEl('p', `Job ID: ${data[i].jobid}`, infoWrapper, false, 'job-id');
+    }
+
     if (data[i].jobdescription && data[i].jobdescription !== '') {
       const jobDescription = document.createElement('p');
       jobDescription.textContent = data[i].jobdescription;
