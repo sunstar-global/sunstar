@@ -540,7 +540,6 @@ div.img-col > video {
   .columns:not(.no-buttons) h3,
   .columns:not(.no-buttons) h4 {
     font-size: var(--h1-font-size-desktop);
-    font-weight: var(--font-weight-small);
     margin: 0 auto 1.5rem;
   }
 
