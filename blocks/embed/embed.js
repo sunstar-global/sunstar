@@ -7,7 +7,7 @@
 import { loadScript } from '../../scripts/scripts.js';
 import { loadCSS } from '../../scripts/lib-franklin.js';
 
-const embedYoutube = (url, isLite) => {
+export const embedYoutube = (url, isLite) => {
   const usp = new URLSearchParams(url.search);
   let suffix = '';
   let vid = usp.get('v');
@@ -23,6 +23,7 @@ const embedYoutube = (url, isLite) => {
   }
 
   let embed = url.pathname;
+  console.log(embed);
   if (url.origin.includes('youtu.be')) {
     [, vid] = url.pathname.split('/');
   }
@@ -33,7 +34,9 @@ const embedYoutube = (url, isLite) => {
     const embedSplit = embed.split('/');
     embedHTML = `
       <lite-youtube videoid=${vid || embedSplit[embedSplit.length - 1]}>
-        <a href="https://www.youtube.com${vid ? `/embed/${vid}?rel=0&v=${vid}${suffix}` : embed}" class="lty-playbtn" title="Play Video">
+        <a href="https://www.youtube.com${
+          vid ? `/embed/${vid}?rel=0&v=${vid}${suffix}&enablejsapi=1` : embed
+        }" class="lty-playbtn" title="Play Video">
       </a>
       </lite-youtube>`;
     loadCSS(`${window.hlx.codeBasePath}/blocks/embed/lite-yt-embed.css`);
@@ -43,8 +46,10 @@ const embedYoutube = (url, isLite) => {
       // Special handling to support urls like "https://www.youtube.com/embed/videoseries?list=PL5uLvIsyvVSkGAGW3nW4pe3nfwQQRlMvD"
       embed += url.search;
     }
-    embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
-        <iframe src="https://www.youtube.com${vid ? `/embed/${vid}?rel=0&v=${vid}${suffix}` : embed}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
+    embedHTML = `<div style="width: 100%; aspect-ratio: 16 / 10; padding: 0;">
+        <iframe src="https://www.youtube.com${
+          vid ? `/embed/${vid}?rel=0&v=${vid}${suffix}&enablejsapi=1` : embed
+        }" style="border: 0; width: 100%; height: 100%;" 
         allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope; picture-in-picture" scrolling="no" title="Content from Youtube" loading="lazy"></iframe>
       </div>`;
   }
@@ -53,11 +58,11 @@ const embedYoutube = (url, isLite) => {
 };
 
 /**
-* Facebook, twitter social plugins embedding
-* @param {*} urlParam
-* @param {*} type
-* @returns
-*/
+ * Facebook, twitter social plugins embedding
+ * @param {*} urlParam
+ * @param {*} type
+ * @returns
+ */
 const embedSocialPlugins = (urlParam, isLite, type) => {
   const url = urlParam;
   const usp = new URLSearchParams(decodeURI(urlParam));
@@ -79,7 +84,7 @@ const embedSocialPlugins = (urlParam, isLite, type) => {
   return embedHTML;
 };
 
-const loadEmbed = (block, grandChilds, link) => {
+export const loadEmbed = (block, grandChilds, link) => {
   if (block.classList.contains('embed-is-loaded')) {
     return;
   }

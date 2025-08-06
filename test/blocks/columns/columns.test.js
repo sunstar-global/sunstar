@@ -11,11 +11,9 @@ document.write(await readFile({ path: './columns.plain.html' }));
 describe('Columns Block', () => {
   before(async () => {
     const mod = await import('../../../blocks/columns/columns.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        scripts[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      scripts[func] = mod[func];
+    });
   });
 
   it('Handles split percentages', () => {

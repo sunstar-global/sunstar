@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
  * Copyright 2023 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -34,7 +35,7 @@ function changeLinks(document) {
   if (detailPageNav) {
     detailPageNav.querySelectorAll('a').forEach((a) => {
       if (!a.href.includes('sunstar-engineering') && !a.href.includes('sunstarfoundation')) {
-        a.href = 'https://main--sunstar--hlxsites.hlx.live'.concat(a.href).replace(/\/$/, '');
+        a.href = 'https://main--sunstar--sunstar-global.hlx.live'.concat(a.href).replace(/\/$/, '');
       }
     });
   }
@@ -50,7 +51,10 @@ function addFooterTop(document) {
     if (footerTopNavContainers) {
       Array.from(footerTopNavContainers).forEach((navContainer) => {
         [...navContainer.children].forEach((navChild) => {
-          if ([...navChild.classList].indexOf('menu-title') > -1 || [...navChild.classList].indexOf('menu-title-two') > -1) {
+          if (
+            [...navChild.classList].indexOf('menu-title') > -1 ||
+            [...navChild.classList].indexOf('menu-title-two') > -1
+          ) {
             const h5 = document.createElement('h5');
             h5.innerHTML = navChild.innerHTML;
             topDiv.append(h5);
@@ -143,18 +147,16 @@ export default {
    */
   transformDOM: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
     // use helper method to remove header, footer, etc.
-    WebImporter.DOMUtils.remove(main, [
-      'noscript',
-      'main > section',
-      'main > div',
-      'header',
-    ]);
+    WebImporter.DOMUtils.remove(main, ['noscript', 'main > section', 'main > div', 'header']);
 
     customImportLogic(document);
     // create the metadata block and append it to the main element
@@ -174,6 +176,9 @@ export default {
    */
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '')),
 };

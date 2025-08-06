@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
  * Copyright 2023 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -92,7 +93,7 @@ function addHeroVerticalTabs(doc) {
     const cells = [['Hero-Vertical-Tabs']];
     const heroMenu = doc.createElement('ul');
     hero.querySelectorAll('.auto-hero-menu li a').forEach((a) => {
-      a.href = 'https://main--sunstar--hlxsites.hlx.live'.concat(a.href).replace(/\/$/, '');
+      a.href = 'https://main--sunstar--sunstar-global.hlx.live'.concat(a.href).replace(/\/$/, '');
       const li = doc.createElement('li');
       if (a.classList.contains('active')) {
         const strong = doc.createElement('strong');
@@ -292,20 +293,21 @@ function createColumnBlockFromSection(document) {
        * doesn't have an embed
        * doesn't have lists
      */
-    const heroParent = Array.from(section.parentElement.classList)
-      .filter((s) => /hero/.test(s)).length;
+    const heroParent = Array.from(section.parentElement.classList).filter((s) => /hero/.test(s)).length;
     const hasEmbed = !!section.querySelector('.wp-block-embed');
     const hasLists = !!section.querySelector('ul');
-    const contentColumns = Array.from(section.children)
-      .filter(
-        (el) => (el.tagName === 'DIV'
-          || el.tagName === 'FIGURE'
-          || el.tagName === 'IMG'),
-      );
-    if (!heroParent && !hasEmbed && !hasLists && contentColumns
-      && contentColumns.length === 2
-      && section.children.length === 2
-      && section.querySelectorAll('p').length !== 0) {
+    const contentColumns = Array.from(section.children).filter(
+      (el) => el.tagName === 'DIV' || el.tagName === 'FIGURE' || el.tagName === 'IMG'
+    );
+    if (
+      !heroParent &&
+      !hasEmbed &&
+      !hasLists &&
+      contentColumns &&
+      contentColumns.length === 2 &&
+      section.children.length === 2 &&
+      section.querySelectorAll('p').length !== 0
+    ) {
       const columnItem = [];
       contentColumns.forEach((column) => {
         columnItem.push(column);
@@ -332,10 +334,9 @@ function createCardsBlockFromSection(document) {
 
     const sectionIsCard = section.parentElement.className.includes('wp-block-sunstar-blocks-home-solution');
     if (sectionIsCard) {
-      const contentCards = Array.from(section.children)
-        .filter(
-          (el) => (el.tagName === 'DIV' || el.tagName === 'FIGURE' || el.tagName === 'IMG'),
-        );
+      const contentCards = Array.from(section.children).filter(
+        (el) => el.tagName === 'DIV' || el.tagName === 'FIGURE' || el.tagName === 'IMG'
+      );
       const headerContainer = contentCards[0];
       const cardsContainer = contentCards[1];
       Array.from(cardsContainer.children).forEach((card) => {
@@ -491,7 +492,7 @@ function getFomattedDate(newsDate) {
  */
 function fixRelativeLinks(document) {
   document.querySelectorAll('a').forEach((a) => {
-    const targetDomain = 'https://main--sunstar--hlxsites.hlx.page';
+    const targetDomain = 'https://main--sunstar--sunstar-global.hlx.page';
     // if the link is relative, make it absolute
     if (a.href.startsWith('/')) {
       let link = a.href;
@@ -548,7 +549,10 @@ export default {
 
   preprocess: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     const schemaDetails = document.querySelector('head script.aioseo-schema');
     const metadataDetails = {};
@@ -581,17 +585,16 @@ export default {
 
   transformDOM: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
     // use helper method to remove header, footer, etc.
-    WebImporter.DOMUtils.remove(main, [
-      'header',
-      'footer',
-      'noscript',
-    ]);
+    WebImporter.DOMUtils.remove(main, ['header', 'footer', 'noscript']);
     customImportLogic(document);
     // create the metadata block and append it to the main element
     createMetadata(main, document, params);
@@ -610,7 +613,10 @@ export default {
    */
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     const { pathname } = new URL(url);
     const { preProcessMetadata } = params;
@@ -620,7 +626,9 @@ export default {
     console.log(`pathname: ${pathname} -> initialReplace: ${initialReplace}`);
     // Custom handling for Japanese news pages
     if (pathname.toLowerCase().indexOf('/ja/news/') !== -1 && preProcessMetadata && preProcessMetadata.NewsDate) {
-      return WebImporter.FileUtils.sanitizePath(initialReplace.replace(/\/ja\/news\/.*$/, `/ja/news/${getFomattedDate(preProcessMetadata.NewsDate)}}`));
+      return WebImporter.FileUtils.sanitizePath(
+        initialReplace.replace(/\/ja\/news\/.*$/, `/ja/news/${getFomattedDate(preProcessMetadata.NewsDate)}}`)
+      );
     }
     return WebImporter.FileUtils.sanitizePath(initialReplace);
   },

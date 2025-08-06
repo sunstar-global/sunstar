@@ -13,11 +13,9 @@ describe('Feed Block', async () => {
   before(async () => {
     window.noload = true;
     const mod = await import('../../../blocks/feed/feed.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        feed[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      feed[func] = mod[func];
+    });
   });
 
   after(() => {
@@ -38,7 +36,10 @@ describe('Feed Block', async () => {
       return {
         ok: false,
         json: () => ({
-          limit: 0, offset: 0, total: 0, data: [],
+          limit: 0,
+          offset: 0,
+          total: 0,
+          data: [],
         }),
         text: () => '',
       };
@@ -75,7 +76,10 @@ describe('Feed Block', async () => {
     try {
       const decoratedBlock = await feed.default(block); // The decorate method is the default one
       //
-      const expected = parser.parseFromString(await readFile({ path: './feed.decorated.newsroom.corporate.html' }), 'text/html');
+      const expected = parser.parseFromString(
+        await readFile({ path: './feed.decorated.newsroom.corporate.html' }),
+        'text/html'
+      );
       expect(decoratedBlock.outerHTML.replace(/\n/g, '')).to.equal(expected.body.innerHTML.replace(/\n/g, ''));
     } catch (e) {
       assert.fail(e);

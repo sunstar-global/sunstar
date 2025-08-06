@@ -1,12 +1,12 @@
 import { fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import buildNavTree from './nav-tree-utils.js';
-import
-{
+import {
   getLanguage,
   getSearchWidget,
   fetchIndex,
   decorateAnchors,
   htmlToElement,
+  LANGUAGES,
 } from '../../scripts/scripts.js';
 
 function decorateSocial(social) {
@@ -51,9 +51,12 @@ function decorateOtherItems(otherItemsEl) {
   otherItemsEl.classList.add('other-items');
 
   /* Pull items from the top nav */
-  document.querySelector('nav.nav-top').querySelectorAll(':scope>ul>li').forEach((li) => {
-    otherItemsEl.appendChild(li.cloneNode(true));
-  });
+  document
+    .querySelector('nav.nav-top')
+    .querySelectorAll(':scope>ul>li')
+    .forEach((li) => {
+      otherItemsEl.appendChild(li.cloneNode(true));
+    });
 
   /* Make a website picker for mobile */
   const websitePicker = document.createElement('li');
@@ -62,9 +65,12 @@ function decorateOtherItems(otherItemsEl) {
   const title = otherItemsEl.querySelector('.website-picker').querySelector(':scope>div');
   websitePicker.appendChild(title);
   websitePicker.appendChild(websitePickerUl);
-  otherItemsEl.querySelector('.website-picker').querySelectorAll(':scope>ul>li').forEach((li) => {
-    websitePickerUl.appendChild(li.cloneNode(true));
-  });
+  otherItemsEl
+    .querySelector('.website-picker')
+    .querySelectorAll(':scope>ul>li')
+    .forEach((li) => {
+      websitePickerUl.appendChild(li.cloneNode(true));
+    });
 
   websitePicker.querySelectorAll(':scope>ul>li').forEach((li) => {
     li.classList.add('mobile-website-picker-item');
@@ -79,9 +85,12 @@ function decorateOtherItems(otherItemsEl) {
   langPicker.classList.add('mobile-lang-picker');
   const langPickerUl = document.createElement('ul');
   langPicker.appendChild(langPickerUl);
-  otherItemsEl.querySelector('.lang-picker').querySelectorAll(':scope>ul>li').forEach((li) => {
-    langPickerUl.appendChild(li.cloneNode(true));
-  });
+  otherItemsEl
+    .querySelector('.lang-picker')
+    .querySelectorAll(':scope>ul>li')
+    .forEach((li) => {
+      langPickerUl.appendChild(li.cloneNode(true));
+    });
 
   langPicker.querySelectorAll(':scope>ul>li').forEach((li) => {
     li.classList.add('mobile-lang-picker-item');
@@ -103,7 +112,8 @@ async function decorateLangPicker(langPicker) {
   langPicker.innerHTML = langPicker.innerHTML.replace(/\[languages\]/, '');
 
   const currentLang = getLanguage();
-  // Get the current path without the language prefix
+
+  // prettier-ignore
   const currPath = currentLang === 'en' ? window.location.pathname : window.location.pathname.replace(`/${currentLang}/`, '/');
   const json = await fetchIndex('query-index');
 
@@ -156,22 +166,52 @@ function decorateTopNav(nav) {
   });
 }
 
-function decorateMiddleNav(nav) {
-  const a = nav.querySelector('a');
-  a.setAttribute('aria-label', 'Sunstar Home');
+function decorateMiddleNav(nav, placeholders) {
+  const firstP = nav.querySelector('p');
+  const logoLink = firstP?.querySelector('a');
+
+  if (!logoLink) return;
+
+  // Create the <div> to replace <p> on all pages
+  const div = document.createElement('div');
+  div.classList.add('logo-container');
+
+  // Move the <a> into the new <div>
+  div.appendChild(logoLink);
+
+  // Replace <p> with <div>
+  firstP.replaceWith(div);
+
+  // If homepage of any language, add an <h1> for accessibility
+  const path = window.location.pathname;
+  const isHomepage = [...LANGUAGES].some((lang) => {
+    const base = lang === 'en' ? '/' : `/${lang}/`;
+    return path === base || path === `${base}index.html`;
+  });
+
+  if (isHomepage) {
+    const h1 = document.createElement('h1');
+    h1.classList.add('sr-only');
+    h1.textContent = placeholders['homepage-h1'];
+    nav.insertBefore(h1, div);
+  }
+
+  // Set accessibility attributes on the logo link
+  logoLink.setAttribute('aria-label', 'Sunstar Home');
+  logoLink.setAttribute('title', placeholders['homepage-h1']);
 }
 
 function getNavbarToggler() {
   const navbarToggl = htmlToElement(`<button class="navbar-toggler" aria-label="Menu">
-  <span class="mobile-icon">
+  <div class="mobile-icon">
     <i></i>
     <i></i>
     <i></i>
     <i></i>
-  </span>
+  </div>
   </button>`);
 
-  if (window.deviceType !== 'Desktop') {
+  if (window.deviceType !== 'Desktop' && window.deviceType !== 'Tablet') {
     navbarToggl.classList.add('visible');
   }
   navbarToggl.addEventListener('click', () => {
@@ -188,55 +228,87 @@ function getNavbarToggler() {
       body.classList.add('fixed');
     }
   });
+
   return navbarToggl;
 }
 
 function attachWindowResizeListeners(nav) {
   const header = document.querySelector('header');
   const { body } = document;
-  window.addEventListener('viewportResize', (event) => {
-    const toggler = nav.querySelector('.navbar-toggler');
-    if (event.detail.deviceType === 'Desktop') {
-      if (nav.classList.contains('open')) {
-        nav.classList.remove('open');
-        header.classList.remove('menu-open');
-        body.classList.remove('fixed');
+  window.addEventListener(
+    'viewportResize',
+    (event) => {
+      const toggler = nav.querySelector('.navbar-toggler');
+      if (event.detail.deviceType === 'Desktop' || event.detail.deviceType === 'Tablet') {
+        if (nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          header.classList.remove('menu-open');
+          body.classList.remove('fixed');
+        }
+        if (toggler.classList.contains('visible')) {
+          toggler.classList.remove('visible');
+        }
+        const visibleMegaDrop = nav.querySelector('.mega-dropdown.visible');
+        if (visibleMegaDrop) {
+          visibleMegaDrop.classList.remove('visible');
+        }
+        const backButton = nav.querySelector('.menu-back-btn');
+        if (backButton) {
+          backButton.remove();
+        }
+      } else {
+        toggler.classList.add('visible');
       }
-      if (toggler.classList.contains('visible')) {
-        toggler.classList.remove('visible');
-      }
-      const visibleMegaDrop = nav.querySelector('.mega-dropdown.visible');
-      if (visibleMegaDrop) {
-        visibleMegaDrop.classList.remove('visible');
-      }
-      const backButton = nav.querySelector('.menu-back-btn');
-      if (backButton) {
-        backButton.remove();
-      }
-    } else {
-      toggler.classList.add('visible');
-    }
-  }, true);
+    },
+    true
+  );
 }
 
 function decorateBottomNav(nav, placeholders, navTreeJson) {
-  const navTree = buildNavTree(navTreeJson);
+  const navTree = buildNavTree(navTreeJson, placeholders);
+
   nav.append(getNavbarToggler());
   nav.append(navTree);
   nav.append(getSearchWidget(placeholders));
+
   const otherItemsEl = document.createElement('li');
   decorateOtherItems(otherItemsEl);
+
   nav.querySelector(':scope .menu-level-1').append(otherItemsEl);
   attachWindowResizeListeners(nav);
 }
 
-const navDecorators = { 'nav-top': decorateTopNav, 'nav-middle': decorateMiddleNav, 'nav-bottom': decorateBottomNav };
+const navDecorators = {
+  'nav-top': decorateTopNav,
+  'nav-middle': decorateMiddleNav,
+  'nav-bottom': decorateBottomNav,
+};
+
+const addRemoveFixedClass = (navBottom) => {
+  const { offsetHeight } = document.querySelector('nav.nav-top');
+  const scroll = offsetHeight + document.querySelector('nav.nav-middle').offsetHeight;
+  const megaDropdowns = document.querySelectorAll('.mega-dropdown');
+
+  if (document.documentElement.scrollTop > scroll) {
+    navBottom.classList.add('fixed');
+    megaDropdowns?.forEach((megaDropdown) => {
+      megaDropdown.classList.add('fixed');
+    });
+  } else {
+    navBottom.classList.remove('fixed');
+    megaDropdowns?.forEach((megaDropdown) => {
+      megaDropdown.classList.remove('fixed');
+    });
+  }
+};
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
   // fetch nav content
+
   const navMeta = getMetadata('nav');
   const navPath = navMeta || (getLanguage() === 'en' ? '/nav' : `/${getLanguage()}/nav`);
   const resp = await fetch(`${navPath}.plain.html`);
@@ -249,10 +321,19 @@ export default async function decorate(block) {
     const fetchedNav = document.createElement('div');
     fetchedNav.innerHTML = html;
     const navClasses = ['nav-top', 'nav-middle'];
-    navClasses.forEach((navClass, idx) => {
+    navClasses.forEach((navClass, index) => {
       const nav = document.createElement('nav');
       nav.classList.add(navClass);
-      nav.innerHTML = fetchedNav.querySelectorAll(':scope>div')[idx].innerHTML;
+      nav.innerHTML = fetchedNav.querySelectorAll(':scope>div')[index].innerHTML;
+      if (navClass === 'nav-middle') {
+        // find h6 and conert it to p with h6 class
+        nav.querySelectorAll('h6').forEach((h6) => {
+          const p = document.createElement('p');
+          p.classList.add('h6-style');
+          p.innerHTML = h6.innerHTML;
+          h6.replaceWith(p);
+        });
+      }
       navDecorators[navClass](nav, placeholders);
       block.appendChild(nav);
     });
@@ -262,11 +343,8 @@ export default async function decorate(block) {
     block.appendChild(nav);
 
     window.addEventListener('scroll', () => {
-      if (document.documentElement.scrollTop > document.querySelector('nav.nav-top').offsetHeight + document.querySelector('nav.nav-middle').offsetHeight) {
-        document.querySelector('header').classList.add('fixed');
-      } else {
-        document.querySelector('header').classList.remove('fixed');
-      }
+      const navBottom = document.querySelector('.nav-bottom');
+      addRemoveFixedClass(navBottom);
     });
 
     const backdrop = document.createElement('div');

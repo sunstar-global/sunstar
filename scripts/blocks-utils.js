@@ -106,3 +106,50 @@ export function getTagName() {
   }
   return tagName;
 }
+
+export function addTextEl(tag, txt, parent, icon, ...classes) {
+  // if there is an icon create a span with the icon class and add it to the p element and add to the p element the class has-icon
+
+  if (tag === 'p') {
+    const wrapper = document.createElement('div');
+    classes.forEach((c) => wrapper.classList.add(c));
+
+    if (Array.isArray(txt)) {
+      txt.forEach((t) => {
+        const p = document.createElement('p');
+        p.textContent = t;
+        wrapper.appendChild(p);
+      });
+    } else {
+      const p = document.createElement('p');
+      p.textContent = txt;
+      wrapper.appendChild(p);
+    }
+
+    if (icon) {
+      const iconSpan = document.createElement('span');
+      iconSpan.classList.add(icon);
+      iconSpan.classList.add('icon');
+      wrapper.classList.add('has-icon');
+      wrapper.prepend(iconSpan);
+    }
+
+    parent.appendChild(wrapper);
+    return;
+  }
+
+  if (Array.isArray(txt)) {
+    txt.forEach((t) => {
+      const el = document.createElement(tag);
+      el.textContent = t;
+      classes.forEach((c) => el.classList.add(c));
+      parent.appendChild(el);
+    });
+    return;
+  }
+
+  const el = document.createElement(tag);
+  el.textContent = txt;
+  classes.forEach((c) => el.classList.add(c));
+  parent.appendChild(el);
+}

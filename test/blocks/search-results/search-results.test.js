@@ -12,11 +12,9 @@ document.write(await readFile({ path: './search-results.plain.html' }));
 describe('Search Results', () => {
   before(async () => {
     const mod = await import('../../../blocks/search-results/search-results.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        scripts[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      scripts[func] = mod[func];
+    });
   });
 
   it('Get Search Params', () => {
@@ -61,13 +59,15 @@ describe('Search Results', () => {
       }
 
       return {
-        ok: false, json: () => ({ data: [] }), text: () => '',
+        ok: false,
+        json: () => ({ data: [] }),
+        text: () => '',
       };
     });
 
     const block = document.querySelector('.search-results');
     const loc = {
-      search: '?s=tex',
+      search: '?s=<t>e<x>',
       pathname: '/search',
     };
 
@@ -139,7 +139,9 @@ describe('Search Results', () => {
       }
 
       return {
-        ok: false, json: () => ({ data: [] }), text: () => '',
+        ok: false,
+        json: () => ({ data: [] }),
+        text: () => '',
       };
     });
 

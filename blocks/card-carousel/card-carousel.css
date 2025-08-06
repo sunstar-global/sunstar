@@ -15,7 +15,7 @@
   padding: 0;
 }
 
-.career .card-slider{
+.career .card-slider {
   margin-left: -1rem;
 }
 
@@ -121,7 +121,7 @@
 
 .card-carousel .carousel-childcard h6 {
   color: var(--light-black);
-  font-size: var( --heading-font-size-mxs);
+  font-size: var(--heading-font-size-mxs);
   text-transform: none;
   margin-bottom: 6px;
 }
@@ -196,7 +196,7 @@
     width: calc(((var(--card-width) + 3rem) * 4));
   }
 
-  .career .card-slider{
+  .career .card-slider {
     width: calc(((var(--card-width) + 3rem) * 4));
   }
 

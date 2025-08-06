@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /*
  * Copyright 2023 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -11,12 +12,7 @@
  */
 /* global WebImporter */
 
-import {
-  addBreadCrumb,
-  createMetadata,
-  fixRelativeLinks,
-  createSectionMetadata,
-} from './utils.js';
+import { addBreadCrumb, createMetadata, fixRelativeLinks, createSectionMetadata } from './utils.js';
 
 /* eslint-disable no-console, class-methods-use-this */
 const extractEmbed = (document) => {
@@ -41,9 +37,9 @@ const extractEmbed = (document) => {
 };
 
 /**
-* Creates a Fragment block from a section
-* @param {HTMLDocument} document The document
-*/
+ * Creates a Fragment block from a section
+ * @param {HTMLDocument} document The document
+ */
 const createFragmentBlockFromSection = (document, url) => {
   const block = [];
   const healthifyThinkingCard = document.querySelector('.related-article');
@@ -53,10 +49,14 @@ const createFragmentBlockFromSection = (document, url) => {
 
   const { pathname } = new URL(url);
   if (healthifyThinkingCard) {
-    block.push([`https://main--sunstar--hlxsites.hlx.page/${pathname.includes('jp') ? 'jp/' : ''}fragments/related-articles`]);
+    block.push([
+      `https://main--sunstar--sunstar-global.hlx.page/${pathname.includes('jp') ? 'jp/' : ''}fragments/related-articles`,
+    ]);
     section = healthifyThinkingCard;
   } else if (newsPressCard) {
-    block.push([`https://main--sunstar--hlxsites.hlx.page/${pathname.includes('jp') ? 'jp/' : ''}fragments/featured-articles`]);
+    block.push([
+      `https://main--sunstar--sunstar-global.hlx.page/${pathname.includes('jp') ? 'jp/' : ''}fragments/featured-articles`,
+    ]);
     section = newsPressCard;
   }
 
@@ -172,7 +172,7 @@ const remmoveNewsContactBar = (document) => {
   if (newsContactBar?.querySelector('.side-card')) {
     const block = [];
     block.push(['Fragment']);
-    block.push(['https://main--sunstar--hlxsites.hlx.page/fragments/press-contact-download-center']);
+    block.push(['https://main--sunstar--sunstar-global.hlx.page/fragments/press-contact-download-center']);
     const table = WebImporter.DOMUtils.createTable(block, document);
     newsContactBar.before(document.createElement('hr'));
     newsContactBar.replaceWith(table);
@@ -205,7 +205,7 @@ const createDownloadLinkBlock = (document, url, params) => {
         } else {
           const a = ele.querySelector('a');
           if (a?.href) {
-            let href = 'https://main--sunstar--hlxsites.hlx.page/jp/assets/newsroom/';
+            let href = 'https://main--sunstar--sunstar-global.hlx.page/jp/assets/newsroom/';
 
             if (params.preProcessMetadata?.PublishedDate) {
               const tempArr = a.href.split('/');
@@ -299,17 +299,20 @@ const customImportLogic = (document, url, params) => {
 
 export default {
   /**
-  * Apply DOM operations to the provided document and return
-  * the root element to be then transformed to Markdown.
-  * @param {HTMLDocument} document The document
-  * @param {string} url The url of the page imported
-  * @param {string} html The raw html (the document is cleaned up during preprocessing)
-  * @param {object} params Object containing some parameters given by the import process.
-  * @returns {HTMLElement} The root element to be transformed
-  */
+   * Apply DOM operations to the provided document and return
+   * the root element to be then transformed to Markdown.
+   * @param {HTMLDocument} document The document
+   * @param {string} url The url of the page imported
+   * @param {string} html The raw html (the document is cleaned up during preprocessing)
+   * @param {object} params Object containing some parameters given by the import process.
+   * @returns {HTMLElement} The root element to be transformed
+   */
   preprocess: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     const schemaDetails = document.querySelector('head script.aioseo-schema');
     const metadataDetails = {};
@@ -330,7 +333,11 @@ export default {
             if (lastItemDetails) {
               metadataDetails.PageName = lastItemDetails.name;
             }
-          } else if (nodeType === 'WebPage' && (pathname.includes('/newsroom/') || pathname.includes('/healthy-thinking/')) && node.datePublished) {
+          } else if (
+            nodeType === 'WebPage' &&
+            (pathname.includes('/newsroom/') || pathname.includes('/healthy-thinking/')) &&
+            node.datePublished
+          ) {
             metadataDetails.PublishedDate = new Date(node.datePublished).getTime();
           }
         });
@@ -362,7 +369,9 @@ export default {
     const tags = document.querySelectorAll('.tag-pill');
 
     if (tags && tags.length) {
-      metadataDetails.Tags = [...tags].map((x) => x.textContent.toLowerCase().split(' ').filter(Boolean).join('-')).join(', ');
+      metadataDetails.Tags = [...tags]
+        .map((x) => x.textContent.toLowerCase().split(' ').filter(Boolean).join('-'))
+        .join(', ');
     }
 
     params.preProcessMetadata = metadataDetails;
@@ -370,17 +379,16 @@ export default {
 
   transformDOM: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
     // use helper method to remove header, footer, etc.
-    WebImporter.DOMUtils.remove(main, [
-      'header',
-      'footer',
-      'noscript',
-    ]);
+    WebImporter.DOMUtils.remove(main, ['header', 'footer', 'noscript']);
 
     customImportLogic(document, url, params);
     // create the metadata block and append it to the main element
@@ -390,17 +398,20 @@ export default {
   },
 
   /**
-  * Return a path that describes the document being transformed (file name, nesting...).
-  * The path is then used to create the corresponding Word document.
-  * @param {HTMLDocument} document The document
-  * @param {string} url The url of the page imported
-  * @param {string} html The raw html (the document is cleaned up during preprocessing)
-  * @param {object} params Object containing some parameters given by the import process.
-  * @return {string} The path
-  */
+   * Return a path that describes the document being transformed (file name, nesting...).
+   * The path is then used to create the corresponding Word document.
+   * @param {HTMLDocument} document The document
+   * @param {string} url The url of the page imported
+   * @param {string} html The raw html (the document is cleaned up during preprocessing)
+   * @param {object} params Object containing some parameters given by the import process.
+   * @return {string} The path
+   */
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
+    document,
+    url,
+    html,
+    params,
   }) => {
     const { pathname } = new URL(url);
     const initialReplace = new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '');

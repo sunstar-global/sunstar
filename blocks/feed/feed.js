@@ -1,6 +1,11 @@
 import {
-  buildBlock, createOptimizedPicture, decorateBlock,
-  getFormattedDate, getMetadata, loadBlock, readBlockConfig,
+  buildBlock,
+  createOptimizedPicture,
+  decorateBlock,
+  getFormattedDate,
+  getMetadata,
+  loadBlock,
+  readBlockConfig,
 } from '../../scripts/lib-franklin.js';
 import { queryIndex, getLanguage, fetchTagsOrCategories } from '../../scripts/scripts.js';
 import { getTagName } from '../../scripts/blocks-utils.js';
@@ -131,7 +136,7 @@ function getMetadataNullable(key) {
 export default async function decorate(block) {
   const blockCfg = readBlockConfig(block);
   const blockName = (blockCfg['block-type'] ?? 'cards').trim().toLowerCase();
-  const blockType = (blockName.split('(')[0]).trim();
+  const blockType = blockName.split('(')[0].trim();
   const variation = (blockName.match(/\((.+)\)/) === null ? '' : blockName.match(/\((.+)\)/)[1]).trim();
   const queryObj = await queryIndex(`${getLanguage()}-search`);
   const sortCriteria = blockCfg.sort ? blockCfg.sort.trim().toLowerCase() : 'path';
@@ -143,28 +148,39 @@ export default async function decorate(block) {
   const queryParams = new URLSearchParams(queryString);
   const tagName = getTagName();
   const type = (blockCfg.type ?? getMetadataNullable('type') ?? queryParams.get('feed-type'))?.trim().toLowerCase();
-  const category = (blockCfg.category ?? getMetadataNullable('category' ?? queryParams.get('feed-category')))?.trim().toLowerCase();
+
+  const category = (blockCfg.category ?? getMetadataNullable('category' ?? queryParams.get('feed-category')))
+    ?.trim()
+    .toLowerCase();
   const tags = (blockCfg.tags ?? getMetadataNullable('tags') ?? tagName)?.trim().toLowerCase();
-  const omitPageTypes = (blockCfg['omit-page-types'] ?? getMetadataNullable('omit-page-types')
-    ?? queryParams.get('feed-omit-page-types'))?.trim().toLowerCase();
+  const omitPageTypes = (
+    blockCfg['omit-page-types'] ??
+    getMetadataNullable('omit-page-types') ??
+    queryParams.get('feed-omit-page-types')
+  )
+    ?.trim()
+    .toLowerCase();
+
   // eslint-disable-next-line prefer-arrow-callback
-  const results = queryObj.where(function filterElements(el) {
-    const elType = (el.type ?? '').trim().toLowerCase();
-    const elCategory = (el.category ?? '').trim().toLowerCase();
-    const elFeatured = (el.featured ?? '').trim().toLowerCase();
-    const elPageType = (el.pagetype ?? '').trim().toLowerCase();
-    let match = false;
-    match = (!type || type === elType)
-      && (!category || category === elCategory)
-      && (!omitPageTypes || !(omitPageTypes.split(',').includes(elPageType)))
-      && (!blockCfg.featured || elFeatured === blockCfg.featured.trim().toLowerCase());
-    if (match && tags) {
-      const tagList = tags.split(',');
-      const elTags = JSON.parse(el.tags ?? '').map((tag) => tag.trim().toLowerCase());
-      match = tagList.some((tag) => elTags.includes(tag.trim()));
-    }
-    return match;
-  }) // eslint-disable-next-line max-len
+  const results = queryObj
+    .where(function filterElements(el) {
+      const elType = (el.type ?? '').trim().toLowerCase();
+      const elCategory = (el.category ?? '').trim().toLowerCase();
+      const elFeatured = (el.featured ?? '').trim().toLowerCase();
+      const elPageType = (el.pagetype ?? '').trim().toLowerCase();
+      let match = false;
+      match =
+        (!type || type === elType) &&
+        (!category || category === elCategory) &&
+        (!omitPageTypes || !omitPageTypes.split(',').includes(elPageType)) &&
+        (!blockCfg.featured || elFeatured === blockCfg.featured.trim().toLowerCase());
+      if (match && tags) {
+        const tagList = tags.split(',');
+        const elTags = JSON.parse(el.tags ?? '').map((tag) => tag.trim().toLowerCase());
+        match = tagList.some((tag) => elTags.includes(tag.trim()));
+      }
+      return match;
+    }) // eslint-disable-next-line max-len
     .orderByDescending((el) => (Number.isNaN(el[sortCriteria]) ? el[sortCriteria] : parseInt(el[sortCriteria], 10)))
     .take(blockCfg.count ? parseInt(blockCfg.count, 10) : 4)
     .toList();

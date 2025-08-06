@@ -1,96 +1,92 @@
 .career-apply-wrapper {
-    background-color: var(--primary);
+  background-color: var(--primary);
 }
 
 .career-apply-wrapper:has(.inverted) {
-    background-color: var(--white);
+  background-color: var(--white);
 }
 
 .career-apply {
-    color: var(--white);
-    text-align: left;
-    padding-inline: 1rem;
-    padding-block: 3rem;
-    margin-bottom: 5rem;
+  color: var(--white);
+  text-align: left;
+  padding-inline: 1rem;
+  padding-block: 3rem;
+  margin-bottom: 5rem;
 }
 
 .career-apply h2 {
-    margin-top: 0;
-    color: var(--white);
-    font-size: 28px;
-    margin-bottom: 1rem;
+  margin-top: 0;
+  color: var(--white);
+  font-size: 28px;
+  margin-bottom: 1rem;
 }
 
 .career-apply.inverted h2 {
-    color: var(--primary)
+  color: var(--primary);
 }
 
 .career-apply p {
-    line-height: 24px;
-    margin-bottom: 1.5rem;
+  line-height: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .career-apply.inverted p {
-    color: var(--light-black)
+  color: var(--light-black);
 }
 
 .career-apply .button-container {
-    margin: 0;
-    display: inline-flex;
-    flex-direction: column;
-}
-
-.career-apply a {
-    margin: 0.5rem 0;
+  margin: 0;
+  display: inline-flex;
+  flex-direction: column;
 }
 
 .career-apply a.button.primary.linkedin {
-    background-color: var(--primary);
-    border: 1px solid white;
-    padding-left: 2.5rem;
+  background-color: var(--primary);
+  border: 1px solid white;
+  padding-left: 2.5rem;
 }
 
 .career-apply a.button.primary.linkedin:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .career-apply.inverted a.button.primary.linkedin {
-    background-color: var(--white);
-    border-color: var(--secondary);
-    color: var(--secondary);
+  background-color: var(--white);
+  border-color: var(--secondary);
+  color: var(--secondary);
 }
 
 .career-apply span.icon-linkedin {
-    margin-left: 0.625rem;
-    margin-right: 1rem;
-    height: 2rem;
-    width: 2.125rem;
+  margin-left: 0.625rem;
+  margin-right: 1rem;
+  height: 2rem;
+  width: 2.125rem;
 }
 
 @media (min-width: 62rem) {
-    .career-apply {
-        max-width: 45rem;
-        text-align: center;
-        padding-top: 5rem;
-        padding-bottom: 5rem;
-        margin-bottom: 5rem;
-    }
+  .career-apply {
+    max-width: 45rem;
+    text-align: center;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    margin-bottom: 5rem;
+  }
 
-    .career-apply p {
-        margin-bottom: 3.125rem;
-    }
+  .career-apply p {
+    margin-bottom: 3.125rem;
+  }
 
-    .career-apply h2 {
-        margin-top: 0;
-        font-size: var(--heading-font-size-mxl);
-    }
+  .career-apply h2 {
+    margin-top: 0;
+    font-size: var(--heading-font-size-mxl);
+  }
 
-    .career-apply .button-container {
-        margin-bottom: 0;
-        flex-direction: row;
-    }
+  .career-apply .button-container {
+    margin-bottom: 0;
+    flex-direction: row;
+  }
 
-    .career-apply a {
-        margin: 0 0.5rem;
-    }
+  .career-apply a {
+    margin: 0 0.5rem;
+  }
 }

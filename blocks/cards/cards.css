@@ -13,6 +13,13 @@ main .block.cards {
   flex-flow: column nowrap;
   padding: 0;
   padding-inline-start: 0;
+  gap: 1.5rem;
+}
+
+.cards.grid-3-cols > ul,
+.cards.grid-4-cols > ul {
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 .cards > ul > li {
@@ -21,15 +28,23 @@ main .block.cards {
   box-shadow: 0 2px 12px 0 rgb(60 70 80 / 20%);
   border: none;
   transition: all 0.15s ease-in-out;
-  margin: 0 0 1.5rem;
+  margin: 0;
   align-items: center;
   text-align: left;
   flex: 1;
   background-color: var(--white);
 }
 
-.cards > ul > li:hover {
-  box-shadow: 0 4px 1rem 0 rgb(60 70 80 / 40%);
+.cards.no-shadow > ul > li {
+  padding: 0;
+  box-sizing: border-box;
+  box-shadow: none !important;
+  border: none;
+  margin: 0;
+  align-items: center;
+  text-align: left;
+  flex: 1;
+  background-color: unset !important;
 }
 
 .cards > ul > li .date {
@@ -71,8 +86,33 @@ main .block.cards {
   text-align: left;
   color: var(--light-black);
   padding: 20px;
-  height: calc(100% - 12.5rem);
   box-sizing: border-box;
+}
+
+.cards.row .cards-card-body {
+  padding: 0;
+}
+
+.cards.no-shadow .cards-card-body {
+  margin: 0 auto;
+  text-align: left;
+  color: var(--light-black);
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+.cards .cards-card-body p {
+  font-size: var(--body-font-size-s);
+  text-wrap: balance;
+}
+
+.cards.large-text .cards-card-body p {
+  font-size: var(--body-font-size-m);
+  text-wrap: balance;
+}
+
+.cards .cards-card-body > :last-child {
+  margin-bottom: 0;
 }
 
 .cards.hide-body .cards-card-body {
@@ -81,6 +121,14 @@ main .block.cards {
 
 .cards.info-points .cards-card-body {
   text-align: center;
+}
+
+.cards .cards-card-body h2,
+.cards .cards-card-body h3,
+.cards .cards-card-body h4,
+.cards .cards-card-body h5 {
+  margin-bottom: 1rem !important;
+  margin-top: 0 !important;
 }
 
 .cards .cards-card-body .title {
@@ -99,7 +147,7 @@ main .block.cards {
   margin-bottom: 3rem;
 }
 
-.cards .cards-card-image img {
+.cards:not(.row) .cards-card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -127,7 +175,11 @@ main .cards.info-points > ul > li {
   box-shadow: none;
 }
 
-main .block.cards.light-background ul > li{
+.cards:not(.no-shadow) > ul > li:hover {
+  box-shadow: 0 4px 1rem 0 rgb(60 70 80 / 40%);
+}
+
+main .block.cards.light-background ul > li {
   padding: 1rem;
   background-color: var(--transparent-blue-light-color);
   margin-block: 1.5rem;
@@ -140,13 +192,24 @@ main .block.cards.light-background ul > li{
 }
 
 .cards .cards-card-image {
-  height: 12.5rem;
+  aspect-ratio: 4/3;
   margin: 0;
   padding: 0;
 }
 
+.cards.aspect-ratio-16-9 .cards-card-image {
+  aspect-ratio: 16/9;
+  height: unset;
+}
+
+.cards.aspect-ratio-1-1 .cards-card-image {
+  aspect-ratio: 1/1;
+  height: unset;
+}
+
 .cards .cards-card-body div {
   margin: 0;
+  text-wrap: balance;
 }
 
 .cards .cards-card-body div:last-child {
@@ -239,11 +302,10 @@ main .cards.machine-parts .cards-card-image {
 }
 
 main .cards .cards-card-image span.icon.icon-scientific-literature-1 {
-  background-image: url("/icons/scientific-literature-1.svg");
+  background-image: url('/icons/scientific-literature-1.svg');
   width: 84px;
   height: 84px;
 }
-
 
 main .cards.machine-parts .cards-card-body {
   width: auto;
@@ -297,8 +359,7 @@ main .cards.machine-parts .cards-card-body a > strong {
 
 /* Style for Row Cards */
 main .cards.row .cards-card-image {
-  width: auto;
-  height: 6rem;
+  width: 20%;
   flex-shrink: 0;
   margin: 0;
 }
@@ -311,8 +372,8 @@ main .block.cards.row > ul > li {
   display: flex;
   align-items: flex-start;
   margin: 0;
-  padding-bottom: 1rem;
   box-shadow: none;
+  gap: 1rem;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -330,7 +391,10 @@ main .nolink .cards > ul > li .cards-card-image {
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
-  border: 1px solid #3C46501A;
+}
+
+main .cards.text-center > ul > li .cards-card-body {
+  text-align: center !important;
 }
 
 main .nolink .cards.info-points > ul > li .cards-card-image {
@@ -338,7 +402,7 @@ main .nolink .cards.info-points > ul > li .cards-card-image {
   border: none;
 }
 
-main .cards-wrapper .machine-parts .cards-card-body h3{
+main .cards-wrapper .machine-parts .cards-card-body h3 {
   margin-block: 0;
   color: var(--light-black);
   font-size: var(--heading-font-size-m);
@@ -375,14 +439,6 @@ main .cards-wrapper .light-background .cards-card-body h3 {
 }
 
 @media screen and (min-width: 48rem) {
-  .cards > ul > li {
-    margin: 0 7px;
-  }
-
-  .cards.grid > ul > li {
-    margin: 0 0 1rem;
-  }
-
   .cards > ul {
     flex-flow: row nowrap;
   }
@@ -406,7 +462,7 @@ main .cards-wrapper .light-background .cards-card-body h3 {
   }
 
   .section.cards-container h2 {
-    margin:0;
+    margin: 0;
   }
 
   main .block.cards {
@@ -421,13 +477,18 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     grid-gap: 2rem;
   }
 
+  .cards.grid-4-cols > ul,
+  .cards.grid-3-cols > ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
   .cards > ul > li {
     padding: 0;
     text-align: center;
   }
 
   .cards > ul > li > a.button {
-    padding: 1rem 6px 0;
     display: block;
   }
 
@@ -451,13 +512,13 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     font-size: 14px;
     color: var(--transparent-grey-color-2);
   }
-
 }
 
 @media screen and (max-width: 77rem) {
-  main .block.cards.machine-parts > ul > li{
-     flex-direction: column;
-     text-align: center;
+  main .block.cards.machine-parts > ul > li {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
   }
 
   main .cards.machine-parts .cards-card-image {
@@ -480,7 +541,6 @@ main .cards-wrapper .light-background .cards-card-body h3 {
   }
 }
 
-
 @media screen and (min-width: 77rem) {
   .cards.grid > ul {
     grid-template-columns: repeat(auto-fill, 21.875rem);
@@ -488,8 +548,14 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     grid-gap: 3rem;
   }
 
-  .cards > ul > li {
-    margin: 0 1rem;
+  .cards.grid-4-cols > ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  .cards.grid-3-cols > ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   .cards > ul > li:first-of-type {
@@ -498,10 +564,6 @@ main .cards-wrapper .light-background .cards-card-body h3 {
 
   .cards > ul > li:last-of-type {
     margin-right: 0;
-  }
-
-  .cards > ul > li > a.button {
-    padding: 20px 0 0;
   }
 
   .cards.large-text .cards-card-body .date {

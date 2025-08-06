@@ -8,13 +8,13 @@ div.consent-manager.block {
   font-size: var(--body-font-size-m);
 }
 
-/* might be removed after https://github.com/hlxsites/sunstar-engineering/issues/198 */
+/* might be removed after https://github.com/sunstar-global/sunstar-engineering/issues/198 */
 .consent-manager h4 {
   color: var(--text-color);
   font-weight: var(--font-weight-medium);
 }
 
-/* might be removed after https://github.com/hlxsites/sunstar-engineering/issues/198 */
+/* might be removed after https://github.com/sunstar-global/sunstar-engineering/issues/198 */
 .consent-manager h5 {
   color: var(--text-color);
   font-weight: var(--font-weight-medium);

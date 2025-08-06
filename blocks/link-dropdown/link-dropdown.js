@@ -9,7 +9,7 @@ function getTitle(block) {
 function getLinks(block) {
   const ul = block.querySelector('ul');
   ul.querySelectorAll('li a').forEach((a) => {
-    a.target = '_self';
+    a.target = a.target ?? '_self';
   });
   return ul;
 }

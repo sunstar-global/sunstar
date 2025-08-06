@@ -1,8 +1,16 @@
 version: 1
 auto-generated: true
 sitemaps:
-  default:
-    origin: https://www.sunstar.com
-    source: /query-index.json
-    destination: /sitemap.xml
+  sunstar:
+    default: en
     lastmod: YYYY-MM-DD
+    languages:
+      en:
+        source: /query-index.json?sheet=en-search
+        destination: /sitemap-en.xml
+        hreflang: en
+      ja:
+        source: /query-index.json?sheet=jp-search
+        destination: /sitemap-ja.xml
+        hreflang: ja
+        alternate: /jp/{path}

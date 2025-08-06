@@ -38,7 +38,9 @@ function isDifferent(folder1, folder2) {
     } else {
       different = true;
     }
-    if (different) { break; }
+    if (different) {
+      break;
+    }
   }
   return different;
 }

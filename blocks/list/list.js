@@ -1,14 +1,12 @@
-import {
-  fetchIndex, fixExcelFilterZeroes, getLanguage, addPagingWidget,
-} from '../../scripts/scripts.js';
+import { fetchIndex, fixExcelFilterZeroes, getLanguage, addPagingWidget } from '../../scripts/scripts.js';
 import { getFormattedDate, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
 const blockJson = {
   news: {
-    filerResults: (data, currPath) => data.filter((entry) => entry.newsdate
-      && entry.path !== currPath
-      && (entry.path.includes('/news/')))
-      .sort((x, y) => y.newsdate - x.newsdate),
+    filerResults: (data, currPath) =>
+      data
+        .filter((entry) => entry.newsdate && entry.path !== currPath && entry.path.includes('/news/'))
+        .sort((x, y) => y.newsdate - x.newsdate),
     resultsPerPage: 12,
     titlePlaceHolderKey: 'news-page-title-text',
   },

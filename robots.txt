@@ -1,16 +1,4 @@
 User-agent: *
-Disallow: /_drafts/
-Disallow: /_tools/
-Disallow: /sidekick/
-Disallow: /fragments/
-Disallow: /**/fragments/
-Disallow: /nav
-Disallow: /**/nav
-Disallow: /footer
-Disallow: /**/footer
-Disallow: /thankyou
-Disallow: /**/thankyou
-Disallow: /search
-Disallow: /**/search
+Allow: /
 
-Sitemap: https://www.sunstar.com/sitemap.xml
+Sitemap: https://www.sunstar.com/sitemap-index.xml

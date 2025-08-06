@@ -11,11 +11,9 @@ document.write(await readFile({ path: './hero-horizontal-tabs.plain.html' }));
 describe('Hero Horizontal Tabs', () => {
   before(async () => {
     const mod = await import('../../../blocks/hero-horizontal-tabs/hero-horizontal-tabs.js');
-    Object
-      .keys(mod)
-      .forEach((func) => {
-        scripts[func] = mod[func];
-      });
+    Object.keys(mod).forEach((func) => {
+      scripts[func] = mod[func];
+    });
   });
 
   beforeEach(async () => {

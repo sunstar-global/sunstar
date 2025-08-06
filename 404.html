@@ -1,147 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <title>Page not found</title>
-  <script type="text/javascript">
-    window.isErrorPage = true;
-    window.errorCode = '404';
+  <head>
+    <title>Page not found</title>
+    <script type="text/javascript" nonce="aem">
+      window.isErrorPage = true;
+      window.errorCode = '404';
 
-    // If the URL requested ends with a slash, e.g. is something
-    // like global-network/asia/ redirect to global-network/asia
-    // i.e. the trailing slash is removed.
-    if (window.location.href.endsWith('/')) {
-      window.stop(); // Stop processing this page, make sure no 404 rendering is done
+      // If the URL requested ends with a slash, e.g. is something
+      // like global-network/asia/ redirect to global-network/asia
+      // i.e. the trailing slash is removed.
+      if (window.location.href.endsWith('/')) {
+        window.stop(); // Stop processing this page, make sure no 404 rendering is done
 
-      const newLoc = window.location.href.slice(0, -1);
-      window.location.replace(newLoc);
-    }
-
-    // If the URL requested is /en/... redirect to /...
-    if (window.location.href.includes('/en/') || window.location.href.endsWith('/en')) {
-      window.stop(); // Stop processing this page, make sure no 404 rendering is done
-      const newLoc = window.location.href.replace('/en', '');
-      window.location.replace(newLoc);
-    }
-
-		/**
-		* * Redirecting all newsroom pages and healthy thinking pages
-		*/
-		const windowHref = window.location.href;
-    const newsRegex = /newsroom\/(event|news|press-releases)/;
-    if (newsRegex.test(windowHref)) {
-			window.stop(); // Stop processing this page, make sure no 404 rendering is done
-      const newLoc = windowHref.replaceAll(/newsroom\/(event|news|press-releases)\//g, 'newsroom/');
-			window.location.replace(newLoc);
-    }
-
-    const healthifyThinkingRegex = /healthy-thinking\/(category)/;
-    if (healthifyThinkingRegex.test(windowHref)) {
-			window.stop(); // Stop processing this page, make sure no 404 rendering is done
-      const newLoc = windowHref.replaceAll(/healthy-thinking\/(category)\//g, 'healthy-thinking/');
-			window.location.replace(newLoc);
-    }
-
-  </script>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title" content="Page not found">
-  <meta name="nobreadcrumb" content="true">
-  <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
-  <script type="module">
-    import { sampleRUM, fetchPlaceholders } from '/scripts/lib-franklin.js';
-    import { getLanguage } from '/scripts/scripts.js';
-
-    window.addEventListener('load', async () => {
-      const lang = getLanguage();
-      const placeholders = await fetchPlaceholders(lang);
-
-      const heading = document.querySelector('main.error h1');
-      if (heading) {
-        heading.innerHTML = placeholders['page-not-found-heading'];
+        const newLoc = window.location.href.slice(0, -1);
+        window.location.replace(newLoc);
       }
 
-      const subHeading = document.querySelector('main.error h4');
-      if (subHeading) {
-        subHeading.innerHTML = placeholders['page-not-found-subheading'];
+      const lastSlashIdx = window.location.href.lastIndexOf('/');
+      if (window.location.href.slice(lastSlashIdx, lastSlashIdx + 2) === '/#') {
+        window.stop();
+
+        var temp = window.location.href.split('');
+        temp.splice(lastSlashIdx, 1);
+        const newLoc = temp.join('');
+        window.location.replace(newLoc);
       }
 
-      const button = document.querySelector('main.error .button');
-      if (button) {
-        button.href = `/${lang === `en` ? '' : lang}`;
-        button.innerHTML = placeholders['page-not-found-button-text'];
+      // If the URL requested is /en/... redirect to /...
+      if (window.location.href.includes('/en/') || window.location.href.endsWith('/en')) {
+        window.stop(); // Stop processing this page, make sure no 404 rendering is done
+        const newLoc = window.location.href.replace('/en', '');
+        window.location.replace(newLoc);
       }
 
-      const title = document.querySelector('head title');
-      if (title) {
-        title.innerHTML =  `${placeholders['page-not-found-title-prefix'] + ' – Sunstar'}`
+      /**
+       * * Redirecting all newsroom pages and healthy thinking pages
+       */
+      const windowHref = window.location.href;
+      const newsRegex = /newsroom\/(event|news|press-releases)/;
+      if (newsRegex.test(windowHref)) {
+        window.stop(); // Stop processing this page, make sure no 404 rendering is done
+        const newLoc = windowHref.replaceAll(/newsroom\/(event|news|press-releases)\//g, 'newsroom/');
+        window.location.replace(newLoc);
       }
 
-      const metaTitle = document.querySelector('meta[property="og:title"]');
-      if (metaTitle) {
-        metaTitle.content = document.querySelector('head title').textContent;
+      const healthifyThinkingRegex = /healthy-thinking\/(category)/;
+      if (healthifyThinkingRegex.test(windowHref)) {
+        window.stop(); // Stop processing this page, make sure no 404 rendering is done
+        const newLoc = windowHref.replaceAll(/healthy-thinking\/(category)\//g, 'healthy-thinking/');
+        window.location.replace(newLoc);
+      }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="Page not found" />
+    <meta name="nobreadcrumb" content="true" />
+    <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials" nonce="aem"></script>
+    <script type="module" nonce="aem">
+      import { sampleRUM, fetchPlaceholders } from '/scripts/lib-franklin.js';
+      import { getLanguage } from '/scripts/scripts.js';
+
+      window.addEventListener('load', async () => {
+        const lang = getLanguage();
+        const placeholders = await fetchPlaceholders(lang);
+
+        const heading = document.querySelector('main.error h1');
+        if (heading) {
+          heading.innerHTML = placeholders['page-not-found-heading'];
+        }
+
+        const subHeading = document.querySelector('main.error h4');
+        if (subHeading) {
+          subHeading.innerHTML = placeholders['page-not-found-subheading'];
+        }
+
+        const button = document.querySelector('main.error .button');
+        if (button) {
+          button.href = `/${lang === `en` ? '' : lang}`;
+          button.innerHTML = placeholders['page-not-found-button-text'];
+        }
+
+        const title = document.querySelector('head title');
+        if (title) {
+          title.innerHTML = `${placeholders['page-not-found-title-prefix'] + ' – Sunstar'}`;
+        }
+
+        const metaTitle = document.querySelector('meta[property="og:title"]');
+        if (metaTitle) {
+          metaTitle.content = document.querySelector('head title').textContent;
+        }
+
+        sampleRUM('404', { source: document.referrer, target: window.location.href });
+      });
+    </script>
+    <link rel="stylesheet" href="/styles/styles.css" />
+    <style>
+      main.error {
+        min-height: calc(100vh - var(--nav-height));
+        align-items: center;
+        background: var(--transparent-blue-light-color);
+        text-align: center;
       }
 
-      sampleRUM('404', { source: document.referrer, target: window.location.href });
-    });
-  </script>
-  <link rel="stylesheet" href="/styles/styles.css">
-  <style>
-    main.error {
-      min-height: calc(100vh - var(--nav-height));
-      align-items: center;
-      background: var(--transparent-blue-light-color);
-      text-align: center;
-    }
+      main.error .section {
+        padding-top: 5rem;
+        padding-bottom: 10rem;
+      }
 
-    main.error .section {
-      padding-top: 5rem;
-      padding-bottom: 10rem;
-    }
+      main.error h1 {
+        font-size: 3.25rem;
+        line-height: 3rem;
+        padding-bottom: 2rem;
+      }
 
-    main.error h1 {
-      font-size: 3.25rem;
-      line-height: 3rem;
-      padding-bottom: 2rem;
-    }
+      main.error h4 {
+        color: var(--light-black);
+        margin-bottom: 2rem;
+        line-height: 1;
+      }
 
-    main.error h4 {
-      color: var(--light-black);
-      margin-bottom: 2rem;
-      line-height: 1;
-    }
+      main.error .button.secondary {
+        background: var(--button-background-color);
+        color: var(--white);
+        border: none;
+      }
 
-    main.error .button.secondary {
-      background: var(--button-background-color);
-      color: var(--white);
-      border: none;
-    }
+      main.error .button.secondary:focus {
+        box-shadow: 0 0 0 0.2rem #26579080;
+      }
+      main.error .button.secondary:hover {
+        background: var(--link-sky-color);
+      }
 
-    main.error .button.secondary:focus {
-      box-shadow: 0 0 0 0.2rem #26579080;
-    }
-    main.error .button.secondary:hover {
-      background: var(--link-sky-color);
-    }
+      main.error .button.secondary:active {
+        color: var(--white);
+        background-color: #003449;
+        border-color: #002b3c;
+      }
+    </style>
+    <link rel="stylesheet" href="/styles/lazy-styles.css" />
+  </head>
 
-    main.error .button.secondary:active {
-      color: var(--white);
-      background-color: #003449;
-      border-color: #002b3c;
-    }
-  </style>
-  <link rel="stylesheet" href="/styles/lazy-styles.css">
-</head>
-
-<body>
-  <header></header>
-  <main class="error">
-    <div class="section">
-      <h1 class="error-message"></h1>
-      <h4></h4>
-      <p class="button-container">
-        <a class="button secondary error-button-home"></a>
-      </p>
-    </div>
-  </main>
-  <footer></footer>
-</body>
+  <body>
+    <header></header>
+    <main class="error">
+      <div class="section">
+        <h1 class="error-message"></h1>
+        <h4></h4>
+        <p class="button-container">
+          <a class="button secondary error-button-home"></a>
+        </p>
+      </div>
+    </main>
+    <footer></footer>
+  </body>
 </html>

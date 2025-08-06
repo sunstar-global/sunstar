@@ -1,0 +1,233 @@
+.job-opportunities .main-title {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--transparent-grey-light-color);
+  padding-bottom: 2rem;
+}
+
+.job-opportunities-page-wrapper {
+  display: flex;
+  gap: 3rem;
+}
+
+.job-posting-card {
+  background-color: var(--white);
+  padding-block: 2rem;
+  border-bottom: 1px solid var(--transparent-grey-light-color);
+}
+
+.job-posting-card h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.job-posting-card .has-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+}
+
+.job-posting-card .has-icon:not(:last-child) {
+  border-right: 1px solid var(--transparent-grey-light-color);
+  padding-right: 1rem;
+}
+
+.job-posting-card .has-icon p {
+  margin: 0;
+  padding: 0;
+  font-size: var(--body-font-size-s);
+  color: var(--gray);
+}
+
+.job-posting-card .icon,
+span.filter-tag span.icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-size: cover;
+}
+
+.job-posting-card span.icon-globe {
+  background-image: url('/icons/globe.svg');
+}
+
+.job-posting-card span.icon-work {
+  background-image: url('/icons/work.svg');
+}
+
+.job-posting-card span.icon-time {
+  background-image: url('/icons/time.svg');
+}
+
+span.filter-tag span.icon-close {
+  background-image: url('/icons/remove-cross.svg');
+}
+
+.job-card-info {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.job-opportunities-container .section-container {
+  padding-bottom: 3rem;
+}
+
+.job-filter-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.job-filter-sidebar h2 {
+  margin: 0;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid var(--transparent-grey-light-color);
+  color: var(--dark);
+}
+
+.job-opportunities div.filter-group {
+  border-bottom: 1px solid var(--transparent-grey-light-color);
+}
+
+.job-opportunities div.filter-group ul {
+  padding: 0 0 1rem;
+  margin: 0;
+}
+
+.job-opportunities div.filter-group ul li {
+  list-style: none;
+  margin: 0;
+  display: flex;
+  padding: 0.5rem 0;
+}
+
+.job-opportunities div.filter-group ul li label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  justify-content: flex-start;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.job-opportunities div.filter-group ul li label input {
+  margin: 0;
+  flex-basis: content;
+}
+
+.job-opportunities div.filter-group .accordion-header h3 {
+  margin: 0;
+  cursor: pointer;
+  font-size: var(--heading-font-size-xs);
+}
+
+.job-opportunities div.filter-group .accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem 0;
+}
+
+.job-opportunities div.filter-group .accordion-header .icon.icon-chevron-down {
+  width: 12px;
+  height: 15px;
+  background-image: url('../../icons/arrow-down-header.svg');
+  background-size: unset;
+  background-repeat: no-repeat;
+}
+
+.job-opportunities div.filter-group .accordion-header.active .icon.icon-chevron-down {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height,
+    opacity 0.3s ease-in-out;
+}
+
+.accordion-body.open {
+  max-height: fit-content; /* enough height to fit content */
+  opacity: 1;
+}
+
+.job-opportunities p.button-container {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.job-opportunities a.button.primary.linkedin {
+  background-color: var(--white);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
+  padding-left: 2.5rem;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.job-opportunities span.icon-linkedin {
+  margin-left: 0.625rem;
+  margin-right: 1rem;
+  height: 2rem;
+  width: 2.125rem;
+}
+
+.job-opportunities a.button.primary.linkedin:hover {
+  opacity: 0.7;
+}
+
+.job-opportunities .job-list .load-more-container {
+  margin-top: 2rem;
+}
+
+.selected-filters {
+  display: none;
+}
+
+.selected-filters.active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 0;
+  align-items: center;
+  border-bottom: 1px solid var(--transparent-grey-light-color);
+}
+
+.filter-tag {
+  background-color: var(--transparent-grey-light-color);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.filter-tag button.remove-filter {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  height: unset;
+  width: unset;
+  min-width: unset;
+}
+
+.clear-all-filters {
+  background-color: transparent;
+  color: var(--secondary);
+  padding: 0.5rem 1rem;
+  height: unset;
+  min-width: unset;
+  min-height: unset;
+}
+
+.clear-all-filters:hover {
+  background-color: transparent !important;
+}

@@ -12,6 +12,7 @@
 
 main .hero-horizontal-tabs-wrapper {
   background-color: var(--primary);
+  overflow: hidden;
 }
 
 main .hero-horiz-tabs-panel {
@@ -42,24 +43,22 @@ main div.tab-item.active {
 main .hero-horiz-tabs-text {
   color: var(--muted-text);
   padding-top: 1.625rem;
-  margin-bottom: 2rem;
+  margin-bottom: calc(1rem + 2.5rem);
   margin-left: 1rem;
   margin-right: 2rem;
 }
-  
-main .hero-horiz-tabs-img {
+
+main .hero-horiz-tabs-img,
+main .hero-horiz-tabs-video {
   order: -1;
 }
 
-main .hero-horiz-tabs-text > h1 {
-  color: var(--white);
-  font-size: var(--heading-font-size-l);
-  font-weight: var(--font-weight-small);
-  line-height: 3rem;
-  margin-bottom: 0.75rem;
-  margin-top: 0;
+main .hero-horiz-tabs-video {
+  aspect-ratio: 16/9;
+  max-width: 100%;
 }
 
+main .hero-horiz-tabs-text > h1,
 main .hero-horiz-tabs-text > h2 {
   color: var(--white);
   font-size: var(--heading-font-size-l);
@@ -69,11 +68,13 @@ main .hero-horiz-tabs-text > h2 {
   margin-top: 0;
 }
 
-main .hero-horiz-tabs-text > h6 {
+main .hero-horiz-tabs-text > p.h6 {
   color: var(--hero-strong-color);
-  font-size: var(--heading-font-size-xxxs);
   letter-spacing: 0.7px;
   margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: var(--heading-font-size-xxs);
 }
 
 main .hero-horiz-tabs-text > p {
@@ -106,16 +107,24 @@ main div.no-image .hero-horiz-tabs-text > p {
   line-height: 1.5em;
 }
 
-main .hero-horiz-tabs-img picture {
+main .hero-horiz-tabs-img picture,
+main .hero-horiz-tabs-img video {
   display: block;
-  height: 15rem;
 }
 
-
-
-main .hero-horiz-tabs-img picture > img {
+main .hero-horiz-tabs-img picture > img,
+main .hero-horiz-tabs-img video {
   object-fit: cover;
   object-position: center;
+  max-height: 100%;
+  min-width: 100%;
+  height: inherit;
+}
+
+main .hero-horizontal-tabs.image-contain .hero-horiz-tabs-img picture > img,
+main .hero-horizontal-tabs.image-contain .hero-horiz-tabs-img video {
+  object-fit: contain;
+  object-position: center center;
   max-height: 100%;
   min-width: 100%;
   height: inherit;
@@ -170,7 +179,7 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
   left: 0.3rem;
 }
 
-@media (min-width:62rem) {
+@media (min-width: 62rem) {
   main .hero-horiz-tabs-panel {
     width: 50%;
   }
@@ -204,18 +213,15 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
     font-size: var(--heading-font-size-xxs);
   }
 
-  main .hero-horiz-tabs-text > h1 {
-    font-size: var(--heading-font-size-xxl);
-    margin-bottom: 1.5rem;
-    margin-top: 1rem;
-  }
-
+  main .hero-horiz-tabs-text > h1,
   main .hero-horiz-tabs-text > h2 {
     font-size: var(--heading-font-size-ml);
   }
 
   main .hero-horiz-tabs-img {
     order: 0;
+    display: flex;
+    align-items: center;
   }
 
   main .hero-horiz-tabs-img picture {
@@ -251,7 +257,8 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
     margin-bottom: 2.2rem;
   }
 
-  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img picture {
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img picture,
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img video {
     height: 34.75rem;
     width: calc(41vw);
   }
@@ -266,9 +273,8 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left,
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right {
     flex: 0 1 auto;
-    
   }
-  
+
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container > a {
     width: 14.375rem;
     font-size: var(--body-font-size-s);
@@ -276,7 +282,7 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
   }
 }
 
-@media (min-width:77rem) {
+@media (min-width: 77rem) {
   main .hero-horizontal-tabs.block {
     max-width: 75rem;
   }
@@ -284,16 +290,14 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
   main .hero-horiz-tabs-text {
     padding-top: 7.5rem;
     margin-right: 2rem;
+    margin-bottom: calc(2rem + 3.5rem);
     min-width: 29.5rem;
   }
 
+  main .hero-horiz-tabs-text > h1,
   main .hero-horiz-tabs-text > h2 {
     font-size: 2.25rem;
     margin-bottom: 1.25rem;
-  }
-
-  main .hero-horiz-tabs-text > h6 {
-    margin-bottom: 1.5rem;
   }
 
   main .hero-horiz-tabs-text > p {
@@ -304,11 +308,23 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
     height: 32.5rem;
   }
 
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img picture {
+    height: 33.75rem;
+  }
+
+  main .hero-horizontal-tabs.image-cover .hero-horiz-tabs-img picture {
+    height: 100%;
+  }
+
+  main .hero-horiz-tabs-img video {
+    max-height: 35.5rem;
+  }
+
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text {
     padding-top: 3.5rem;
   }
 
-  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img picture {
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-img video {
     height: 33.75rem;
   }
 }

@@ -1,5 +1,7 @@
+/* eslint-disable no-empty */
 import { getLanguage } from '../../scripts/scripts.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { decorateButtons } from '../text/text.js';
 
 /* eslint-disable no-console */
 
@@ -53,6 +55,8 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
   let textDiv = headingRow.querySelector('div');
   const heroBannerWrapper = document.createElement('div');
 
+  // check if it contains h6 if yes replace it with p and add h6 class
+
   if (overlap) {
     if (textDiv.querySelector('p') === null) {
       textDiv = textDiv.nextElementSibling;
@@ -77,17 +81,20 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
     linkedin.appendChild(sprite);
 
     pElement.append(linkedin);
-  } else if (!target.classList.contains('small-box') && pElement && pElement.childElementCount === 1 && pElement.firstElementChild.tagName === 'A') {
-    textDiv.removeChild(pElement);
-    const buttonDiv = document.createElement('div');
-    buttonDiv.classList.add('hero-banner-button-container');
-    const aElement = pElement.querySelector('a');
-    const spanElement = document.createElement('span');
-    spanElement.textContent = aElement.textContent;
-    aElement.textContent = '';
-    buttonDiv.appendChild(aElement);
-    buttonDiv.appendChild(spanElement);
-    headingRow.appendChild(buttonDiv);
+  } else if (
+    !target.classList.contains('small-box') &&
+    pElement &&
+    pElement.childElementCount === 1 &&
+    pElement.firstElementChild.tagName === 'A'
+  ) {
+  }
+
+  if (textDiv.querySelector('h6') !== null) {
+    const h6 = textDiv.querySelector('h6');
+    const p = document.createElement('p');
+    p.classList.add('h6');
+    p.innerHTML = h6.innerHTML;
+    h6.replaceWith(p);
   }
 
   heroBannerWrapper.classList.add('hero-banner-heading-container');
@@ -123,6 +130,8 @@ function appendColumnContent(item, column) {
 
 export default async function decorate(block) {
   const rows = [...block.children];
+
+  decorateButtons(block);
 
   if (block.classList && block.classList.contains('composite')) {
     const compositeContainer = document.createElement('div');

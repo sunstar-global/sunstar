@@ -30,17 +30,25 @@
 
 .columns > div > div {
   order: 1;
+  width: 100%;
 }
 
 .columns > div > div > div {
+  margin: 0;
   width: auto;
+}
+
+.columns.no-margin,
+.columns.no-margin > div {
+  margin: 0;
 }
 
 .columns.small-margin > div {
   margin-bottom: 0;
 }
 
-.columns:not(.native-image-sizes) img {
+.columns:not(.native-image-sizes) img,
+.columns:not(.native-image-sizes) div.image-collage.autoblocked {
   width: 100%;
 }
 
@@ -55,6 +63,12 @@
   font-weight: var(--font-weight-medium);
   line-height: 1.3em;
   margin: 0 auto 1rem;
+}
+
+.columns.no-margin-headings h2,
+.columns.no-margin-headings h3,
+.columns.no-margin-headings h4 {
+  margin: 0 !important;
 }
 
 .columns.heading-divider h2,
@@ -92,11 +106,10 @@
 }
 
 .columns p.button-container {
-  display: inline;
+  display: flex;
   align-items: flex-start;
-  flex-direction: column;
+  flex-flow: column nowrap;
   gap: 1rem;
-  width: 11rem;
 }
 
 .columns a.button.tertiary {
@@ -106,7 +119,7 @@
 }
 
 .columns a.button.primary.video-link::after {
-  content: url("../../icons/play.svg");
+  content: url('../../icons/play.svg');
   position: relative;
   top: 0.1rem;
   left: 0.3rem;
@@ -210,6 +223,94 @@
   margin-left: 0;
 }
 
+.columns.h1-h2 h1 {
+  font-size: var(--h2-font-size-mobile) !important;
+}
+
+.columns.h1-h3 h1 {
+  font-size: var(--h3-font-size-mobile) !important;
+}
+
+.columns.h1-h4 h1 {
+  font-size: var(--h4-font-size-mobile) !important;
+}
+
+.columns.h2-h1 h2 {
+  font-size: var(--h1-font-size-mobile) !important;
+}
+
+.columns.h2-h3 h2 {
+  font-size: var(--h3-font-size-mobile) !important;
+}
+
+.columns.h2-h4 h2 {
+  font-size: var(--h4-font-size-mobile) !important;
+}
+
+.columns.h3-h1 h3 {
+  font-size: var(--h1-font-size-mobile) !important;
+}
+
+.columns.h3-h2 h3 {
+  font-size: var(--h2-font-size-mobile) !important;
+}
+
+.columns.h3-h4 h3 {
+  font-size: var(--h4-font-size-mobile) !important;
+}
+
+.columns.h4-h1 h4 {
+  font-size: var(--h1-font-size-mobile) !important;
+}
+
+.columns.h4-h2 h4 {
+  font-size: var(--h2-font-size-mobile) !important;
+}
+
+.columns.h4-h3 h4 {
+  font-size: var(--h3-font-size-mobile) !important;
+}
+
+.columns.h1-dark h1,
+.columns.h2-dark h2,
+.columns.h3-dark h3,
+.columns.h4-dark h4 {
+  color: var(--gray-dark) !important;
+}
+
+.columns.heading-narrow-spacing h1:has(+ h2),
+.columns.heading-narrow-spacing h1:has(+ h3),
+.columns.heading-narrow-spacing h1:has(+ h4),
+.columns.heading-narrow-spacing h1:has(+ h5),
+.columns.heading-narrow-spacing h1:has(+ h6),
+.columns.heading-narrow-spacing h2:has(+ h2),
+.columns.heading-narrow-spacing h2:has(+ h3),
+.columns.heading-narrow-spacing h2:has(+ h4),
+.columns.heading-narrow-spacing h2:has(+ h5),
+.columns.heading-narrow-spacing h2:has(+ h6),
+.columns.heading-narrow-spacing h3:has(+ h2),
+.columns.heading-narrow-spacing h3:has(+ h3),
+.columns.heading-narrow-spacing h3:has(+ h4),
+.columns.heading-narrow-spacing h3:has(+ h5),
+.columns.heading-narrow-spacing h3:has(+ h6),
+.columns.heading-narrow-spacing h4:has(+ h2),
+.columns.heading-narrow-spacing h4:has(+ h3),
+.columns.heading-narrow-spacing h4:has(+ h4),
+.columns.heading-narrow-spacing h4:has(+ h5),
+.columns.heading-narrow-spacing h4:has(+ h6),
+.columns.heading-narrow-spacing h5:has(+ h2),
+.columns.heading-narrow-spacing h5:has(+ h3),
+.columns.heading-narrow-spacing h5:has(+ h4),
+.columns.heading-narrow-spacing h5:has(+ h5),
+.columns.heading-narrow-spacing h5:has(+ h6),
+.columns.heading-narrow-spacing h6:has(+ h2),
+.columns.heading-narrow-spacing h6:has(+ h3),
+.columns.heading-narrow-spacing h6:has(+ h4),
+.columns.heading-narrow-spacing h6:has(+ h5),
+.columns.heading-narrow-spacing h6:has(+ h6) {
+  margin-bottom: 0.5rem !important; /* Apply narrow spacing */
+}
+
 .columns.text-layout > div > div h2 {
   font-size: var(--h1-font-size-mobile);
   margin: 0;
@@ -236,7 +337,7 @@
   display: block;
   position: absolute;
   content: '';
-  background: url("../../icons/play.svg") no-repeat center;
+  background: url('../../icons/play.svg') no-repeat center;
   background-size: cover;
   height: 5.25rem;
   width: 5.25rem;
@@ -272,11 +373,11 @@
   gap: 0;
 }
 
-.columns.text-center > div div.text-col p, 
-.columns.text-center > div div.text-col h2, 
-.columns.text-center > div div.text-col h3, 
-.columns.text-center > div div.text-col h4, 
-.columns.text-center > div div.text-col h5, 
+.columns.text-center > div div.text-col p,
+.columns.text-center > div div.text-col h2,
+.columns.text-center > div div.text-col h3,
+.columns.text-center > div div.text-col h4,
+.columns.text-center > div div.text-col h5,
 .columns.text-center > div div.text-col h6 {
   text-align: center;
 }
@@ -321,27 +422,21 @@
   text-align: center;
 }
 
+.columns div.image-collage.autoblocked picture ~ *.image-caption {
+  color: var(--steel-blue);
+  font-size: var(--body-font-size-s);
+  margin: 1rem 0;
+}
 
-.columns.history
-  div.image-collage.autoblocked
-  div.text-col:last-of-type,
-.columns.history
-  div.image-collage.autoblocked
-  div.img-col:last-of-type {
+.columns.history div.image-collage.autoblocked div.text-col:last-of-type,
+.columns.history div.image-collage.autoblocked div.img-col:last-of-type {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
 }
 
-
-.columns.history
-  div.image-collage.autoblocked
-  div.text-col:last-of-type
-  picture,
-.columns.history
-  div.image-collage.autoblocked
-  div.img-col:last-of-type
-  picture {
+.columns.history div.image-collage.autoblocked div.text-col:last-of-type picture,
+.columns.history div.image-collage.autoblocked div.img-col:last-of-type picture {
   margin: 0 auto 2rem;
 }
 
@@ -381,22 +476,19 @@ div.img-col > video {
   margin-top: 3rem;
 }
 
-  .columns.plain-links.collapse.collapse-without-top-margin:not(.continuation)
-    > div
-    > div:first-child {
-    margin-top: 0;
-  }
-
+.columns.plain-links.collapse.collapse-without-top-margin:not(.continuation) > div > div:first-child {
+  margin-top: 0;
+}
 
 .columns.plain-links.collapse > div h6::after {
-  content: "";
+  content: '';
   position: absolute;
   height: 20px;
   width: 10px;
   top: 50%;
   right: 0;
   transform: translateY(-50%) rotate(0deg);
-  background-image: url("/icons/arrow-down.svg");
+  background-image: url('/icons/arrow-down.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -427,7 +519,7 @@ div.img-col > video {
 }
 
 .columns.plain-links.collapse ul {
-  display:none;
+  display: none;
   padding: 0;
 }
 
@@ -448,7 +540,6 @@ div.img-col > video {
   .columns:not(.no-buttons) h3,
   .columns:not(.no-buttons) h4 {
     font-size: var(--h1-font-size-desktop);
-    font-weight: var(--font-weight-small);
     margin: 0 auto 1.5rem;
   }
 
@@ -466,7 +557,6 @@ div.img-col > video {
   .columns p.button-container {
     flex-direction: row;
     align-items: center;
-    gap: 2rem;
     width: unset;
   }
 
@@ -520,7 +610,7 @@ div.img-col > video {
   .columns.title-text-link h4 {
     font-size: var(--heading-font-size-s);
     margin-bottom: 0.5rem;
-}
+  }
 
   .columns > div .img-col {
     order: unset;
@@ -580,6 +670,54 @@ div.img-col > video {
   main .block.columns.machine-parts .img-col {
     flex: auto;
     flex-basis: auto;
+  }
+
+  .columns.h1-h2 h1 {
+    font-size: var(--h2-font-size-desktop) !important;
+  }
+
+  .columns.h1-h3 h1 {
+    font-size: var(--h3-font-size-desktop) !important;
+  }
+
+  .columns.h1-h4 h1 {
+    font-size: var(--h4-font-size-desktop) !important;
+  }
+
+  .columns.h2-h1 h2 {
+    font-size: var(--h1-font-size-desktop) !important;
+  }
+
+  .columns.h2-h3 h2 {
+    font-size: var(--h3-font-size-desktop) !important;
+  }
+
+  .columns.h2-h4 h2 {
+    font-size: var(--h4-font-size-desktop) !important;
+  }
+
+  .columns.h3-h1 h3 {
+    font-size: var(--h1-font-size-desktop) !important;
+  }
+
+  .columns.h3-h2 h3 {
+    font-size: var(--h2-font-size-desktop) !important;
+  }
+
+  .columns.h3-h4 h3 {
+    font-size: var(--h4-font-size-desktop) !important;
+  }
+
+  .columns.h4-h1 h4 {
+    font-size: var(--h1-font-size-desktop) !important;
+  }
+
+  .columns.h4-h2 h4 {
+    font-size: var(--h2-font-size-desktop) !important;
+  }
+
+  .columns.h4-h3 h4 {
+    font-size: var(--h3-font-size-desktop) !important;
   }
 
   main .block.columns.machine-parts .text-col h1,

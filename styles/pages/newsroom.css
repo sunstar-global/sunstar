@@ -1,38 +1,22 @@
 /* For the newsroom featured block title */
 
 main .section.newsroom h4 {
-    color: #89d1e1;
-    padding-top: 0;
-  }
-  
+  color: var(--hero-strong-color);
+  padding-top: 0;
+}
+
 main .newsroom.section .cards-card-body .title {
-    font-size: var(--body-font-size-m);
-  }
-  
-  main .newsroom.section .cards-card-body > div {
-    height: 10rem;
-  }
-  
-  main .newsroom.section .cards-card-image img {
-    object-position: 50% 50%;
-  }
+  font-size: var(--body-font-size-m);
+}
 
-  main .newsroom.section .cards > ul {
-    gap: 1rem;
-  }
+main .newsroom.section .cards-card-body > div {
+  height: 10rem;
+}
 
-  @media (min-width: 62rem) {
-    main .newsroom.section .cards-card-image {
-        height: 10rem;
-        aspect-ratio: 16/9;
-    }
-    
-      main .newsroom.section .cards-card-image img {
-        object-position: 50% 50%;
-    }
+main .newsroom.section .cards-card-image img {
+  object-position: 50% 50%;
+}
 
-    main .newsroom.section .cards > ul {
-        gap: 0;
-      }
-
-  }
+main .newsroom.section .cards > ul {
+  gap: 1.5rem;
+}

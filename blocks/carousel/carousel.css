@@ -24,7 +24,6 @@
   transition: none;
 }
 
-
 .carousel .text-item {
   padding: 1.5rem 1rem 5.5rem;
   opacity: 0;
@@ -35,10 +34,11 @@
 .carousel .text {
   color: var(--white);
   display: flex;
+  height: 21rem;
 }
 
-.carousel.small .text{
-  color:var(--black);
+.carousel.small .text {
+  color: var(--black);
 }
 
 .carousel img {
@@ -50,7 +50,7 @@
 .carousel.small img {
   height: 6rem;
   width: 6rem;
-  object-fit:contain;
+  object-fit: contain;
   margin-left: 1rem;
 }
 
@@ -59,17 +59,19 @@
   flex-direction: column-reverse;
 }
 
-.carousel .text-item.active, .carousel .image-item.active {
+.carousel .text-item.active,
+.carousel .image-item.active {
   opacity: 1;
 }
 
-.carousel .text-item.unhide, .carousel .image-item.unhide {
+.carousel .text-item.unhide,
+.carousel .image-item.unhide {
   display: block;
 }
 
-.carousel h1 {
+.carousel h6 {
   margin: 0;
-  opacity: 0.7;
+  opacity: 0.8;
   margin-bottom: 1rem;
   text-transform: uppercase;
   font-size: var(--heading-font-size-xxs);
@@ -140,9 +142,9 @@
 }
 
 .carousel .icon-left {
-    background-image: url('../../icons/left-white.svg');
-    display: none;
-    cursor: pointer;
+  background-image: url('../../icons/left-white.svg');
+  display: none;
+  cursor: pointer;
 }
 
 .carousel.small .icon-left {
@@ -190,7 +192,7 @@
 }
 
 main .section.carousel-container {
-  padding: 0
+  padding: 0;
 }
 
 .carousel .swiper-wrapper {
@@ -209,11 +211,23 @@ main .section.carousel-container {
   transition-duration: 0ms;
 }
 
+@media (min-width: 36rem) {
+  .carousel .text {
+    height: 18rem;
+  }
+}
+
+/* @media (min-width: 48rem) {
+  .carousel .text {
+    height: 15rem;
+  }
+} */
+
 @media (min-width: 62rem) {
   .carousel {
     display: flex;
     flex-direction: column;
-    height: 28.125rem
+    height: 28.125rem;
   }
 
   .carousel .icon-right {
@@ -256,7 +270,7 @@ main .section.carousel-container {
     position: relative;
   }
 
-  .carousel.small .text{
+  .carousel.small .text {
     padding-top: 6.5rem;
     max-width: 100%;
   }
@@ -266,7 +280,6 @@ main .section.carousel-container {
     height: 28.125rem;
     position: absolute;
   }
-
 
   .section-container > div.carousel-wrapper {
     margin: 0;
@@ -306,14 +319,13 @@ main .section.carousel-container {
     width: 30rem;
   }
 
-  .carousel.small img{
+  .carousel.small img {
     margin-left: 0;
   }
 
   .carousel.small .text-item {
     width: 35rem;
   }
-
 
   .carousel .control-container {
     width: 100%;

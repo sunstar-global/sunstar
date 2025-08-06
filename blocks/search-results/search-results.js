@@ -50,6 +50,8 @@ function formatSearchResultCount(num, placeholders, term, lang) {
 }
 
 async function searchPages(placeholders, term, page) {
+  // Remove characters that could be a tag to avoid injection.
+  const saniterm = term.replaceAll('<', '').replaceAll('>', '');
   const sheet = `${getLanguage()}-search`;
 
   const json = await fetchIndex('query-index', sheet);
@@ -58,15 +60,17 @@ async function searchPages(placeholders, term, page) {
   const resultsPerPage = 10;
   const startResult = page * resultsPerPage;
 
-  const result = json.data
-    .filter((entry) => `${entry.description} ${entry.pagename} ${entry.breadcrumbtitle} ${entry.title}`.toLowerCase()
-      .includes(term.toLowerCase()));
+  const result = json.data.filter((entry) =>
+    `${entry.description} ${entry.pagename} ${entry.breadcrumbtitle} ${entry.title}`
+      .toLowerCase()
+      .includes(saniterm.toLowerCase())
+  );
 
   const div = document.createElement('div');
 
   const summary = document.createElement('h3');
   summary.classList.add('search-summary');
-  summary.innerHTML = formatSearchResultCount(result.length, placeholders, term, getLanguage());
+  summary.innerHTML = formatSearchResultCount(result.length, placeholders, saniterm, getLanguage());
   div.appendChild(summary);
 
   const curPage = result.slice(startResult, startResult + resultsPerPage);
@@ -79,7 +83,7 @@ async function searchPages(placeholders, term, page) {
     const link = document.createElement('a');
     if (line.type === 'Newsroom') searchTitle = line.breadcrumbtitle || line.title || line.type;
     else searchTitle = line.title || line.breadcrumbtitle || line.type;
-    setResultValue(link, searchTitle, term);
+    setResultValue(link, searchTitle, saniterm);
     link.href = line.path;
     const path = line.path || '';
     const parentPath = path && path.lastIndexOf('/') > -1 ? path.slice(0, path.lastIndexOf('/')) : '';
@@ -133,8 +137,8 @@ async function searchPages(placeholders, term, page) {
     res.appendChild(header);
     const para = document.createElement('p');
     if (getLanguage() === 'jp') {
-      setResultValue(para, line?.description?.split('。')[0], term);
-    } else setResultValue(para, line.description, term);
+      setResultValue(para, line?.description?.split('。')[0], saniterm);
+    } else setResultValue(para, line.description, saniterm);
 
     res.appendChild(para);
     div.appendChild(res);
@@ -162,18 +166,21 @@ async function searchPages(placeholders, term, page) {
     firstElement.after(threeDotsBefore);
     lastElement.before(threeDotsAfter);
 
-    if (page < (paginationLimit - 1)) {
+    if (page < paginationLimit - 1) {
       firstElement.nextElementSibling.classList.add('notvisible');
       const currentElement = paginationblock.querySelector('.active');
       // eslint-disable-next-line max-len
-      elementForward = (page === 0) ? currentElement.nextElementSibling.nextElementSibling.nextElementSibling : currentElement.nextElementSibling.nextElementSibling;
+      elementForward =
+        page === 0
+          ? currentElement.nextElementSibling.nextElementSibling.nextElementSibling
+          : currentElement.nextElementSibling.nextElementSibling;
       while (elementForward) {
         elementForward.classList.add('notvisible');
         elementForward = elementForward.nextElementSibling;
         if (elementForward.innerText === '...') break;
       }
     }
-    if (page > (paginationLimit - 2) && (page < (totalPages - 3))) {
+    if (page > paginationLimit - 2 && page < totalPages - 3) {
       const currentElement = paginationblock.querySelector('.active');
       elementForward = currentElement.nextElementSibling.nextElementSibling;
       while (elementForward) {
@@ -188,7 +195,7 @@ async function searchPages(placeholders, term, page) {
         elementBefore = elementBefore.previousElementSibling;
         if (elementBefore.innerText === '...') break;
       }
-    } else if (page > (totalPages - 4)) {
+    } else if (page > totalPages - 4) {
       const currentElement = paginationblock.querySelector('.active');
       lastElement.previousElementSibling.classList.add('notvisible');
       // eslint-disable-next-line max-len
@@ -207,16 +214,9 @@ async function searchPages(placeholders, term, page) {
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
-export default async function decorate(
-  block,
-  curLocation = window.location,
-  resetLanguageCache = false,
-) {
+export default async function decorate(block, curLocation = window.location, resetLanguageCache = false) {
   const { searchTerm, curPage } = getSearchParams(curLocation.search);
-  const placeholders = await fetchPlaceholders(getLanguage(
-    curLocation.pathname,
-    resetLanguageCache,
-  ));
+  const placeholders = await fetchPlaceholders(getLanguage(curLocation.pathname, resetLanguageCache));
   block.innerHTML = '';
   block.append(getSearchWidget(placeholders, searchTerm, true));
 

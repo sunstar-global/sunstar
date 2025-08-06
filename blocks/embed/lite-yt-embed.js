@@ -47,7 +47,7 @@ class LiteYTEmbed extends HTMLElement {
     playBtnEl.removeAttribute('href');
 
     // On hover (or tap), warm up the TCP connections we're (likely) about to use.
-    this.addEventListener('pointerover', LiteYTEmbed.warmConnections, {once: true});
+    this.addEventListener('pointerover', LiteYTEmbed.warmConnections, { once: true });
 
     // Once the user clicks, add the real iframe and drop our play button
     // TODO: In the future we could be like amp-youtube and silently swap in the iframe during idle time
@@ -61,28 +61,28 @@ class LiteYTEmbed extends HTMLElement {
     this.needsYTApiForAutoplay = navigator.vendor.includes('Apple') || navigator.userAgent.includes('Mobi');
   }
 
-    /**
-     * Add a <link rel={preload | preconnect} ...> to the head
-     */
-    static addPrefetch(kind, url, as) {
-        const linkEl = document.createElement('link');
-        linkEl.rel = kind;
-        linkEl.href = url;
-        if (as) {
-          linkEl.as = as;
-        }
-        document.head.append(linkEl);
+  /**
+   * Add a <link rel={preload | preconnect} ...> to the head
+   */
+  static addPrefetch(kind, url, as) {
+    const linkEl = document.createElement('link');
+    linkEl.rel = kind;
+    linkEl.href = url;
+    if (as) {
+      linkEl.as = as;
     }
+    document.head.append(linkEl);
+  }
 
-    /**
-     * Begin pre-connecting to warm up the iframe load
-     * Since the embed's network requests load within its iframe,
-     *   preload/prefetch'ing them outside the iframe will only cause double-downloads.
-     * So, the best we can do is warm up a few connections to origins that are in the critical path.
-     *
-     * Maybe `<link rel=preload as=document>` would work, but it's unsupported: http://crbug.com/593267
-     * But TBH, I don't think it'll happen soon with Site Isolation and split caches adding serious complexity.
-     */
+  /**
+   * Begin pre-connecting to warm up the iframe load
+   * Since the embed's network requests load within its iframe,
+   *   preload/prefetch'ing them outside the iframe will only cause double-downloads.
+   * So, the best we can do is warm up a few connections to origins that are in the critical path.
+   *
+   * Maybe `<link rel=preload as=document>` would work, but it's unsupported: http://crbug.com/593267
+   * But TBH, I don't think it'll happen soon with Site Isolation and split caches adding serious complexity.
+   */
   static warmConnections() {
     if (LiteYTEmbed.preconnected) return;
 
@@ -99,42 +99,42 @@ class LiteYTEmbed extends HTMLElement {
   }
 
   fetchYTPlayerApi() {
-      if (window.YT || (window.YT && window.YT.Player)) return;
+    if (window.YT || (window.YT && window.YT.Player)) return;
 
-      this.ytApiPromise = new Promise((res, rej) => {
-        var el = document.createElement('script');
-        el.src = 'https://www.youtube.com/iframe_api';
-        el.async = true;
-        el.onload = _ => {
-          YT.ready(res);
-        };
-        el.onerror = rej;
-        this.append(el);
-      });
+    this.ytApiPromise = new Promise((res, rej) => {
+      var el = document.createElement('script');
+      el.src = 'https://www.youtube.com/iframe_api';
+      el.async = true;
+      el.onload = (_) => {
+        YT.ready(res);
+      };
+      el.onerror = rej;
+      this.append(el);
+    });
   }
 
   async addYTPlayerIframe(params) {
-      this.fetchYTPlayerApi();
-      await this.ytApiPromise;
+    this.fetchYTPlayerApi();
+    await this.ytApiPromise;
 
-      const videoPlaceholderEl = document.createElement('div')
-      this.append(videoPlaceholderEl);
+    const videoPlaceholderEl = document.createElement('div');
+    this.append(videoPlaceholderEl);
 
-      const paramsObj = Object.fromEntries(params.entries());
+    const paramsObj = Object.fromEntries(params.entries());
 
-      new YT.Player(videoPlaceholderEl, {
-        width: '100%',
-        videoId: this.videoId,
-        playerVars: paramsObj,
-        events: {
-          'onReady': event => {
-            event.target.playVideo();
-          }
-        }
-      });
+    new YT.Player(videoPlaceholderEl, {
+      width: '100%',
+      videoId: this.videoId,
+      playerVars: paramsObj,
+      events: {
+        onReady: (event) => {
+          event.target.playVideo();
+        },
+      },
+    });
   }
 
-  async addIframe(){
+  async addIframe() {
     if (this.classList.contains('lyt-activated')) return;
     this.classList.add('lyt-activated');
 

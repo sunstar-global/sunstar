@@ -1,13 +1,18 @@
 import {
-  buildBlock, createOptimizedPicture, decorateBlock,
-  getFormattedDate, getMetadata, loadBlock, readBlockConfig,
+  buildBlock,
+  createOptimizedPicture,
+  decorateBlock,
+  getFormattedDate,
+  getMetadata,
+  loadBlock,
+  readBlockConfig,
 } from '../../scripts/lib-franklin.js';
 import { queryIndex, getLanguage, fetchTagsOrCategories } from '../../scripts/scripts.js';
 
 // Result parsers parse the query results into a format that can be used by the block builder for
 // the specific block types
 const resultParsers = {
-// Parse results into a highlight block
+  // Parse results into a highlight block
 
   highlight: (results, blockCfg, locale) => {
     const blockContents = [];
@@ -31,7 +36,7 @@ const resultParsers = {
             div.classList.add('title');
             div.textContent = result[fieldName];
           } else if (fieldName === 'description') {
-            const firstJpLine = (locale === 'jp') ? result[fieldName].split('。')[0] : result[fieldName].split('. ')[0];
+            const firstJpLine = locale === 'jp' ? result[fieldName].split('。')[0] : result[fieldName].split('. ')[0];
             div.textContent = firstJpLine;
           } else {
             div.textContent = result[fieldName];
@@ -81,7 +86,7 @@ async function loadMoreResults(block, blockType, results, blockCfg, loadMoreCont
   });
   const parentBlock = document.querySelector('.block.feed-newsroom > .others');
   parentBlock.append(...builtBlock.childNodes);
-  if ((results.length - currentResults) > chunk) {
+  if (results.length - currentResults > chunk) {
     parentBlock.append(loadMoreContainer);
   } else loadMoreContainer.remove();
 }
@@ -119,9 +124,13 @@ async function loadResults(block, blockType, results, blockCfg, chunk, filterDiv
   builtBlock.before(filterDiv);
 
   // In order to place fragment block to the right side of the page
-  const downloadCenter = document.querySelectorAll('.feed-newsroom-container > .section-container > div:not(.feed-newsroom-wrapper)');
+  const downloadCenter = document.querySelectorAll(
+    '.feed-newsroom-container > .section-container > div:not(.feed-newsroom-wrapper)'
+  );
   const rightDiv = document.createElement('div');
-  downloadCenter.forEach((x) => { rightDiv.append(x); });
+  downloadCenter.forEach((x) => {
+    rightDiv.append(x);
+  });
   rightDiv.classList.add('others');
   builtBlock.append(rightDiv);
 
@@ -157,8 +166,8 @@ async function loadYearResults(block, blockType, results, blockCfg, locale) {
 }
 
 /**
-   * Feed block decorator to build feeds based on block configuration
-   */
+ * Feed block decorator to build feeds based on block configuration
+ */
 export default async function decorate(block) {
   const chunk = 15;
   const blockType = 'highlight';
@@ -168,16 +177,20 @@ export default async function decorate(block) {
 
   const omitPageTypes = getMetadataNullable('omit-page-types');
   // eslint-disable-next-line prefer-arrow-callback
-  const results = queryObj.where(function filterElements(el) {
-    const elPageType = (el.pagetype ?? '').trim().toLowerCase();
-    let match = false;
-    match = (!omitPageTypes || !(omitPageTypes.split(',').includes(elPageType)));
-    return match;
-  })
-  // eslint-disable-next-line
+  const results = queryObj
+    .where(function filterElements(el) {
+      const elPageType = (el.pagetype ?? '').trim().toLowerCase();
+      let match = false;
+      match = !omitPageTypes || !omitPageTypes.split(',').includes(elPageType);
+      return match;
+    })
+    // eslint-disable-next-line
     .orderByDescending((el) => (blockCfg.sort ? parseInt(el[blockCfg.sort.trim().toLowerCase()], 10) : el.path))
     .toList()
-    .filter((x) => { const itsDate = getFormattedDate(new Date(parseInt(x[blockCfg.sort.trim().toLowerCase()], 10))).split(', '); return (parseInt(itsDate[itsDate.length - 1], 10) > 2000); });
+    .filter((x) => {
+      const itsDate = getFormattedDate(new Date(parseInt(x[blockCfg.sort.trim().toLowerCase()], 10))).split(', ');
+      return parseInt(itsDate[itsDate.length - 1], 10) > 2000;
+    });
   block.innerHTML = '';
   // Creation of Category, Year and filter
   const filterDiv = document.createElement('div');
@@ -196,14 +209,30 @@ export default async function decorate(block) {
     <button data-nonce="8411f43402" data-post_type="news" " id="news_filter">FILTER</button>
   </div>
 </form>`;
-  const uniqYears = Array.from(new Set(results.map((x) => { const itsDate = getFormattedDate(new Date(parseInt(x[blockCfg.sort.trim().toLowerCase()], 10))).split(', '); return parseInt(itsDate[itsDate.length - 1], 10); })));
+  const uniqYears = Array.from(
+    new Set(
+      results.map((x) => {
+        const itsDate = getFormattedDate(new Date(parseInt(x[blockCfg.sort.trim().toLowerCase()], 10))).split(', ');
+        return parseInt(itsDate[itsDate.length - 1], 10);
+      })
+    )
+  );
   // eslint-disable-next-line
-  const yroptions = uniqYears.reduce((accum, current) => { accum += "<option value='" + current + "'>" + current + "</option>"; return accum; }, "");
+  const yroptions = uniqYears.reduce((accum, current) => {
+    // eslint-disable-next-line
+    accum += `<option value='${current}'>${current}</option>`;
+    return accum;
+  }, '');
   filterDiv.querySelector('#news_year').innerHTML = filterDiv.querySelector('#news_year').innerHTML + yroptions;
   const categoryDetails = await fetchTagsOrCategories('', 'categories', 'newsroom', locale);
   // eslint-disable-next-line
-  const categoryOptions = categoryDetails.reduce((accum, current) => { accum += "<option value='" + current.id + "'>" + current.name + "</option>"; return accum; }, "");
-  filterDiv.querySelector('#news_category').innerHTML = filterDiv.querySelector('#news_category').innerHTML + categoryOptions;
+  const categoryOptions = categoryDetails.reduce((accum, current) => {
+    // eslint-disable-next-line
+    accum += `<option value='${current.id}'>${current.name}</option>`;
+    return accum;
+  }, '');
+  filterDiv.querySelector('#news_category').innerHTML =
+    filterDiv.querySelector('#news_category').innerHTML + categoryOptions;
 
   filterDiv.querySelector('form .filter-nav button').addEventListener('click', () => {
     const searchYear = Number(filterDiv.querySelector('form .filter-nav #news_year').value);
@@ -212,7 +241,7 @@ export default async function decorate(block) {
     if (searchYear) {
       filteredResults = filteredResults.where((el) => {
         const itsDate = getFormattedDate(new Date(parseInt(el[blockCfg.sort.trim().toLowerCase()], 10))).split(', ');
-        return (parseInt(itsDate[itsDate.length - 1], 10) === searchYear);
+        return parseInt(itsDate[itsDate.length - 1], 10) === searchYear;
       });
     }
     if (searchCategory) {
@@ -229,5 +258,5 @@ export default async function decorate(block) {
       }
     }
   });
-  loadResults(block, blockType, results, blockCfg, chunk, filterDiv, locale);
+  await loadResults(block, blockType, results, blockCfg, chunk, filterDiv, locale);
 }

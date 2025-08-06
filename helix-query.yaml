@@ -6,6 +6,8 @@ indices:
     exclude:
       - '/_drafts/**'
       - '/_tools/**'
+      - '/drafts/**'
+      - '/tools/**'
       - '/sidekick/**'
       - '/fragments/**'
       - '/**/fragments/**'
@@ -17,7 +19,21 @@ indices:
       - '/**/thankyou'
       - '/search'
       - '/**/search'
-
+      - '/jp/_drafts/**'
+      - '/jp/_tools/**'
+      - '/jp/drafts/**'
+      - '/jp/tools/**'
+      - '/jp/sidekick/**'
+      - '/jp/fragments/**'
+      - '/jp/**/fragments/**'
+      - '/jp/nav'
+      - '/jp/**/nav'
+      - '/jp/footer'
+      - '/jp/**/footer'
+      - '/jp/thankyou'
+      - '/jp/**/thankyou'
+      - '/jp/search'
+      - '/jp/**/search'
     target: /query-index.json
     properties:
       lastModified:
@@ -66,3 +82,30 @@ indices:
       pagetype:
         select: head > meta[name="pagetype"]
         value: attribute(el, "content")
+      city:
+        select: main .job-posting
+        value: match(el, '.*?\n?City\n([^\n]+)')
+      region:
+        select: main .job-posting
+        value: match(el, '.*?\n?Region\n([^\n]+)')
+      country:
+        select: main .job-posting
+        value: match(el, '.*?\n?Country\n([^\n]+)')
+      workmode:
+        select: main .job-posting
+        value: match(el, '.*?\n?WorkMode\n([^\n]+)')
+      employmenttype:
+        select: main .job-posting
+        value: match(el, '.*?\n?EmploymentType\n([^\n]+)')
+      jobtitle:
+        select: main .job-posting
+        value: match(el, '.*?\n?JobTitle\n([^\n]+)')
+      jobdescription:
+        select: main .job-posting
+        value: match(el, '.*?\n?JobDescription\n([^\n]+)')
+      linkedin:
+        select: main .job-posting
+        value: match(el, '.*?\n?Linkedin\n([^\n]+)')
+      jobid:
+        select: main .job-posting
+        value: match(el, '.*?\n?JobID\n([^\n]+)')

@@ -2,6 +2,12 @@ main .block.text.padded {
   padding: 0 1rem;
 }
 
+main .block.text.max-width {
+  max-width: 760px;
+  margin: 0;
+  text-wrap: pretty;
+}
+
 main .block.text.narrow {
   width: 100%;
   padding-right: 0;
@@ -13,6 +19,10 @@ main .block.text.narrow {
   margin-bottom: 3.5rem;
 }
 
+main .block.text.text-right > * {
+  text-align: right;
+}
+
 main .block.text.narrower {
   width: 100%;
   padding-right: 0;
@@ -21,6 +31,22 @@ main .block.text.narrower {
   margin-left: auto;
   max-width: 45rem;
   margin-bottom: 3.5rem;
+}
+
+main .block.text h1,
+main .block.text h2,
+main .block.text h3 {
+  margin: 0 auto 1rem !important;
+}
+
+main .block.text.black h1,
+main .block.text.black h2,
+main .block.text.black h3,
+main .block.text.black h4,
+main .block.text.black h5,
+main .block.text.black h6,
+main .block.text.black p {
+  color: var(--light-black);
 }
 
 main .block.text.left-aligned h1,
@@ -35,23 +61,12 @@ main .block.text.left-aligned div {
   margin-left: 0;
 }
 
-main .block.text.black h1,
-main .block.text.black h2,
-main .block.text.black h3,
-main .block.text.black h4,
-main .block.text.black h5,
-main .block.text.black h6,
-main .block.text.black p {
-  color: var(--light-black);
-}
-
 main .block.text.highlight {
   margin-top: 5rem;
 }
 
-
 main .block.text.highlight h2 {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   text-align: center;
 }
 
@@ -101,7 +116,7 @@ main .block.text.rounded-border p {
   font-size: var(--body-font-size-xl);
 }
 
-main .block.text.rounded-border  h4 {
+main .block.text.rounded-border h4 {
   text-align: center;
   border-bottom: 1px solid var(--light-black);
   padding-bottom: 1.5rem;
@@ -115,7 +130,7 @@ main .block.text.lead {
 }
 
 main .block.text.colored {
-  color: var(--primary)
+  color: var(--primary);
 }
 
 main .block.text.emphasis {
@@ -137,13 +152,71 @@ main .block.text.text-small p {
 }
 
 main .block.text.emphasis > div > div > :first-child,
-main .block.text.light-background  > div > div > :first-child {
+main .block.text.light-background > div > div > :first-child {
   margin-top: 0;
 }
 
 main .block.text.emphasis > div > div > :last-child,
-main .block.text.light-background  > div > div > :last-child {
+main .block.text.light-background > div > div > :last-child {
   margin-bottom: 0;
+}
+
+main .block.text.p-h1 p {
+  font-size: var(--h1-font-size-mobile);
+  margin: 3.5rem 0 2rem;
+}
+
+main .block.text.p-h2 p {
+  font-size: var(--h2-font-size-mobile);
+  margin: 3rem 0 1.5rem;
+}
+
+main .block.text.p-h3 p {
+  font-size: var(--h3-font-size-mobile);
+  margin: 2rem 0 0.75rem;
+}
+
+main .block.text.p-h4 p {
+  font-size: var(--h4-font-size-mobile);
+  margin: 1.5em 0 0.5rem;
+}
+
+main .block.text.p-h1 p,
+main .block.text.p-h2 p,
+main .block.text.p-h3 p,
+main .block.text.p-h4 p {
+  color: var(--primary);
+  font-family: var(--heading-font-family);
+  line-height: 1.25;
+  scroll-margin: calc(var(--nav-height) + 1em);
+  font-weight: var(--font-weight-medium);
+  text-wrap: balance;
+}
+
+main .block.text.heading-p h1,
+main .block.text.heading-p h2,
+main .block.text.heading-p h3,
+main .block.text.heading-p h4,
+main .block.text.heading-p h5,
+main .block.text.heading-p h6 {
+  line-height: 1.6;
+  color: var(--text-color);
+  font-size: var(--body-font-size-m);
+  font-family: var(--body-font-family);
+  font-variant-ligatures: common-ligatures;
+  font-style: normal;
+  margin: unset;
+}
+
+main .block.text.heading-small-margin h1,
+main .block.text.heading-small-margin h2,
+main .block.text.heading-small-margin h3,
+main .block.text.heading-small-margin h4,
+main .block.text.heading-small-margin.p-h1 p,
+main .block.text.heading-small-margin.p-h2 p,
+main .block.text.heading-small-margin.p-h3 p,
+main .block.text.heading-small-margin.p-h4 p {
+  margin-bottom: 0.5rem;
 }
 
 main .block.text.red-circle > div > div::before {
@@ -180,5 +253,31 @@ main .block.text.red-circle > div > div * {
   main .block.text.light-background {
     margin-block: 1.5rem;
     padding: 2rem;
+  }
+
+  main .block.text.p-h1 p {
+    font-size: var(--h1-font-size-desktop);
+    margin: 4.375rem 0 2.5rem;
+  }
+
+  main .block.text.p-h2 p {
+    font-size: var(--h2-font-size-desktop);
+    margin: 3.5rem 0 2rem;
+  }
+
+  main .block.text.p-h3 p {
+    font-size: var(--h3-font-size-desktop);
+    margin: 2.5rem 0 1rem;
+  }
+
+  main .block.text.p-h4 p {
+    font-size: var(--h4-font-size-desktop);
+    margin: 2rem 0 0.5rem;
+  }
+
+  main .block.text h1,
+  main .block.text h2,
+  main .block.text h3 {
+    margin: 0 auto 1.5rem !important;
   }
 }
