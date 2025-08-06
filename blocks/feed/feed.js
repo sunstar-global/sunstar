@@ -148,6 +148,7 @@ export default async function decorate(block) {
   const queryParams = new URLSearchParams(queryString);
   const tagName = getTagName();
   const type = (blockCfg.type ?? getMetadataNullable('type') ?? queryParams.get('feed-type'))?.trim().toLowerCase();
+
   const category = (blockCfg.category ?? getMetadataNullable('category' ?? queryParams.get('feed-category')))
     ?.trim()
     .toLowerCase();
@@ -159,6 +160,7 @@ export default async function decorate(block) {
   )
     ?.trim()
     .toLowerCase();
+
   // eslint-disable-next-line prefer-arrow-callback
   const results = queryObj
     .where(function filterElements(el) {
