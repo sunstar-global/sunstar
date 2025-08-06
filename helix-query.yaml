@@ -106,3 +106,6 @@ indices:
       linkedin:
         select: main .job-posting
         value: match(el, '.*?\n?Linkedin\n([^\n]+)')
+      jobid:
+        select: main .job-posting
+        value: match(el, '.*?\n?JobID\n([^\n]+)')

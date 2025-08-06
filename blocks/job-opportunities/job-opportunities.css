@@ -168,6 +168,7 @@ span.filter-tag span.icon-close {
   color: var(--secondary);
   border: 1px solid var(--secondary);
   padding-left: 2.5rem;
+  transition: opacity 0.15s ease-in-out;
 }
 
 .job-opportunities span.icon-linkedin {
