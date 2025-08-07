@@ -2,20 +2,27 @@ import { fetchIndex, getLanguage } from '../../scripts/scripts.js';
 import { addTextEl } from '../../scripts/blocks-utils.js';
 
 export default async function decorate(block) {
-  // const blockCfg = readBlockConfig(block);
-  const chunkSize = 6; // Set chunk size
+  const chunkSize = 6;
   block.innerHTML = '';
   const lang = getLanguage();
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
-  const { data } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
+  const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
 
-  let currentResults = 0; // Track number of loaded results
+  const data = unfilteredData.filter((item) => {
+    if (item.robots && item.robots.includes('noindex')) {
+      return false;
+    }
+    return true;
+  });
+
+  let currentResults = 0;
 
   const unique = (arr) => [...new Set(arr.filter(Boolean))];
 
   const countries = unique(data.map((item) => item.country));
   const regions = unique(data.map((item) => item.region));
   const cities = unique(data.map((item) => item.city));
+  const departments = unique(data.map((item) => item.department).filter((dept) => dept && dept !== 0 && dept !== '0'));
 
   // eslint-disable-next-line no-unused-vars
   const employmentTypes = unique(data.map((item) => item.employmenttype));
@@ -24,16 +31,34 @@ export default async function decorate(block) {
   const wrapper = document.createElement('div');
   wrapper.classList.add('job-opportunities-page-wrapper');
 
-  // Sidebar filter (2/5)
   const sidebar = document.createElement('aside');
-  sidebar.style.position = 'sticky';
-  sidebar.style.top = '1rem'; // adjust if needed
-  sidebar.style.alignSelf = 'flex-start'; // needed for sticky to work
   sidebar.classList.add('job-filter-sidebar');
 
   sidebar.innerHTML = `
     <h2 class="h3">Refine your search</h2>
-		<div class="filter-group">
+    <div class="filter-group">
+      <div class="accordion-header active">
+        <h3>Department</h3>
+        <span class="icon icon-chevron-down"></span>
+      </div>
+      <div class="accordion-body open">
+        <ul>
+          ${departments
+            .map(
+              (department) => `
+          <li>
+            <label>
+            <input type="checkbox" name="category" class="filter-checkbox" data-filter-type="department" value="${department}">
+            ${department}
+            </label>
+          </li>
+          `
+            )
+            .join('')}
+        </ul>
+      </div>
+    </div>
+    <div class="filter-group">
       <div class="accordion-header active">
         <h3>Region</h3>
         <span class="icon icon-chevron-down"></span>
@@ -145,7 +170,6 @@ export default async function decorate(block) {
     </div>
 	`;
 
-  // Job list container (3/5)
   const jobList = document.createElement('div');
   jobList.classList.add('job-list');
   jobList.style.width = '68%';
@@ -154,7 +178,6 @@ export default async function decorate(block) {
   loadResults(jobList, data, currentResults, chunkSize);
   currentResults += chunkSize;
 
-  // **Load More Button**
   if (currentResults < data.length) {
     const loadMoreContainer = document.createElement('div');
     loadMoreContainer.classList.add('load-more-container');
@@ -168,7 +191,7 @@ export default async function decorate(block) {
       await loadMoreResults(jobList, data, currentResults, chunkSize, loadMoreButton);
       currentResults += chunkSize;
       if (currentResults >= data.length) {
-        loadMoreButton.remove(); // Hide button when all data is loaded
+        loadMoreButton.remove();
       }
     });
 
@@ -185,11 +208,9 @@ export default async function decorate(block) {
   title.textContent = 'Job Opportunities';
   jobList.prepend(title);
 
-  // Append layout
   wrapper.append(sidebar, jobList);
   block.append(wrapper);
 
-  // Enable filters
   document.querySelectorAll('.filter-checkbox').forEach((cb) => {
     // eslint-disable-next-line no-use-before-define
     cb.addEventListener('change', applyFilters);
@@ -214,12 +235,26 @@ function loadResults(container, data, startIndex, chunkSize) {
     div.dataset.region = data[i].region || '';
     div.dataset.country = data[i].country || '';
     div.dataset.city = data[i].city || '';
+    if (data[i].department !== 0 && data[i].department !== '0') {
+      div.dataset.department = data[i].department;
+    } else {
+      div.dataset.department = '';
+    }
 
     const contentDiv = document.createElement('div');
     contentDiv.classList.add('job-card-content', 'h-full');
 
+    // place a inside h2
+    const linkTitle = document.createElement('a');
+    linkTitle.classList.add('job-posting-link');
+    linkTitle.href = data[i].path;
+    linkTitle.setAttribute('aria-label', `Apply for ${data[i].jobtitle}`);
+    linkTitle.target = '_blank';
+    linkTitle.rel = 'noopener noreferrer';
+    linkTitle.textContent = data[i].jobtitle;
+
     const jobTitle = document.createElement('h2');
-    jobTitle.textContent = data[i].jobtitle;
+    jobTitle.append(linkTitle);
     contentDiv.append(jobTitle);
 
     const infoWrapper = document.createElement('div');
@@ -349,6 +384,7 @@ function applyFilters() {
     region: [],
     workmode: [],
     employmenttype: [],
+    department: [],
   };
 
   document.querySelectorAll('.filter-checkbox:checked').forEach((cb) => {
@@ -366,9 +402,16 @@ function applyFilters() {
     const matchWorkMode = selected.workmode.length === 0 || selected.workmode.includes(card.dataset.workmode);
     const matchEmploymentType =
       selected.employmenttype.length === 0 || selected.employmenttype.includes(card.dataset.employmenttype);
+    const matchDepartment = selected.department.length === 0 || selected.department.includes(card.dataset.department);
 
     card.style.display =
-      matchCategory && matchCountry && matchCity && matchRegion && matchWorkMode && matchEmploymentType
+      matchCategory &&
+      matchCountry &&
+      matchCity &&
+      matchRegion &&
+      matchWorkMode &&
+      matchEmploymentType &&
+      matchDepartment
         ? 'block'
         : 'none';
   });
