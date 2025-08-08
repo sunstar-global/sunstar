@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   sampleRUM,
   buildBlock,
@@ -226,7 +227,7 @@ export function buildBreadcrumbBlock(main) {
 function buildAutoBlocks(main) {
   try {
     buildBreadcrumbBlock(main);
-    buildHeroBlock(main);
+    // buildHeroBlock(main);
     buildModalFragmentBlock(main);
     buildImageWithCaptionBlocks(main, buildBlock);
   } catch (error) {
