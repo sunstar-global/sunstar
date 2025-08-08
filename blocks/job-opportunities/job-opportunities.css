@@ -7,9 +7,10 @@
 
 .job-opportunities-page-wrapper {
   display: flex;
-  gap: 3rem;
+  gap: 2rem;
   width: 100%;
   padding: 0 1rem;
+  flex-direction: column;
 }
 
 .job-posting-card {
@@ -20,7 +21,7 @@
 
 .job-posting-card h2 {
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .job-posting-card .job-card-info .has-icon {
@@ -78,21 +79,12 @@ span.filter-tag span.icon-close {
 }
 
 .job-filter-sidebar {
-  display: none;
-  position: fixed;
+  display: flex;
   top: calc(var(--nav-bottom-height) + var(--nav-middle-height));
   flex-direction: column;
   width: 100%;
   align-self: flex-start;
-  bottom: 0;
-  margin: 0;
-  padding: 1rem;
-  left: 0;
   background-color: var(--white);
-}
-
-.job-filter-sidebar.active {
-  display: flex;
 }
 
 .job-filter-sidebar h2 {
@@ -115,7 +107,6 @@ span.filter-tag span.icon-close {
   list-style: none;
   margin: 0;
   display: flex;
-  padding: 0.5rem 0;
 }
 
 .job-opportunities div.filter-group ul li label {
@@ -126,6 +117,7 @@ span.filter-tag span.icon-close {
   justify-content: flex-start;
   flex-grow: 1;
   cursor: pointer;
+  padding: 0.5rem 0;
 }
 
 .job-opportunities div.filter-group ul li label input {
@@ -207,7 +199,7 @@ span.filter-tag span.icon-close {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
   align-items: center;
   border-bottom: 1px solid var(--transparent-grey-light-color);
 }
@@ -265,7 +257,7 @@ span.filter-tag span.icon-close {
     flex-direction: column;
     align-self: flex-start;
     bottom: unset;
-    margin: 0;
+    padding: 0;
   }
 
   .job-filter-sidebar .close {
