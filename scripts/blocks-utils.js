@@ -132,8 +132,6 @@ export function addTextEl(tag, txt, parent, icon, ...classes) {
       iconSpan.classList.add('icon');
       wrapper.classList.add('has-icon');
       wrapper.prepend(iconSpan);
-    } else {
-      wrapper.classList.add('no-icon');
     }
 
     parent.appendChild(wrapper);

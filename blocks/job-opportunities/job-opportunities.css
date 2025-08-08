@@ -8,6 +8,8 @@
 .job-opportunities-page-wrapper {
   display: flex;
   gap: 3rem;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 .job-posting-card {
@@ -21,7 +23,7 @@
   margin-bottom: 0.5rem;
 }
 
-.job-posting-card .has-icon {
+.job-posting-card .job-card-info .has-icon {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -32,8 +34,8 @@
   padding-right: 1rem;
 }
 
-.job-posting-card .has-icon p,
-.job-posting-card .no-icon p {
+.job-posting-card .job-card-info p,
+.job-posting-card .job-card-info .has-icon p {
   margin: 0;
   padding: 0;
   font-size: var(--body-font-size-s);
@@ -76,12 +78,21 @@ span.filter-tag span.icon-close {
 }
 
 .job-filter-sidebar {
-  display: flex;
-  position: sticky;
-  top: 0;
+  display: none;
+  position: fixed;
+  top: calc(var(--nav-bottom-height) + var(--nav-middle-height));
   flex-direction: column;
-  width: 30%;
+  width: 100%;
   align-self: flex-start;
+  bottom: 0;
+  margin: 0;
+  padding: 1rem;
+  left: 0;
+  background-color: var(--white);
+}
+
+.job-filter-sidebar.active {
+  display: flex;
 }
 
 .job-filter-sidebar h2 {
@@ -171,13 +182,11 @@ span.filter-tag span.icon-close {
   background-color: var(--white);
   color: var(--secondary);
   border: 1px solid var(--secondary);
-  padding-left: 2.5rem;
   transition: opacity 0.15s ease-in-out;
 }
 
 .job-opportunities span.icon-linkedin {
   margin-left: 0.625rem;
-  margin-right: 1rem;
   height: 2rem;
   width: 2.125rem;
 }
@@ -234,4 +243,32 @@ span.filter-tag span.icon-close {
 
 .clear-all-filters:hover {
   background-color: transparent !important;
+}
+
+@media (min-width: 77rem) {
+  .job-opportunities-page-wrapper {
+    display: grid;
+    gap: 3rem;
+    padding: 0;
+    grid-template-columns: 2fr 4fr;
+  }
+
+  .job-list {
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  .job-filter-sidebar {
+    display: flex;
+    position: sticky;
+    top: calc(var(--nav-bottom-height) + 1rem);
+    flex-direction: column;
+    align-self: flex-start;
+    bottom: unset;
+    margin: 0;
+  }
+
+  .job-filter-sidebar .close {
+    display: none;
+  }
 }

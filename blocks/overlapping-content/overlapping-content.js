@@ -59,7 +59,8 @@ function injectBackgroundDivForText(row) {
 }
 
 export default function decorate(block) {
-  console.log('decorating overlapping-content block');
+  console.log('decorating overlapping-content block', block);
+
   const shouldHaveButtons = !block.classList.contains('no-buttons');
   decorateRenderHints(block);
 

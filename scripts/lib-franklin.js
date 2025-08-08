@@ -769,13 +769,22 @@ export function getFormattedDate(date, locale = 'en') {
  */
 export function decorateRenderHints(block) {
   [...block.children].forEach((row) => {
-    const typeHintEl = row.querySelector('div:first-child');
-    const typeHints = typeHintEl?.textContent
+    const typeHintEl = row.firstElementChild;
+    if (!typeHintEl) return;
+
+    const typeHints = typeHintEl.textContent
       ?.trim()
       ?.toLowerCase()
       ?.split(',')
       ?.map((type) => type.trim());
-    if (typeHints?.length) {
+
+    // Check if type hints look valid (e.g. contain at least one word with % or known keyword)
+    const hasHint =
+      typeHints &&
+      typeHints.length > 0 &&
+      typeHints.some((hint) => /\d+%/.test(hint) || ['left', 'right', 'background', 'crop'].includes(hint));
+
+    if (hasHint) {
       row.classList.add(...typeHints);
       typeHintEl.remove();
     }

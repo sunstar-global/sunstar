@@ -172,7 +172,6 @@ export default async function decorate(block) {
 
   const jobList = document.createElement('div');
   jobList.classList.add('job-list');
-  jobList.style.width = '68%';
 
   // eslint-disable-next-line no-use-before-define
   loadResults(jobList, data, currentResults, chunkSize);
@@ -202,11 +201,6 @@ export default async function decorate(block) {
   const selectedFiltersContainer = document.createElement('div');
   selectedFiltersContainer.classList.add('selected-filters');
   jobList.prepend(selectedFiltersContainer);
-
-  const title = document.createElement('h2');
-  title.classList.add('h1', 'main-title');
-  title.textContent = 'Job Opportunities';
-  jobList.prepend(title);
 
   wrapper.append(sidebar, jobList);
   block.append(wrapper);
@@ -296,7 +290,6 @@ function loadResults(container, data, startIndex, chunkSize) {
     applyNowLink.setAttribute('aria-label', 'Apply now');
     applyNowLink.href = data[i].path;
 
-    // Add the link text as a text node (do NOT use textContent here)
     applyNowLink.appendChild(document.createTextNode('Apply now'));
     if (data[i].linkedin && data[i].linkedin !== '') {
       buttonContainer.appendChild(applyNowLink);
@@ -307,11 +300,9 @@ function loadResults(container, data, startIndex, chunkSize) {
       linkedinLink.setAttribute('aria-label', 'Apply on LinkedIn');
       linkedinLink.href = data[i].linkedin;
 
-      // Add the icon span
       const linkedinIcon = document.createElement('span');
       linkedinIcon.classList.add('icon', 'icon-linkedin');
 
-      // Add the link text as a text node (do NOT use textContent here)
       linkedinLink.appendChild(document.createTextNode('Apply on LinkedIn'));
       linkedinLink.append(linkedinIcon);
 

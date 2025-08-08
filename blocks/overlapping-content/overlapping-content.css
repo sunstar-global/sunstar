@@ -6,6 +6,7 @@
   margin: auto 1rem;
 }
 
+.overlapping-content .overlapping-content-item h1,
 .overlapping-content .overlapping-content-item h2 {
   margin-top: 0;
   margin-bottom: 0.75rem;
@@ -64,6 +65,7 @@
   margin-left: 1rem;
 }
 
+.overlapping-content > div.background .background-wrapper h1,
 .overlapping-content > div.background .background-wrapper h2,
 .overlapping-content > div.background .background-wrapper p {
   color: var(--white);
@@ -74,6 +76,7 @@
     margin: auto 0;
   }
 
+  .overlapping-content .overlapping-content-item h1,
   .overlapping-content .overlapping-content-item h2 {
     margin-top: 0;
     margin-bottom: 1rem;

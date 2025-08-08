@@ -25,55 +25,74 @@ export default async function decorate(block) {
   infoWrapper.classList.add('hero-career-info');
   title.appendChild(infoWrapper);
 
-  // 1. Location
   const location = [cfg.region, cfg.country, cfg.city].filter(Boolean).join(', ');
   if (location) {
     addTextEl('p', location, infoWrapper, 'icon-globe', 'hero-career-location');
   }
 
-  // 2. Work mode
   if (cfg.workmode) {
     addTextEl('p', cfg.workmode, infoWrapper, 'icon-work', 'hero-career-workmode');
   }
 
-  // 3. Employment type
   if (cfg.employmenttype) {
     addTextEl('p', cfg.employmenttype, infoWrapper, 'icon-time', 'hero-career-employmenttype');
   }
 
-  addTextEl('p', cfg.jobdescription, title, '', 'hero-career-description', 'lead');
+  if (cfg.jobid) {
+    addTextEl('p', `Job ID: ${cfg.jobid}`, infoWrapper, '', false, 'hero-career-job-id');
+  }
 
-  if (cfg.linkedin && cfg.linkedin !== '') {
+  if (cfg.jobdescription) {
+    addTextEl('p', cfg.jobdescription, title, '', 'hero-career-description', 'lead');
+  }
+
+  if (cfg.email || cfg.linkedin || cfg.externallink) {
     const buttonContainer = document.createElement('p');
     buttonContainer.classList.add('button-container');
     title.appendChild(buttonContainer);
-    const applyNowLink = document.createElement('a');
-    applyNowLink.target = '_blank';
-    applyNowLink.rel = 'noopener noreferrer';
-    applyNowLink.classList.add('button', 'primary', 'hero-career-applynow');
-    applyNowLink.setAttribute('aria-label', 'Apply now');
-    applyNowLink.href = cfg.applynow;
 
-    // Add the link text as a text node (do NOT use textContent here)
-    applyNowLink.appendChild(document.createTextNode(' Apply now'));
+    if (cfg.email) {
+      const emailLink = document.createElement('a');
+      emailLink.target = '_blank';
+      emailLink.rel = 'noopener noreferrer';
+      emailLink.classList.add('button', 'primary', 'email');
+      emailLink.setAttribute('aria-label', 'Apply by Email');
+      emailLink.href = `mailto:${cfg.email}?subject=${encodeURIComponent(`Job Application: ${cfg.jobtitle || ''}`)}&body=${encodeURIComponent('Please provide your CV and motivation letter.')}`;
+      emailLink.appendChild(document.createTextNode('Apply by Email'));
+      buttonContainer.appendChild(emailLink);
+    }
 
-    buttonContainer.appendChild(applyNowLink);
-    const linkedinLink = document.createElement('a');
-    linkedinLink.target = '_blank';
-    linkedinLink.rel = 'noopener noreferrer';
-    linkedinLink.classList.add('button', 'primary', 'linkedin', 'hero-career-linkedin');
-    linkedinLink.setAttribute('aria-label', 'Apply on LinkedIn');
-    linkedinLink.href = cfg.linkedin;
+    if (cfg.externallink) {
+      const externalLink = document.createElement('a');
+      externalLink.target = '_blank';
+      externalLink.rel = 'noopener noreferrer';
+      externalLink.classList.add('button', 'primary', 'externallink');
+      externalLink.setAttribute('aria-label', 'Apply on an external site');
+      externalLink.href = cfg.externallink;
+      externalLink.appendChild(document.createTextNode('Apply on'));
+      buttonContainer.appendChild(externalLink);
 
-    // Add the icon span
-    const linkedinIcon = document.createElement('span');
-    linkedinIcon.classList.add('icon', 'icon-linkedin');
+      const externalLinkIcon = document.createElement('span');
+      externalLinkIcon.classList.add('icon', 'icon-link-white');
+      externalLink.appendChild(externalLinkIcon);
+    }
 
-    // Add the link text as a text node (do NOT use textContent here)
-    linkedinLink.appendChild(document.createTextNode(' Apply on LinkedIn'));
-    linkedinLink.append(linkedinIcon);
+    if (cfg.linkedin) {
+      const linkedinLink = document.createElement('a');
+      linkedinLink.target = '_blank';
+      linkedinLink.rel = 'noopener noreferrer';
+      linkedinLink.classList.add('button', 'primary', 'linkedin');
+      linkedinLink.setAttribute('aria-label', 'Apply on LinkedIn');
+      linkedinLink.href = cfg.linkedin;
 
-    buttonContainer.appendChild(linkedinLink);
+      const linkedinIcon = document.createElement('span');
+      linkedinIcon.classList.add('icon', 'icon-linkedin');
+
+      linkedinLink.appendChild(document.createTextNode(' Apply on LinkedIn'));
+      linkedinLink.append(linkedinIcon);
+
+      buttonContainer.appendChild(linkedinLink);
+    }
   }
 
   deleteConfigBlock(block, container);
