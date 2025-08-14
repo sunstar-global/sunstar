@@ -759,7 +759,7 @@ export function getEnvType(hostname = window.location.hostname) {
     'main--sunstar--sunstar-global.hlx.live': 'live',
     'main--sunstar--sunstar-global.aem.page': 'preview',
     'main--sunstar--sunstar-global.aem.live': 'live',
-    'ga-integration--sunstar--sunstar-global.hlx.live': 'live',
+    'ga-integration--sunstar--sunstar-global.aem.live': 'live',
   };
   return fqdnToEnvType[hostname] || 'dev';
 }
