@@ -565,13 +565,6 @@ main pre {
   background-image: url('/icons/youtube.svg');
 }
 
-.icon.icon-link-black {
-  background-image: url('/icons/link-black.svg');
-  display: inline-flex;
-  height: 18px;
-  width: 12px;
-}
-
 .icon.icon-angle-white-70 {
   background-image: url('/icons/angle-white-70.svg');
   margin-left: 6px;
@@ -580,8 +573,22 @@ main pre {
   scale: 0.8;
 }
 
+.icon.icon-link-black {
+  background-image: url('/icons/link-black.svg');
+  display: inline-flex;
+  height: 18px;
+  width: 12px;
+}
+
 .icon.icon-link-blue {
   background-image: url('/icons/link-blue.svg');
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.3rem;
+}
+
+.icon.icon-link-white {
+  background-image: url('/icons/link-white.svg');
   width: 1.25rem;
   height: 1.25rem;
   margin-left: 0.3rem;
