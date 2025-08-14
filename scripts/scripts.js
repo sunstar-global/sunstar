@@ -575,6 +575,8 @@ function setMetaTags(main) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  if (!main) return;
+
   await loadBlocks(main);
   wrapDirectDivTextInParagraphs(main);
 

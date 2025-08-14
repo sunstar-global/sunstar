@@ -472,6 +472,7 @@ export function getHref() {
  * @param {Element} main The container element
  */
 export async function loadBlocks(main) {
+  if (!main) return;
   updateSectionsStatus(main);
   const blocks = [...main.querySelectorAll('div.block')];
   for (let i = 0; i < blocks.length; i += 1) {
