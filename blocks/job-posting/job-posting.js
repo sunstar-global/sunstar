@@ -1,5 +1,6 @@
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { readBlockConfig, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { addTextEl } from '../../scripts/blocks-utils.js';
+import { getLanguage } from '../../scripts/scripts.js';
 
 function deleteConfigBlock(block, firstNonCfgEl) {
   while (block.children.length > 0 && block.children[0] !== firstNonCfgEl) {
@@ -9,7 +10,8 @@ function deleteConfigBlock(block, firstNonCfgEl) {
 
 export default async function decorate(block) {
   const cfg = readBlockConfig(block);
-
+  const lang = getLanguage();
+  const placeholders = await fetchPlaceholders(lang);
   const container = document.createElement('div');
   container.classList.add('section', 'hero-career-container');
   const title = document.createElement('div');
@@ -39,7 +41,7 @@ export default async function decorate(block) {
   }
 
   if (cfg.jobid) {
-    addTextEl('p', `Job ID: ${cfg.jobid}`, infoWrapper, '', false, 'hero-career-job-id');
+    addTextEl('p', `${placeholders['job-id']}: ${cfg.jobid}`, infoWrapper, '', false, 'hero-career-job-id');
   }
 
   if (cfg.jobdescription) {
@@ -69,7 +71,7 @@ export default async function decorate(block) {
       externalLink.classList.add('button', 'primary', 'externallink');
       externalLink.setAttribute('aria-label', 'Apply on an external site');
       externalLink.href = cfg.externallink;
-      externalLink.appendChild(document.createTextNode('Apply on'));
+      externalLink.appendChild(document.createTextNode(`${placeholders['apply-on']}`));
       buttonContainer.appendChild(externalLink);
 
       const externalLinkIcon = document.createElement('span');
@@ -82,13 +84,13 @@ export default async function decorate(block) {
       linkedinLink.target = '_blank';
       linkedinLink.rel = 'noopener noreferrer';
       linkedinLink.classList.add('button', 'primary', 'linkedin');
-      linkedinLink.setAttribute('aria-label', 'Apply on LinkedIn');
+      linkedinLink.setAttribute('aria-label', `${placeholders['apply-on-linkedin']}`);
       linkedinLink.href = cfg.linkedin;
 
       const linkedinIcon = document.createElement('span');
       linkedinIcon.classList.add('icon', 'icon-linkedin');
 
-      linkedinLink.appendChild(document.createTextNode(' Apply on LinkedIn'));
+      linkedinLink.appendChild(document.createTextNode(`${placeholders['apply-on-linkedin']}`));
       linkedinLink.append(linkedinIcon);
 
       buttonContainer.appendChild(linkedinLink);

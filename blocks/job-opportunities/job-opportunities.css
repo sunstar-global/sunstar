@@ -120,6 +120,11 @@ span.filter-tag span.icon-close {
   padding: 0.5rem 0;
 }
 
+.job-opportunities div.filter-group ul li label.is-disabled {
+  color: var(--light-grey);
+  pointer-events: none;
+}
+
 .job-opportunities div.filter-group ul li label input {
   margin: 0;
   flex-basis: content;
