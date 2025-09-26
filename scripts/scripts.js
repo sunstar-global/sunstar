@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+
 import {
   sampleRUM,
   buildBlock,
@@ -30,7 +31,7 @@ const SKIP_FROM_LCP = ['breadcrumb']; // add blocks that shouldn't ever be LCP c
 // search for at least these many blocks (post-skipping-non-candidates) to find LCP candidates
 const MAX_LCP_CANDIDATE_BLOCKS = 2;
 
-export const LANGUAGES = new Set(['en', 'de', 'cn', 'th', 'id', 'it', 'jp']);
+export const LANGUAGES = new Set(['en', 'jp']);
 
 const MODAL_FRAGMENTS_PATH_SEGMENT = '/fragments/modals/';
 export const MODAL_FRAGMENTS_ANCHOR_SELECTOR = `a[href*="${MODAL_FRAGMENTS_PATH_SEGMENT}"]`;
@@ -258,6 +259,27 @@ export function decorateVideoLinks(youTubeAnchors) {
  * @param {Element}s element The element to decorate
  * @returns {void}
  */
+export function decorateExternalLinksAccessibility(externalAnchors) {
+  if (externalAnchors.length) {
+    console.log('externalAnchors', externalAnchors[0].href.includes('linkedin'));
+    externalAnchors.forEach((a) => {
+      if (a.href.includes('youtu')) {
+        a.setAttribute('aria-label', 'YouTube');
+        a.setAttribute('title', 'Sunstar YouTube Channel');
+      } else if (a.href.includes('linkedin')) {
+        a.setAttribute('aria-label', 'LinkedIn');
+        a.setAttribute('title', 'Sunstar LinkedIn Profile');
+      }
+    });
+  }
+}
+
+/**
+ * decorates external links to open in new window
+ * for styling updates via CSS
+ * @param {Element}s element The element to decorate
+ * @returns {void}
+ */
 export function decorateExternalAnchors(externalAnchors) {
   if (externalAnchors.length) {
     externalAnchors.forEach((a) => {
@@ -309,6 +331,14 @@ export function decorateAnchors(element = document) {
   const anchors = element.getElementsByTagName('a');
   decorateVideoLinks(Array.from(anchors).filter((a) => a.href.includes('youtu')));
   decorateExternalAnchors(
+    Array.from(anchors).filter(
+      (a) =>
+        a.href &&
+        (!a.href.match(`^http[s]*://${window.location.host}/`) ||
+          ['pdf'].includes(getUrlExtension(a.href).toLowerCase()))
+    )
+  );
+  decorateExternalLinksAccessibility(
     Array.from(anchors).filter(
       (a) =>
         a.href &&

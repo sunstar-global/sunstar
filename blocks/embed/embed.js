@@ -7,6 +7,14 @@
 import { loadScript } from '../../scripts/scripts.js';
 import { loadCSS } from '../../scripts/lib-franklin.js';
 
+const getDefaultEmbed = (
+  url
+) => `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
+      scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
+    </iframe>
+  </div>`;
+
 export const embedYoutube = (url, isLite) => {
   const usp = new URLSearchParams(url.search);
   let suffix = '';
@@ -23,7 +31,6 @@ export const embedYoutube = (url, isLite) => {
   }
 
   let embed = url.pathname;
-  console.log(embed);
   if (url.origin.includes('youtu.be')) {
     [, vid] = url.pathname.split('/');
   }
@@ -84,7 +91,7 @@ const embedSocialPlugins = (urlParam, isLite, type) => {
   return embedHTML;
 };
 
-export const loadEmbed = (block, grandChilds, link) => {
+export const loadEmbed = async (block, grandChilds, link) => {
   if (block.classList.contains('embed-is-loaded')) {
     return;
   }
@@ -113,12 +120,29 @@ export const loadEmbed = (block, grandChilds, link) => {
 
   const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
   const url = new URL(link);
+
   const isLite = block.classList.contains('lite');
 
   if (config) {
     const shareVariant = block.classList.contains('share');
     block.innerHTML = config.embed(url, isLite, config.type);
     block.classList = `block embed embed-${config.match[0]} ${shareVariant ? 'share' : ''}`;
+  } else {
+    block.innerHTML = getDefaultEmbed(url);
+    const videoConfig = {
+      autoplay: 'any',
+    };
+    window.addEventListener('message', (event) => {
+      switch (event.data) {
+        case 'config':
+        case 'video-config':
+          event.source.window.postMessage(JSON.stringify(videoConfig), '*');
+          break;
+        default:
+          break;
+      }
+    });
+    block.classList = 'block embed';
   }
   block.classList.add('embed-is-loaded');
 

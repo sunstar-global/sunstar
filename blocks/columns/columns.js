@@ -98,6 +98,9 @@ export default function decorate(block) {
   block.classList.add(`columns-${cols.length}-cols`);
   const videoAnchor = [...block.querySelectorAll('a')].filter((a) => a.href.includes('.mp4'));
   const youtubeAnchor = [...block.querySelectorAll('a')].filter((a) => a.href.toLowerCase().includes('youtu.be'));
+  const sceneSevenAnchor = [...block.querySelectorAll('a')].filter((a) =>
+    a.href.toLowerCase().includes('s7g10.scene7.com')
+  );
 
   const textOnlyColBlock = !block.querySelector('picture') && !videoAnchor.length;
 
@@ -217,6 +220,11 @@ export default function decorate(block) {
   if (youtubeAnchor.length && block.classList.contains('embed-yt')) {
     const videoWrapper = youtubeAnchor[0].parentElement;
     loadEmbed(videoWrapper, [], youtubeAnchor[0].href);
+  }
+
+  if (sceneSevenAnchor.length) {
+    const videoWrapper = sceneSevenAnchor[0].parentElement;
+    loadEmbed(videoWrapper, [], sceneSevenAnchor[0].href);
   }
 
   // style headings if collapse is enabled
