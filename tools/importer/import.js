@@ -93,7 +93,7 @@ function addHeroVerticalTabs(doc) {
     const cells = [['Hero-Vertical-Tabs']];
     const heroMenu = doc.createElement('ul');
     hero.querySelectorAll('.auto-hero-menu li a').forEach((a) => {
-      a.href = 'https://main--sunstar--sunstar-global.hlx.live'.concat(a.href).replace(/\/$/, '');
+      a.href = 'https://main--sunstar--sunstar-global.aem.live'.concat(a.href).replace(/\/$/, '');
       const li = doc.createElement('li');
       if (a.classList.contains('active')) {
         const strong = doc.createElement('strong');
@@ -492,7 +492,7 @@ function getFomattedDate(newsDate) {
  */
 function fixRelativeLinks(document) {
   document.querySelectorAll('a').forEach((a) => {
-    const targetDomain = 'https://main--sunstar--sunstar-global.hlx.page';
+    const targetDomain = 'https://main--sunstar--sunstar-global.aem.page';
     // if the link is relative, make it absolute
     if (a.href.startsWith('/')) {
       let link = a.href;

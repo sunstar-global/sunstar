@@ -1,0 +1,4 @@
+redirects:
+  - from: "^https?://sunstar\.com/(.*)$"
+    to: "https://www.sunstar.com/$1"
+    status: 301

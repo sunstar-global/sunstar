@@ -36,7 +36,7 @@ export const createMetadata = (main, document, params) => {
  */
 export const fixRelativeLinks = (document) => {
   document.querySelectorAll('a').forEach((a) => {
-    const targetDomain = 'https://main--sunstar--sunstar-global.hlx.page';
+    const targetDomain = 'https://main--sunstar--sunstar-global.aem.page';
     // if the link is relative, make it absolute
     if (a.href.startsWith('/')) {
       let link = a.href;
