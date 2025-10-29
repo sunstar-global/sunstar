@@ -201,15 +201,18 @@ function decorateMiddleNav(nav, placeholders) {
   logoLink.setAttribute('title', placeholders['homepage-h1']);
 }
 
-function getNavbarToggler() {
-  const navbarToggl = htmlToElement(`<button class="navbar-toggler" aria-label="Menu">
-  <div class="mobile-icon">
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-  </div>
-  </button>`);
+function getNavbarToggler(placeholders) {
+  const navbarToggl = htmlToElement(
+    `<button class="navbar-toggler" aria-label="${placeholders.menu}">
+      <div class="mobile-icon">
+        <i></i>
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
+    </button>
+    `
+  );
 
   if (window.deviceType !== 'Desktop' && window.deviceType !== 'Tablet') {
     navbarToggl.classList.add('visible');
@@ -267,7 +270,7 @@ function attachWindowResizeListeners(nav) {
 function decorateBottomNav(nav, placeholders, navTreeJson) {
   const navTree = buildNavTree(navTreeJson, placeholders);
 
-  nav.append(getNavbarToggler());
+  nav.append(getNavbarToggler(placeholders));
   nav.append(navTree);
   nav.append(getSearchWidget(placeholders));
 

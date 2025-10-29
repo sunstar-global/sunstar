@@ -199,12 +199,14 @@ main .block.cards.light-background ul > li {
 
 .cards.aspect-ratio-16-9 .cards-card-image {
   aspect-ratio: 16/9;
-  height: unset;
+  height: unset !important;
+  width: 100% !important;
 }
 
 .cards.aspect-ratio-1-1 .cards-card-image {
   aspect-ratio: 1/1;
-  height: unset;
+  height: unset !important;
+  width: 100% !important;
 }
 
 .cards .cards-card-body div {
@@ -239,6 +241,94 @@ main .cards.info-points .cards-card-body * {
   text-align: left;
 }
 
+.cards.h1-h2 h1 {
+  font-size: var(--h2-font-size-mobile) !important;
+}
+
+.cards.h1-h3 h1 {
+  font-size: var(--h3-font-size-mobile) !important;
+}
+
+.cards.h1-h4 h1 {
+  font-size: var(--h4-font-size-mobile) !important;
+}
+
+.cards.h2-h1 h2 {
+  font-size: var(--h1-font-size-mobile) !important;
+}
+
+.cards.h2-h3 h2 {
+  font-size: var(--h3-font-size-mobile) !important;
+}
+
+.cards.h2-h4 h2 {
+  font-size: var(--h4-font-size-mobile) !important;
+}
+
+.cards.h3-h1 h3 {
+  font-size: var(--h1-font-size-mobile) !important;
+}
+
+.cards.h3-h2 h3 {
+  font-size: var(--h2-font-size-mobile) !important;
+}
+
+.cards.h3-h4 h3 {
+  font-size: var(--h4-font-size-mobile) !important;
+}
+
+.cards.h4-h1 h4 {
+  font-size: var(--h1-font-size-mobile) !important;
+}
+
+.cards.h4-h2 h4 {
+  font-size: var(--h2-font-size-mobile) !important;
+}
+
+.cards.h4-h3 h4 {
+  font-size: var(--h3-font-size-mobile) !important;
+}
+
+.cards.h1-dark h1,
+.cards.h2-dark h2,
+.cards.h3-dark h3,
+.cards.h4-dark h4 {
+  color: var(--gray-dark) !important;
+}
+
+.cards.heading-narrow-spacing h1:has(+ h2),
+.cards.heading-narrow-spacing h1:has(+ h3),
+.cards.heading-narrow-spacing h1:has(+ h4),
+.cards.heading-narrow-spacing h1:has(+ h5),
+.cards.heading-narrow-spacing h1:has(+ h6),
+.cards.heading-narrow-spacing h2:has(+ h2),
+.cards.heading-narrow-spacing h2:has(+ h3),
+.cards.heading-narrow-spacing h2:has(+ h4),
+.cards.heading-narrow-spacing h2:has(+ h5),
+.cards.heading-narrow-spacing h2:has(+ h6),
+.cards.heading-narrow-spacing h3:has(+ h2),
+.cards.heading-narrow-spacing h3:has(+ h3),
+.cards.heading-narrow-spacing h3:has(+ h4),
+.cards.heading-narrow-spacing h3:has(+ h5),
+.cards.heading-narrow-spacing h3:has(+ h6),
+.cards.heading-narrow-spacing h4:has(+ h2),
+.cards.heading-narrow-spacing h4:has(+ h3),
+.cards.heading-narrow-spacing h4:has(+ h4),
+.cards.heading-narrow-spacing h4:has(+ h5),
+.cards.heading-narrow-spacing h4:has(+ h6),
+.cards.heading-narrow-spacing h5:has(+ h2),
+.cards.heading-narrow-spacing h5:has(+ h3),
+.cards.heading-narrow-spacing h5:has(+ h4),
+.cards.heading-narrow-spacing h5:has(+ h5),
+.cards.heading-narrow-spacing h5:has(+ h6),
+.cards.heading-narrow-spacing h6:has(+ h2),
+.cards.heading-narrow-spacing h6:has(+ h3),
+.cards.heading-narrow-spacing h6:has(+ h4),
+.cards.heading-narrow-spacing h6:has(+ h5),
+.cards.heading-narrow-spacing h6:has(+ h6) {
+  margin-bottom: 0.5rem !important; /* Apply narrow spacing */
+}
+
 main .cards.info-points .cards-card-body h1,
 main .cards.info-points .cards-card-body h2,
 main .cards.info-points .cards-card-body h3,
@@ -261,6 +351,7 @@ main .section.cards-container:has(.cards.info-points) h2 {
 .cards.grid .cards-card-body .title {
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -511,6 +602,54 @@ main .cards-wrapper .light-background .cards-card-body h3 {
     margin: 0 auto;
     font-size: 14px;
     color: var(--transparent-grey-color-2);
+  }
+
+  .cards.h1-h2 h1 {
+    font-size: var(--h2-font-size-desktop) !important;
+  }
+
+  .cards.h1-h3 h1 {
+    font-size: var(--h3-font-size-desktop) !important;
+  }
+
+  .cards.h1-h4 h1 {
+    font-size: var(--h4-font-size-desktop) !important;
+  }
+
+  .cards.h2-h1 h2 {
+    font-size: var(--h1-font-size-desktop) !important;
+  }
+
+  .cards.h2-h3 h2 {
+    font-size: var(--h3-font-size-desktop) !important;
+  }
+
+  .cards.h2-h4 h2 {
+    font-size: var(--h4-font-size-desktop) !important;
+  }
+
+  .cards.h3-h1 h3 {
+    font-size: var(--h1-font-size-desktop) !important;
+  }
+
+  .cards.h3-h2 h3 {
+    font-size: var(--h2-font-size-desktop) !important;
+  }
+
+  .cards.h3-h4 h3 {
+    font-size: var(--h4-font-size-desktop) !important;
+  }
+
+  .cards.h4-h1 h4 {
+    font-size: var(--h1-font-size-desktop) !important;
+  }
+
+  .cards.h4-h2 h4 {
+    font-size: var(--h2-font-size-desktop) !important;
+  }
+
+  .cards.h4-h3 h4 {
+    font-size: var(--h3-font-size-desktop) !important;
   }
 }
 

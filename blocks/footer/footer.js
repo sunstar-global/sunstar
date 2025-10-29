@@ -7,6 +7,7 @@ function decorateFooterTop(block) {
   const tempDiv = footerTop.querySelector('.section-container>div');
   const children = [...footerTop.querySelector('.section-container>div').children];
 
+  console.log(children[15]);
   let index = 0;
   let topIndex = 0;
   tempDiv.innerHTML = '';
