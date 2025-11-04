@@ -129,6 +129,7 @@ main .block.cards {
 .cards .cards-card-body h5 {
   margin-bottom: 1rem !important;
   margin-top: 0 !important;
+  text-wrap: pretty;
 }
 
 .cards .cards-card-body .title {
