@@ -258,7 +258,7 @@ h4 {
 }
 
 p {
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
   font-size: var(--body-font-size-m);
   line-height: 1.7em;
   text-size-adjust: 100%;
