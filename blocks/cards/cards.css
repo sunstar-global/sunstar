@@ -103,12 +103,12 @@ main .block.cards {
 
 .cards .cards-card-body p {
   font-size: var(--body-font-size-s);
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .cards.large-text .cards-card-body p {
   font-size: var(--body-font-size-m);
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .cards .cards-card-body > :last-child {
