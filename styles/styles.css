@@ -996,7 +996,7 @@ main .section.narrower.section.with-background-image > .section-container {
   box-sizing: border-box;
 }
 
-main .section.border-bottom  > .section-container .default-content-wrapper {
+main .section.border-bottom  > .section-container .default-content-wrapper:last-of-type {
   border-bottom: 1px solid var(--transparent-grey-light-color);
   padding-bottom: 5rem;
 } 
