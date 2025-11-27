@@ -90,7 +90,7 @@
 
   /* fonts */
 
-  --body-font-family: 'Noto Sans', noto-sans-normal-400-fallback, sans-serif;
+  --body-font-family: 'Noto Sans', 'Noto Sans JP', noto-sans-normal-400-fallback, sans-serif;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
