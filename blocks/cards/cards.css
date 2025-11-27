@@ -196,6 +196,19 @@ main .block.cards.light-background ul > li {
   aspect-ratio: 4/3;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+}
+
+.cards.aspect-ratio-3-2 .cards-card-image {
+  aspect-ratio: 3/2;
+  height: unset !important;
+  width: 100% !important;
+}
+
+.cards.aspect-ratio-16-10 .cards-card-image {
+  aspect-ratio: 16/10;
+  height: unset !important;
+  width: 100% !important;
 }
 
 .cards.aspect-ratio-16-9 .cards-card-image {
@@ -424,6 +437,15 @@ main .cards.machine-parts .cards-card-body h6 {
 
 main .cards.machine-parts .cards-card-body img {
   height: 2rem;
+}
+
+.cards.image-hover-effect a .cards-card-image img {
+  transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.cards.image-hover-effect a:hover .cards-card-image img {
+  transform: matrix(1.05, 0, 0, 1.05, 0, 0);
 }
 
 main .cards.machine-parts .cards-card-body p {
