@@ -1188,6 +1188,7 @@ main .block.download a::after {
 .section.with-background-image,
 .section.with-static-background-image {
   position: relative;
+  overflow: hidden;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */

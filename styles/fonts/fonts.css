@@ -172,6 +172,27 @@
 
 /* Japanese Katakana, Hiragana and Kanji */
 @font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/styles/fonts/o-0IIpQlx3QUlC5A4PNr5TRASf6M7Q.woff2') format('woff2');
+  unicode-range: U+4E00-9FFF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+FF00-FFEF;
+}
+
+/* Japanese Katakana, Hiragana and Kanji - Bold */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/styles/fonts/o-0NIpQlx3QUlC5A4PNjXhFVZNyBx2pqPA.woff2') format('woff2');
+  unicode-range: U+4E00-9FFF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+FF00-FFEF;
+}
+
+
+/* Noto Sans JP font faces Fallback */
+@font-face {
   font-family: 'Noto Sans JP';
   font-style: normal;
   font-weight: 400;
@@ -179,7 +200,22 @@
   src: url('/styles/fonts/NotoSansJP-Regular.woff2') format('woff2');
 }
 
-/* Japanese Katakana, Hiragana and Kanji Bold */
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/styles/fonts/NotoSansJP-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/styles/fonts/NotoSansJP-SemiBold.woff2') format('woff2');
+}
+
 @font-face {
   font-family: 'Noto Sans JP';
   font-style: normal;
@@ -187,4 +223,3 @@
   font-display: swap;
   src: url('/styles/fonts/NotoSansJP-Bold.woff2') format('woff2');
 }
-
