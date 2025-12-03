@@ -261,7 +261,6 @@ export function decorateVideoLinks(youTubeAnchors) {
  */
 export function decorateExternalLinksAccessibility(externalAnchors) {
   if (externalAnchors.length) {
-    console.log('externalAnchors', externalAnchors[0].href.includes('linkedin'));
     externalAnchors.forEach((a) => {
       if (a.href.includes('youtu')) {
         a.setAttribute('aria-label', 'YouTube');
@@ -787,8 +786,6 @@ export function getEnvType(hostname = window.location.hostname) {
   const fqdnToEnvType = {
     'sunstar.com': 'live',
     'www.sunstar.com': 'live',
-    'main--sunstar--sunstar-global.hlx.page': 'preview',
-    'main--sunstar--sunstar-global.hlx.live': 'live',
     'main--sunstar--sunstar-global.aem.page': 'preview',
     'main--sunstar--sunstar-global.aem.live': 'live',
     'ga-integration--sunstar--sunstar-global.aem.live': 'live',
