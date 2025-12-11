@@ -23,6 +23,14 @@ export function decorateButtons(block) {
           el.classList.add('secondary');
         }
 
+        if (block.classList.contains('button-arrow-down')) {
+          el.classList.add('arrow-down');
+        }
+
+        if (block.classList.contains('min-width-unset')) {
+          el.classList.add('min-width-unset');
+        }
+
         if (block.classList.contains('button-outline')) {
           el.classList.add('outline');
         }

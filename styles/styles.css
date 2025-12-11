@@ -697,6 +697,22 @@ button.secondary {
   color: var(--text-color);
 }
 
+a.button.arrow-down::after,
+button.arrow-down::after {
+  content: '';
+  background-image: url('../../icons/arrow-down-header.svg');
+  height: 15px;
+  width: 12px;
+  background-size: contain;
+  background-position: top 5px center;
+  background-repeat: no-repeat;
+  margin-left: 8px;
+}
+
+a.button.min-width-unset {
+  min-width: unset;
+}
+
 a.button.branded {
   padding-inline: 2.5rem;
 }
