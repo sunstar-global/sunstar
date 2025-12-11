@@ -90,7 +90,7 @@
 
   /* fonts */
 
-  --body-font-family: 'Noto Sans', noto-sans-normal-400-fallback, sans-serif;
+  --body-font-family: 'Noto Sans', 'Noto Sans JP', noto-sans-normal-400-fallback, sans-serif;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
@@ -692,8 +692,14 @@ button:not(:disabled):hover {
 
 a.button.secondary,
 button.secondary {
-  background-color: unset;
-  border: 2px solid currentcolor;
+  background-color: unset !important;
+  border: 2px solid var(--transparent-grey-color-2);
+  color: var(--text-color);
+}
+
+a.button.secondary:hover,
+button.secondary:hover {
+  border-color: var(--transparent-grey-color);
   color: var(--text-color);
 }
 
@@ -1069,6 +1075,11 @@ main .section.three-columns-layout.with-static-background-image > picture {
   bottom: 0;
 }
 
+main .section.border-bottom > .section-container > div:last-of-type {
+  border-bottom: 1px solid var(--transparent-grey-light-color);
+  padding-bottom: 5rem;
+}
+
 main .section.narrower.section.with-background-image > picture {
   margin: auto;
   margin-block-end: 3rem;
@@ -1199,6 +1210,7 @@ main .block.download a::after {
 .section.with-background-image,
 .section.with-static-background-image {
   position: relative;
+  overflow: hidden;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
