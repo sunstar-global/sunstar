@@ -190,7 +190,6 @@
   unicode-range: U+4E00-9FFF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+FF00-FFEF;
 }
 
-
 /* Noto Sans JP font faces Fallback */
 @font-face {
   font-family: 'Noto Sans JP';

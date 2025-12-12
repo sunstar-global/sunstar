@@ -6,11 +6,11 @@ main .block.text.question p {
   font-size: var(--body-font-size-l);
   font-weight: var(--font-weight-medium);
   margin-bottom: 2rem;
-  text-wrap: pretty!important;
+  text-wrap: pretty !important;
 }
 
 main .block.text.question p::before {
-  content: "Q. ";
+  content: 'Q. ';
   color: var(--primary);
   position: inline-block;
   font-weight: var(--font-weight-bold);

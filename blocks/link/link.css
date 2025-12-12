@@ -15,6 +15,21 @@
   top: 0.5rem;
 }
 
+.block.link.icon-arrow-down-right a::after {
+  content: '';
+  background-image: url('../../icons/arrow-down-blue.svg');
+  height: 15px;
+  width: 12px;
+  background-size: contain;
+  background-position: top 5px center;
+  background-repeat: no-repeat;
+  margin-left: 8px;
+}
+
+.block.link.min-width-unset a {
+  min-width: unset;
+}
+
 .block.link.no-margin {
   margin-bottom: 0;
 }
