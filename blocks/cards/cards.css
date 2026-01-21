@@ -47,6 +47,7 @@ main .block.cards {
   background-color: unset !important;
 }
 
+
 .cards > ul > li .date {
   font-size: var(--body-font-size-s);
   padding-bottom: 0.25rem;
@@ -174,6 +175,10 @@ main .cards.features-items ul > li {
 main .cards.info-points > ul > li {
   display: flex;
   box-shadow: none;
+}
+
+.cards.hover-background-gray > ul > li:hover {
+  background-color: var(--transparent-blue-light-color)!important;
 }
 
 .cards:not(.no-shadow) > ul > li:hover {
