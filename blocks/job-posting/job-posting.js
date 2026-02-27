@@ -14,6 +14,9 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders(lang);
   const container = document.createElement('div');
   container.classList.add('section', 'hero-career-container');
+
+  const infoWrapper = document.createElement('div');
+  infoWrapper.classList.add('hero-career-info');
   const title = document.createElement('div');
   title.classList.add('hero-career-title');
   const titleContainer = document.createElement('div');
@@ -21,11 +24,11 @@ export default async function decorate(block) {
   block.appendChild(container);
   container.appendChild(title);
   title.appendChild(titleContainer);
-  addTextEl('h1', cfg.jobtitle, titleContainer, '', 'hero-career-name');
+  if (cfg.jobtitle) {
+    addTextEl('h1', cfg.jobtitle, titleContainer, '', 'hero-career-name');
 
-  const infoWrapper = document.createElement('div');
-  infoWrapper.classList.add('hero-career-info');
-  title.appendChild(infoWrapper);
+    title.appendChild(infoWrapper);
+  }
 
   const location = [cfg.region, cfg.country, cfg.city].filter(Boolean).join(', ');
   if (location) {
@@ -58,9 +61,9 @@ export default async function decorate(block) {
       emailLink.target = '_blank';
       emailLink.rel = 'noopener noreferrer';
       emailLink.classList.add('button', 'primary', 'email');
-      emailLink.setAttribute('aria-label', 'Apply by Email');
+      emailLink.setAttribute('aria-label', placeholders['apply-by-email']);
       emailLink.href = `mailto:${cfg.email}?subject=${encodeURIComponent(`Job Application: ${cfg.jobtitle || ''}`)}&body=${encodeURIComponent('Please provide your CV and motivation letter.')}`;
-      emailLink.appendChild(document.createTextNode('Apply by Email'));
+      emailLink.appendChild(document.createTextNode(placeholders['apply-by-email']));
       buttonContainer.appendChild(emailLink);
     }
 
@@ -69,7 +72,7 @@ export default async function decorate(block) {
       externalLink.target = '_blank';
       externalLink.rel = 'noopener noreferrer';
       externalLink.classList.add('button', 'primary', 'externallink');
-      externalLink.setAttribute('aria-label', 'Apply on an external site');
+      externalLink.setAttribute('aria-label', placeholders['apply-on']);
       externalLink.href = cfg.externallink;
       externalLink.appendChild(document.createTextNode(`${placeholders['apply-on']}`));
       buttonContainer.appendChild(externalLink);

@@ -12,11 +12,10 @@
       ]
     }
   ],
-	"copyMode": [ 
-    	{ 
-        	"mimeType": "image/*", 
-        	"value": "reference" 
-    	} 
-	] 
-} 
-
+  "copyMode": [
+    {
+      "mimeType": "image/*",
+      "value": "reference"
+    }
+  ]
+}
