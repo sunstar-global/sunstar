@@ -11,7 +11,9 @@
     "lint": "npm run lint:js && npm run lint:css",
     "prepare": "husky install",
     "copy": "node ./tools/actions/copy.js",
-    "compare": "node ./tools/actions/compare.js"
+    "compare": "node ./tools/actions/compare.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "lint-staged": {
     "*.js": "eslint .",

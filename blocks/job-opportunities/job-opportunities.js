@@ -10,6 +10,7 @@ export default async function decorate(block) {
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
   const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
 
+  console.log(unfilteredData);
   const data = unfilteredData.filter((item) => {
     if (item.robots && item.robots.includes('noindex')) {
       return false;
