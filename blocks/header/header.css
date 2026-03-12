@@ -520,6 +520,30 @@ header .picker:hover > ul {
   display: block;
 }
 
+/* Language Picker Styles */
+header .lang-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+header .lang-picker > a::after {
+  display: none; /* Remove dropdown arrow for lang picker */
+}
+
+header .lang-picker .current-lang {
+  font-size: var(--body-font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--light-black);
+}
+
+header .lang-picker .lang-switch-link {
+  font-size: var(--body-font-size-s);
+  font-weight: var(--font-weight-medium);
+  color: var(--light-black);
+  text-decoration: none;
+}
+
 /* WesbitePickerItem Styles */
 header .website-picker-item > a::after,
 header > div > nav.nav-bottom.open > ul > li.other-items > li.mobile-website-picker > ul > li > a::after {
@@ -559,6 +583,14 @@ header .nav-bottom .other-items .mobile-lang-picker .mobile-lang-picker-item a {
   text-decoration: none;
   font-size: var(--body-font-size-s);
   letter-spacing: -0.4px;
+}
+
+header .nav-bottom .other-items .mobile-lang-picker .mobile-lang-current {
+  padding: 1rem;
+  list-style: none;
+  color: var(--white);
+  font-size: var(--body-font-size-s);
+  font-weight: var(--font-weight-medium);
 }
 
 header .mega-dropdown {
