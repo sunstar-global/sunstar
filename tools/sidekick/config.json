@@ -22,7 +22,8 @@
     {
       "id": "preflight",
       "titleI18n": {
-        "en": "Preflight"
+        "en": "Preflight",
+        "jp": "事前検査"
       },
       "environments": ["preview"],
       "event": "preflight"
