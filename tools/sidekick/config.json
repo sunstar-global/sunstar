@@ -5,12 +5,18 @@
     {
       "id": "library",
       "title": "Library",
+      "titleI18n": {
+        "en": "Library",
+        "ja": "ライブラリ",
+        "fr": "Bibliothèque"
+      },
       "environments": ["edit"],
       "url": "/tools/sidekick/library.html",
       "includePaths": ["**.docx**"]
     },
     {
       "id": "asset-library",
+      "title": "DAM (Asset Management)",
       "titleI18n": {
         "en": "DAM (Asset Management)",
         "ja": "DAM (デジタル資産管理)",
@@ -25,6 +31,7 @@
     },
     {
       "id": "preflight",
+      "title": "Preflight",
       "titleI18n": {
         "en": "Preflight",
         "ja": "事前検査",
@@ -35,6 +42,7 @@
     },
     {
       "id": "aem-genai-variations",
+      "title": "Generate with AI",
       "titleI18n": {
         "en": "Generate with AI",
         "ja": "AIで生成",
