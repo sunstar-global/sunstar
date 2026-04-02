@@ -808,6 +808,8 @@ export async function loadFragment(path) {
 export async function loadScript(url, attrs = {}) {
   const script = document.createElement('script');
   script.src = url;
+  script.setAttribute('nonce', 'aem');
+
   // eslint-disable-next-line no-restricted-syntax
   for (const [name, value] of Object.entries(attrs)) {
     script.setAttribute(name, value);
@@ -1036,4 +1038,18 @@ export function cropString(inputString, maxLength) {
 
 if (!window.noload) {
   loadPage();
+}
+
+export async function loadChartJs() {
+  if (!window.Chart) {
+    return loadScript('https://cdn.jsdelivr.net/npm/chart.js');
+  }
+  return Promise.resolve();
+}
+
+export function replaceCellContent(cell, loadedContent) {
+  if (!cell || !loadedContent) return;
+
+  const contentRoot = loadedContent.querySelector('main') || loadedContent;
+  cell.replaceChildren(...[...contentRoot.children]);
 }
