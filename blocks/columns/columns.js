@@ -1,7 +1,7 @@
 import { loadEmbed } from '../embed/embed.js';
 import { decorateButtons } from '../text/text.js';
 import { processLoadableCells } from '../fragment/fragment.js';
-import { loadFragment, replaceCellContent } from '../../scripts/scripts.js';
+import { loadFragment, initInjectedBlocks, injectFragmentIntoCell, replaceCellContent } from '../../scripts/scripts.js';
 
 export function applySplitPercentages(block) {
   const ratios = [];
@@ -81,13 +81,13 @@ export function applyCellAlignment(block) {
 }
 
 export default async function decorate(block) {
-  // check if it's not null then load fragment
-
   await processLoadableCells(block, {
     marker: 'Fragment',
-    load: async (path) => loadFragment(path),
+    load: async (path) => loadFragment(path, { decorate: false }),
     onMatch: async ({ cell, loadedContent }) => {
       replaceCellContent(cell, loadedContent);
+      injectFragmentIntoCell(cell, loadedContent);
+      await initInjectedBlocks(cell);
     },
   });
 

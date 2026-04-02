@@ -23,24 +23,16 @@ export default async function decorate(block) {
   }
 }
 
-export function getLoadablePathFromCell(cell, marker = 'fragment') {
+export function getLoadablePathFromCell(cell, marker = 'Fragment') {
   if (!cell) return null;
 
-  const directDivs = [...cell.querySelectorAll(':scope > div')];
+  const textNodes = [...cell.querySelectorAll('p, div, span')];
+  const markerFound = textNodes.some((el) => el.textContent.trim().toLowerCase() === marker.toLowerCase());
 
-  const markerIndex = directDivs.findIndex((div) => div.textContent.trim().toLowerCase() === marker.toLowerCase());
+  if (!markerFound) return null;
 
-  if (markerIndex === -1) return null;
-
-  const nextDiv = directDivs[markerIndex + 1];
-  const nextLink = nextDiv?.querySelector('a');
-
-  if (nextLink) {
-    return nextLink.getAttribute('href');
-  }
-
-  const fallbackLink = cell.querySelector('a');
-  return fallbackLink?.getAttribute('href') || null;
+  const link = cell.querySelector('a[href]');
+  return link ? link.getAttribute('href') : null;
 }
 
 export async function processLoadableCells(
