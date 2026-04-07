@@ -3,83 +3,146 @@
 import { loadChartJs } from '../../scripts/scripts.js';
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
-function generateBarChart(labels, data, config, block) {
-  const canvas = document.createElement('canvas');
-  canvas.ctx = canvas.getContext('2d');
-  block.appendChild(canvas);
-  let title = {};
-  if (config.title) {
-    title = {
-      display: true,
-      text: config.title,
-      position: 'top',
-      align: 'start',
-      color: '#00587c',
-      font: {
-        size: 24,
-        weight: 'normal',
-      },
-      padding: {
-        top: 10,
-        bottom: 30,
-      },
-    };
+function getNiceStepSize(maxValue, targetSteps = 6) {
+  const roughStep = maxValue / targetSteps;
+  const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+  const normalized = roughStep / magnitude;
+
+  let niceNormalized;
+  if (normalized <= 1) niceNormalized = 1;
+  else if (normalized <= 2) niceNormalized = 2;
+  else if (normalized <= 2.5) niceNormalized = 2.5;
+  else if (normalized <= 5) niceNormalized = 5;
+  else niceNormalized = 10;
+
+  return niceNormalized * magnitude;
+}
+
+function animateValueLabels(chart, duration = 600) {
+  const start = performance.now();
+
+  function frame(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    chart.$labelAnimationProgress = progress;
+    chart.draw();
+
+    if (progress < 1) {
+      requestAnimationFrame(frame);
+    }
   }
 
-  // chck what is the max value in data and set stepSize accordingly to have around 6 steps in y axis + 10% buffer on top
-  const stepSize = Math.ceil(Math.max(...data) / 6) + Math.ceil(Math.max(...data) / 10);
+  requestAnimationFrame(frame);
+}
 
-  // set the last bar to be thicker if it has the max value, otherwise all bars will have the same thickness
-  const barTicknessArray = data.map((value) => (value === Math.max(...data) ? 60 : 90));
+function generateBarChart(labels, data, config, block) {
+  // eslint-disable-next-line no-undef
+  Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
+
+  const canvas = document.createElement('canvas');
+  block.appendChild(canvas);
 
   const lastIndex = data.length - 1;
-  const mainData = data.map((v, i) => (i === lastIndex ? null : v));
-  const mainLabels = labels.map((v, i) => (i === lastIndex ? '' : v));
-  const lastBarData = data.map((v, i) => (i === lastIndex ? v : null));
-  const lastBarLabel = labels.map((v, i) => (i === lastIndex ? v : ''));
 
-  const ctx = canvas;
+  const finalMainData = data.map((v, i) => (i === lastIndex ? null : v));
+  const finalLastBarData = data.map((v, i) => (i === lastIndex ? v : null));
 
-  // eslint-disable-next-line no-undef, no-new
-  const chart = new Chart(ctx, {
+  const initialMainData = data.map((v, i) => (i === lastIndex ? null : 0));
+  const initialLastBarData = data.map((v, i) => (i === lastIndex ? 0 : null));
+
+  const stepSize = getNiceStepSize(Math.max(...data) * 1.1);
+  const maxRounded = Math.ceil((Math.max(...data) * 1.1) / stepSize) * stepSize;
+
+  const valueLabelPlugin = {
+    id: 'valueLabelPlugin',
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const progress = chart.$labelAnimationProgress ?? 0;
+
+      chart.data.datasets.forEach((dataset, datasetIndex) => {
+        const meta = chart.getDatasetMeta(datasetIndex);
+
+        meta.data.forEach((bar, index) => {
+          const rawValue = dataset.rawValues?.[index];
+          if (rawValue == null) return;
+
+          const isLast = index === chart.data.labels.length - 1;
+          const animatedValue = Math.round(rawValue * progress);
+          const { x, y, base } = bar;
+
+          ctx.save();
+          ctx.globalAlpha = progress;
+          ctx.textAlign = 'center';
+
+          if (isLast) {
+            ctx.font = '500 28px "Noto Sans", sans-serif';
+            ctx.fillStyle = '#F28B2D';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(animatedValue.toLocaleString(), x, y - 10);
+          } else {
+            ctx.font = '500 24px "Noto Sans", sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(animatedValue.toLocaleString(), x, y + (base - y) / 2);
+          }
+
+          ctx.restore();
+        });
+      });
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  const chart = new Chart(canvas, {
     type: 'bar',
-    title: 'Chart Title',
-    aspectRatio: 1,
+    plugins: [valueLabelPlugin],
     data: {
-      stacked: true,
       labels,
       datasets: [
         {
-          data: mainData,
+          data: initialMainData,
+          rawValues: finalMainData,
           borderWidth: 0,
           borderRadius: 16,
-          backgroundColor: ['#4D89A3', '#00577C'],
-          barThickness: 60,
+          backgroundColor: ['#4D89A3', '#00577C', null],
+          barPercentage: 0.8,
           grouped: false,
         },
         {
-          data: lastBarData,
+          data: initialLastBarData,
+          rawValues: finalLastBarData,
           borderWidth: 0,
           borderRadius: 16,
-          backgroundColor: '#F28B2D',
-          barThickness: 90,
+          backgroundColor: [null, null, '#F28B2D'],
+          barPercentage: 1,
           grouped: false,
         },
       ],
     },
     options: {
+      aspectRatio: 1,
+      maintainAspectRatio: true,
+      animation: {
+        duration: 800,
+        easing: 'easeOutQuart',
+      },
       plugins: {
-        title: { ...title },
         legend: {
           display: false,
+        },
+        tooltip: {
+          enabled: false,
         },
       },
       scales: {
         y: {
           beginAtZero: true,
+          max: maxRounded,
           ticks: {
             color: '#00587c',
             stepSize,
+            font: {
+              size: 16,
+            },
           },
           border: {
             width: 0,
@@ -88,26 +151,64 @@ function generateBarChart(labels, data, config, block) {
         x: {
           ticks: {
             color: '#00587c',
+            font: (ct) => {
+              const isLastTick = ct.index === ct.chart.data.labels.length - 1;
+
+              return {
+                size: isLastTick ? 20 : 16,
+                weight: isLastTick ? '600' : '400',
+                family: 'Noto Sans, Noto Sans JP, sans-serif',
+              };
+            },
           },
           border: {
             width: 0,
           },
           grid: {
+            drawTicks: true,
+            tickLength: 8,
             display: false,
           },
         },
       },
     },
   });
+
+  chart.$labelAnimationProgress = 0;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        if (entry.intersectionRatio < 0.65) return;
+
+        // Small delay so it feels tied to the scroll position
+        setTimeout(() => {
+          chart.data.datasets[0].data = finalMainData;
+          chart.data.datasets[1].data = finalLastBarData;
+          chart.update();
+
+          setTimeout(() => {
+            animateValueLabels(chart, 600);
+          }, 800);
+        }, 120);
+
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: [0.65],
+    }
+  );
+
+  observer.observe(canvas);
 }
 
 function getDataFromBlock(block) {
   const labels = [];
   const data = [];
-
   const rows = Array.from(block.children);
 
-  // 1. Find index of "Data" row
   const dataStartIndex = rows.findIndex((row) => {
     const firstCell = row.children[0];
     return firstCell && firstCell.textContent.trim().toLowerCase() === 'data';
@@ -117,7 +218,6 @@ function getDataFromBlock(block) {
     return { labels, data };
   }
 
-  // 2. Loop through rows AFTER "Data"
   for (let i = dataStartIndex + 1; i < rows.length; i += 1) {
     const row = rows[i];
     const cells = row.children;
@@ -136,16 +236,30 @@ function getDataFromBlock(block) {
 
 export default async function decorate(block) {
   await loadChartJs();
+
   const blockCfg = readBlockConfig(block);
-
-  console.log(blockCfg);
-
   const { labels, data } = getDataFromBlock(block);
-  generateBarChart(labels, data, blockCfg, block);
-  // remove everything except canvas element from block
+
   Array.from(block.children).forEach((child) => {
-    if (child.tagName.toLowerCase() !== 'canvas') {
-      block.removeChild(child);
-    }
+    block.removeChild(child);
   });
+
+  if (blockCfg.title) {
+    const titleContainer = document.createElement('div');
+    titleContainer.classList.add('chart-title-container');
+
+    const titleEl = document.createElement('h3');
+    titleEl.textContent = blockCfg.title;
+    titleContainer.appendChild(titleEl);
+
+    if (blockCfg.caption) {
+      const captionEl = document.createElement('span');
+      captionEl.textContent = ` (${blockCfg.caption})`;
+      titleEl.appendChild(captionEl);
+    }
+
+    block.appendChild(titleContainer);
+  }
+
+  generateBarChart(labels, data, blockCfg, block);
 }

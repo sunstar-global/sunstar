@@ -472,6 +472,10 @@ div.img-col > video {
   padding: 0 1rem;
 }
 
+.columns .charts.block {
+  padding: 0!important;
+}
+
 .columns.plain-links.collapse:not(.continuation) > div > div:first-child {
   margin-top: 3rem;
 }
