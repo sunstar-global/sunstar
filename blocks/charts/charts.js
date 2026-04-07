@@ -121,10 +121,7 @@ function generateBarChart(labels, data, config, block) {
     options: {
       aspectRatio: 1,
       maintainAspectRatio: true,
-      animation: {
-        duration: 800,
-        easing: 'easeOutQuart',
-      },
+      animation: false,
       plugins: {
         legend: {
           display: false,
@@ -136,6 +133,7 @@ function generateBarChart(labels, data, config, block) {
       scales: {
         y: {
           beginAtZero: true,
+          min: 0,
           max: maxRounded,
           ticks: {
             color: '#00587c',
@@ -176,21 +174,37 @@ function generateBarChart(labels, data, config, block) {
 
   chart.$labelAnimationProgress = 0;
 
+  let hasAnimated = false;
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
+        if (!entry.isIntersecting || hasAnimated) return;
         if (entry.intersectionRatio < 0.65) return;
 
-        // Small delay so it feels tied to the scroll position
+        hasAnimated = true;
+
         setTimeout(() => {
-          chart.data.datasets[0].data = finalMainData;
-          chart.data.datasets[1].data = finalLastBarData;
+          // Reset instantly to bottom before animating
+          chart.$labelAnimationProgress = 0;
+          chart.data.datasets[0].data = [...initialMainData];
+          chart.data.datasets[1].data = [...initialLastBarData];
+          chart.update('none');
+
+          // Animate bars from 0 to final values
+          chart.options.animation = {
+            duration: 1000,
+            easing: 'easeOutCubic',
+          };
+
+          chart.data.datasets[0].data = [...finalMainData];
+          chart.data.datasets[1].data = [...finalLastBarData];
           chart.update();
 
+          // Start counting/fading labels after bars are almost done
           setTimeout(() => {
             animateValueLabels(chart, 600);
-          }, 800);
+          }, 850);
         }, 120);
 
         observer.unobserve(entry.target);
