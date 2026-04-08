@@ -77,6 +77,25 @@ export function getLanguangeSpecificPath(path) {
 }
 
 /**
+ * Returns true when breadcrumb navigation is available or can be generated.
+ * @param {Document|Element} main The container element to inspect.
+ * @returns {boolean}
+ */
+export function isBreadcrumbAvailable(main = document) {
+  const noBreadcrumb = getMetadata('nobreadcrumb');
+  const alreadyBreadcrumb = main.querySelector('.breadcrumb');
+
+  if (alreadyBreadcrumb) return true;
+  if (isInternalPage()) return false;
+
+  return !noBreadcrumb || noBreadcrumb === 'false';
+}
+
+if (typeof window !== 'undefined') {
+  window.isBreadcrumbAvailable = isBreadcrumbAvailable;
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
