@@ -18,6 +18,8 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
+import loadSchema from './schema.js';
+
 const LCP_BLOCKS = [
   'hero',
   'hero-banner',
@@ -714,6 +716,7 @@ async function loadPage() {
   redirectTagPage();
   await loadEager(document);
   await loadLazy(document);
+  loadSchema(document);
   loadDelayed();
 }
 
