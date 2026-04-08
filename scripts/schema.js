@@ -1,4 +1,37 @@
-import { getMetadata, isInternalPage } from './lib-franklin.js';
+import { getMetadata } from './lib-franklin.js';
+
+/**
+ * Generate and inject breadcrumb schema into <head> if breadcrumbs are rendered.
+ * @param {Document} doc The document object
+ */
+export function generateBreadcrumbSchema(doc) {
+  const breadcrumbElement = doc.querySelector('.breadcrumb');
+
+  if (breadcrumbElement) {
+    const breadcrumbLinks = doc.querySelectorAll('.breadcrumb a');
+
+    if (breadcrumbLinks.length > 0) {
+      const breadcrumbList = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: Array.from(breadcrumbLinks).map((link, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: link.textContent.trim(),
+          item: link.href,
+        })),
+      };
+
+      const breadcrumbScript = doc.createElement('script');
+      breadcrumbScript.type = 'application/ld+json';
+      breadcrumbScript.textContent = JSON.stringify(breadcrumbList);
+
+      doc.head.appendChild(breadcrumbScript);
+
+      console.log('Breadcrumb schema injected', breadcrumbList);
+    }
+  }
+}
 
 export default function loadSchema(document) {
   console.log('Schema function running');
@@ -79,32 +112,4 @@ export default function loadSchema(document) {
   document.head.appendChild(script);
 
   console.log('Auto-generated schema injected', schema);
-
-  // Generate breadcrumb schema if available
-  const noBreadcrumb = getMetadata('nobreadcrumb');
-  const alreadyBreadcrumb = document.querySelector('.breadcrumb');
-
-  if ((!noBreadcrumb || noBreadcrumb === 'false') && alreadyBreadcrumb && !isInternalPage()) {
-    const breadcrumbLinks = document.querySelectorAll('.breadcrumb a');
-    if (breadcrumbLinks.length > 0) {
-      const breadcrumbList = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: Array.from(breadcrumbLinks).map((link, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          name: link.textContent.trim(),
-          item: link.href,
-        })),
-      };
-
-      const breadcrumbScript = document.createElement('script');
-      breadcrumbScript.type = 'application/ld+json';
-      breadcrumbScript.textContent = JSON.stringify(breadcrumbList);
-
-      document.head.appendChild(breadcrumbScript);
-
-      console.log('Breadcrumb schema injected', breadcrumbList);
-    }
-  }
 }

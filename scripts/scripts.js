@@ -18,7 +18,7 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
-import loadSchema from './schema.js';
+import loadSchema, { generateBreadcrumbSchema } from './schema.js';
 
 const LCP_BLOCKS = [
   'hero',
@@ -628,6 +628,7 @@ async function loadLazy(doc) {
   if (!main) return;
 
   await loadBlocks(main);
+  generateBreadcrumbSchema(doc);
   wrapDirectDivTextInParagraphs(main);
 
   const { hash } = window.location;
