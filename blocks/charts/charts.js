@@ -38,6 +38,7 @@ function generateBarChart(labels, data, config, block) {
   // eslint-disable-next-line no-undef
   Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
 
+  const aspectRatio = config.aspectRatio || 1.2;
   const canvas = document.createElement('canvas');
   block.appendChild(canvas);
 
@@ -119,7 +120,7 @@ function generateBarChart(labels, data, config, block) {
       ],
     },
     options: {
-      aspectRatio: 1,
+      aspectRatio,
       maintainAspectRatio: true,
       animation: false,
       plugins: {
@@ -218,6 +219,141 @@ function generateBarChart(labels, data, config, block) {
   observer.observe(canvas);
 }
 
+function generateDoughnutChart(labels, data, config, block) {
+  // eslint-disable-next-line no-undef
+  Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
+
+  const aspectRatio = config.aspectRatio || 1.4;
+  const canvas = document.createElement('canvas');
+  block.appendChild(canvas);
+
+  const colors = config.colors || ['#0099D4', '#00A89C'];
+  const centerTextColor = config.centerTextColor || '#00577C';
+  const labelColor = config.labelColor || '#00577C';
+  const connectorColor = config.connectorColor || '#7A8A93';
+  const dotColor = config.dotColor || '#2F3A40';
+
+  const total = data.reduce((sum, value) => sum + value, 0);
+
+  const customPlugin = {
+    id: 'customDoughnutInsideLabels',
+    afterDraw(chart) {
+      const { ctx, chartArea } = chart;
+      const meta = chart.getDatasetMeta(0);
+
+      if (!meta?.data?.length) return;
+
+      const arc = meta.data[0];
+      const cx = arc.x;
+      const cy = arc.y;
+      const { outerRadius } = arc;
+
+      ctx.save();
+
+      // Center text
+      ctx.fillStyle = centerTextColor;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      ctx.font = '400 14px "Noto Sans", sans-serif';
+      ctx.fillText('Sales (%) by', cx, cy - 16);
+
+      ctx.font = '700 18px "Noto Sans", sans-serif';
+      ctx.fillText('Business', cx, cy + 2);
+      ctx.fillText('Sector', cx, cy + 24);
+
+      meta.data.forEach((segment, index) => {
+        const angle = (segment.startAngle + segment.endAngle) / 2;
+        const value = data[index];
+        const percent = `${Math.round((value / total) * 100)}%`;
+
+        const anchorX = cx + Math.cos(angle) * (outerRadius - 8);
+        const anchorY = cy + Math.sin(angle) * (outerRadius - 8);
+
+        const isRight = Math.cos(angle) >= 0;
+
+        // Keep everything inside chart area
+        const dotX = isRight ? cx + outerRadius + 18 : cx - outerRadius - 18;
+        const dotY = anchorY;
+
+        const lineEndX = isRight ? dotX + 22 : dotX - 22;
+        const textX = isRight ? lineEndX + 8 : lineEndX - 8;
+
+        // Connector
+        ctx.beginPath();
+        ctx.strokeStyle = connectorColor;
+        ctx.lineWidth = 1.5;
+        ctx.moveTo(anchorX, anchorY);
+        ctx.lineTo(dotX, dotY);
+        ctx.lineTo(lineEndX, dotY);
+        ctx.stroke();
+
+        // Dot
+        ctx.beginPath();
+        ctx.fillStyle = dotColor;
+        ctx.arc(dotX, dotY, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Text
+        ctx.fillStyle = labelColor;
+        ctx.textAlign = isRight ? 'left' : 'right';
+
+        ctx.font = '400 13px "Noto Sans", sans-serif';
+        ctx.fillText(labels[index], textX, dotY - 12);
+
+        ctx.font = '700 18px "Noto Sans", sans-serif';
+        ctx.fillText(percent, textX, dotY + 10);
+      });
+
+      ctx.restore();
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  const chart = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [
+        {
+          data,
+          backgroundColor: colors,
+          borderWidth: 2,
+          borderColor: '#ffffff',
+          hoverOffset: 0,
+          radius: '78%', // makes doughnut smaller
+        },
+      ],
+    },
+    options: {
+      aspectRatio,
+      maintainAspectRatio: true,
+      cutout: '60%',
+      layout: {
+        padding: {
+          top: 30,
+          right: 90,
+          bottom: 30,
+          left: 90,
+        },
+      },
+      animation: {
+        animateRotate: true,
+        duration: 800,
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+      },
+    },
+    plugins: [customPlugin],
+  });
+}
+
 function getDataFromBlock(block) {
   const labels = [];
   const data = [];
@@ -267,13 +403,20 @@ export default async function decorate(block) {
     titleContainer.appendChild(titleEl);
 
     if (blockCfg.caption) {
-      const captionEl = document.createElement('span');
-      captionEl.textContent = ` (${blockCfg.caption})`;
+      const captionEl = document.createElement('p');
+      captionEl.textContent = `${blockCfg.caption}`;
       titleEl.appendChild(captionEl);
     }
 
     block.appendChild(titleContainer);
   }
 
-  generateBarChart(labels, data, blockCfg, block);
+  if (blockCfg.type === 'doughnut') {
+    generateDoughnutChart(labels, data, blockCfg, block);
+    return;
+  }
+
+  if (blockCfg.type === 'bar') {
+    generateBarChart(labels, data, blockCfg, block);
+  }
 }
