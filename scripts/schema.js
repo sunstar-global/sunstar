@@ -7,30 +7,62 @@ import { getMetadata } from './lib-franklin.js';
 export function generateBreadcrumbSchema(doc) {
   const breadcrumbElement = doc.querySelector('.breadcrumb');
 
-  if (breadcrumbElement) {
-    const breadcrumbLinks = doc.querySelectorAll('.breadcrumb a');
+  if (!breadcrumbElement) return;
 
-    if (breadcrumbLinks.length > 0) {
-      const breadcrumbList = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: Array.from(breadcrumbLinks).map((link, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          name: link.textContent.trim(),
-          item: link.href,
-        })),
-      };
+  const breadcrumbItems = [];
 
-      const breadcrumbScript = doc.createElement('script');
-      breadcrumbScript.type = 'application/ld+json';
-      breadcrumbScript.textContent = JSON.stringify(breadcrumbList);
-
-      doc.head.appendChild(breadcrumbScript);
-
-      console.log('Breadcrumb schema injected', breadcrumbList);
-    }
+  function isSeparator(text) {
+    return ['>', '/', '»', '›', '\u00BB', '|'].includes(text.trim());
   }
+
+  breadcrumbElement.childNodes.forEach((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.matches('a')) {
+        breadcrumbItems.push({
+          '@type': 'ListItem',
+          name: node.textContent.trim(),
+          item: node.href,
+        });
+      } else {
+        const text = node.textContent.trim();
+        if (text && !isSeparator(text)) {
+          breadcrumbItems.push({
+            '@type': 'ListItem',
+            name: text,
+            item: window.location.href,
+          });
+        }
+      }
+    } else if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent.trim();
+      if (text && !isSeparator(text)) {
+        breadcrumbItems.push({
+          '@type': 'ListItem',
+          name: text,
+          item: window.location.href,
+        });
+      }
+    }
+  });
+
+  if (breadcrumbItems.length === 0) return;
+
+  const breadcrumbList = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems.map((item, index) => ({
+      ...item,
+      position: index + 1,
+    })),
+  };
+
+  const breadcrumbScript = doc.createElement('script');
+  breadcrumbScript.type = 'application/ld+json';
+  breadcrumbScript.textContent = JSON.stringify(breadcrumbList);
+
+  doc.head.appendChild(breadcrumbScript);
+
+  console.log('Breadcrumb schema injected', breadcrumbList);
 }
 
 export default function loadSchema(document) {
