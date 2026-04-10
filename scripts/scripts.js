@@ -828,9 +828,14 @@ export async function loadFragment(path) {
   return null;
 }
 
-export async function loadScript(url, attrs = {}) {
+export async function loadScript(url = null, attrs = {}) {
   const script = document.createElement('script');
-  script.src = url;
+  if (url && url !== '') {
+    script.src = url;
+  } else {
+    // inject inline script content if url is not provided
+    script.textContent = attrs.content || '';
+  }
   // eslint-disable-next-line no-restricted-syntax
   for (const [name, value] of Object.entries(attrs)) {
     script.setAttribute(name, value);
