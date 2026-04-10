@@ -18,6 +18,8 @@ import {
   createOptimizedPicture,
 } from './lib-franklin.js';
 
+import loadSchema, { generateBreadcrumbSchema } from './schema.js';
+
 const LCP_BLOCKS = [
   'hero',
   'hero-banner',
@@ -72,6 +74,25 @@ export function getLanguangeSpecificPath(path) {
   const lang = getLanguage();
   if (lang === 'en') return path;
   return `/${lang}${path}`;
+}
+
+/**
+ * Returns true when breadcrumb navigation is available or can be generated.
+ * @param {Document|Element} main The container element to inspect.
+ * @returns {boolean}
+ */
+export function isBreadcrumbAvailable(main = document) {
+  const noBreadcrumb = getMetadata('nobreadcrumb');
+  const alreadyBreadcrumb = main.querySelector('.breadcrumb');
+
+  if (alreadyBreadcrumb) return true;
+  if (isInternalPage()) return false;
+
+  return !noBreadcrumb || noBreadcrumb === 'false';
+}
+
+if (typeof window !== 'undefined') {
+  window.isBreadcrumbAvailable = isBreadcrumbAvailable;
 }
 
 /**
@@ -607,6 +628,7 @@ async function loadLazy(doc) {
   if (!main) return;
 
   await loadBlocks(main);
+  generateBreadcrumbSchema(doc);
   wrapDirectDivTextInParagraphs(main);
 
   const { hash } = window.location;
@@ -714,6 +736,7 @@ async function loadPage() {
   redirectTagPage();
   await loadEager(document);
   await loadLazy(document);
+  loadSchema(document);
   loadDelayed();
 }
 
