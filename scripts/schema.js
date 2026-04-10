@@ -5,43 +5,28 @@ import { getMetadata } from './lib-franklin.js';
  * @param {Document} doc The document object
  */
 export function generateBreadcrumbSchema(doc) {
-  const breadcrumbElement = doc.querySelector('.breadcrumb');
+  const breadcrumbElements = doc.querySelectorAll('.breadcrumb ul li');
 
-  if (!breadcrumbElement) return;
+  if (!breadcrumbElements) return;
 
   const breadcrumbItems = [];
 
-  function isSeparator(text) {
-    return ['>', '/', '»', '›', '\u00BB', '|'].includes(text.trim());
-  }
-
-  breadcrumbElement.childNodes.forEach((node) => {
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.matches('a')) {
-        breadcrumbItems.push({
-          '@type': 'ListItem',
-          name: node.textContent.trim(),
-          item: node.href,
-        });
-      } else {
-        const text = node.textContent.trim();
-        if (text && !isSeparator(text)) {
-          breadcrumbItems.push({
-            '@type': 'ListItem',
-            name: text,
-            item: window.location.href,
-          });
-        }
-      }
-    } else if (node.nodeType === Node.TEXT_NODE) {
+  breadcrumbElements.forEach((node) => {
+    if (node.querySelector('a')) {
+      const anchor = node.querySelector('a');
+      breadcrumbItems.push({
+        '@type': 'ListItem',
+        name: anchor.textContent.trim(),
+        item: anchor.href,
+      });
+    } else {
       const text = node.textContent.trim();
-      if (text && !isSeparator(text)) {
-        breadcrumbItems.push({
-          '@type': 'ListItem',
-          name: text,
-          item: window.location.href,
-        });
-      }
+
+      breadcrumbItems.push({
+        '@type': 'ListItem',
+        name: text,
+        item: window.location.href,
+      });
     }
   });
 
@@ -61,13 +46,9 @@ export function generateBreadcrumbSchema(doc) {
   breadcrumbScript.textContent = JSON.stringify(breadcrumbList);
 
   doc.head.appendChild(breadcrumbScript);
-
-  console.log('Breadcrumb schema injected', breadcrumbList);
 }
 
 export default function loadSchema(document) {
-  console.log('Schema function running');
-
   // Check if manual schema exists in metadata
   const manualSchema = getMetadata('schema');
 
@@ -80,7 +61,7 @@ export default function loadSchema(document) {
       script.textContent = manualSchema;
 
       document.head.appendChild(script);
-      console.log('Manual schema injected');
+
       return;
     } catch (e) {
       console.error('Invalid manual schema JSON:', e);
@@ -93,7 +74,6 @@ export default function loadSchema(document) {
   const isNewsroomPath = window.location.pathname.includes('/newsroom');
 
   if (pageType && !allowedTypes.includes(pageType) && !isNewsroomPath) {
-    console.log('Skipping schema: not a supported page type');
     return;
   }
 
