@@ -1,3 +1,13 @@
+/* TODO 
+
+Use this model:
+
+  - author-controlled page type in metadata
+  - URL-based fallback if metadata is missing
+  - separate schema generator that maps page type → JSON-LD
+
+*/
+
 import { getMetadata } from './lib-franklin.js';
 
 /**
@@ -68,9 +78,10 @@ export default function loadSchema(document) {
     }
   }
 
-  // Determine page type
-  const allowedTypes = ['article', 'newsroom'];
-  const pageType = getMetadata('pagetype')?.toLowerCase();
+  // TODO Determine page type
+  const allowedTypes = ['article', 'newsroom', 'AboutPage'];
+  const pageType = getMetadata('type')?.toLowerCase();
+  console.log('Page type:', pageType);
   const isNewsroomPath = window.location.pathname.includes('/newsroom');
 
   if (pageType && !allowedTypes.includes(pageType) && !isNewsroomPath) {
@@ -85,7 +96,7 @@ export default function loadSchema(document) {
   const image = document.querySelector('main img')?.src;
 
   // Choose schema type
-  const schemaType = pageType === 'newsroom' || isNewsroomPath ? 'NewsArticle' : 'Article';
+  const schemaType = pageType === 'newsroom' || isNewsroomPath ? 'NewsArticle' : 'WebPage';
 
   // Build schema object
   const schema = {
@@ -117,11 +128,10 @@ export default function loadSchema(document) {
   });
 
   // Inject schema into <head>
+  // TODO Check if we can use the existing function to inject script tag instead of creating a new one
   const script = document.createElement('script');
   script.type = 'application/ld+json';
   script.textContent = JSON.stringify(schema);
 
   document.head.appendChild(script);
-
-  console.log('Auto-generated schema injected', schema);
 }
