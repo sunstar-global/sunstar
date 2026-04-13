@@ -58,6 +58,8 @@
   --highlight-background-color: #ccc;
   --text-color: #3c4350;
   --text-h2-underline-color: #3c46501e;
+  --light-blue: #C4E3EE;
+  --light-green: #C4E6E3;
   --blue-light-color: #90bfdc;
   --blue-deep-color: #044764;
   --tab-content-color: var(--blue-light-color);
@@ -1108,7 +1110,7 @@ main .section.padding-bottom-400 .section-container {
 }
 
 /* section - highlight */
-main .section .section-container.highlight {
+main .section.highlight {
   background-color: var(--highlight-background-color);
 }
 

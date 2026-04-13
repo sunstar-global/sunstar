@@ -49,8 +49,14 @@ function generateBarChart(labels, data, config, block) {
 
   const initialMainData = data.map((v, i) => (i === lastIndex ? null : 0));
   const initialLastBarData = data.map((v, i) => (i === lastIndex ? 0 : null));
+  let stepSize;
+  if (config.stepsize === null || config.stepsize === undefined) {
+    stepSize = getNiceStepSize(Math.max(...data) * 1.1);
+  } else {
+    stepSize = parseInt(config.stepsize, 10);
+  }
 
-  const stepSize = getNiceStepSize(Math.max(...data) * 1.1);
+  console.log('stepSize:', stepSize);
   const maxRounded = Math.ceil((Math.max(...data) * 1.1) / stepSize) * stepSize;
 
   const valueLabelPlugin = {
@@ -388,6 +394,7 @@ export default async function decorate(block) {
   await loadChartJs();
 
   const blockCfg = readBlockConfig(block);
+
   const { labels, data } = getDataFromBlock(block);
 
   Array.from(block.children).forEach((child) => {

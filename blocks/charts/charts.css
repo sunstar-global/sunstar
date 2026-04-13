@@ -1,19 +1,42 @@
 .charts {
-    gap: 1rem;
+    gap: 1.5rem;
+    padding: 2rem!important;
+    display: flex;
+    flex-direction: column;
 }
 
-.charts h2, 
-.charts h3 {
-    font-size: var(--h2-font-size-desktop)!important;
+.charts.light-blue {
+    background-color: var(--light-blue);
+}
+
+.charts.light-green {
+    background-color: var(--light-green);
+}
+
+.charts .text-col-wrapper, 
+.charts .text-col-wrapper .chart-title-container {
+    padding: 0!important;
+}
+
+.charts .text-col-wrapper .chart-title-container h2, 
+.charts .text-col-wrapper .chart-title-container h3 {
+    font-size: var(--h2-font-size-mobile)!important;
     margin: 0;
-    display: inline-block!important;
     text-wrap: balance;
 }
 
-.charts h2 span, 
-.charts h3 span {
+.charts .text-col-wrapper .chart-title-container h2 p, 
+.charts .text-col-wrapper .chart-title-container h3 p {
     font-size: var(--body-font-size-m)!important;
-    display: inline!important;
     line-height: 1.25;
-    margin-left: 0.5rem;
+}
+
+
+@media (min-width: 62rem) {
+    .charts .text-col-wrapper .chart-title-container h2, 
+    .charts .text-col-wrapper .chart-title-container h3 {
+        font-size: var(--h2-font-size-desktop)!important;
+        margin: 0;
+        text-wrap: balance;
+    }
 }
