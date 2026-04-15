@@ -38,7 +38,7 @@ function generateBarChart(labels, data, config, block) {
   // eslint-disable-next-line no-undef
   Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
 
-  const aspectRatio = config.aspectRatio || 1.2;
+  const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 1.2;
   const canvas = document.createElement('canvas');
   block.appendChild(canvas);
 
@@ -56,8 +56,10 @@ function generateBarChart(labels, data, config, block) {
     stepSize = parseInt(config.stepsize, 10);
   }
 
-  console.log('stepSize:', stepSize);
-  const maxRounded = Math.ceil((Math.max(...data) * 1.1) / stepSize) * stepSize;
+  // check if max is define in config.scale if yes then use it otherwise calculate a nice max value based on data and step size
+  const maxRounded = config.scale
+    ? parseInt(config.scale, 10)
+    : Math.ceil((Math.max(...data) * 1.1) / stepSize) * stepSize;
 
   const valueLabelPlugin = {
     id: 'valueLabelPlugin',
@@ -145,6 +147,7 @@ function generateBarChart(labels, data, config, block) {
           ticks: {
             color: '#00587c',
             stepSize,
+            maxValue: maxRounded,
             font: {
               size: 16,
             },
@@ -229,7 +232,8 @@ function generateDoughnutChart(labels, data, config, block) {
   // eslint-disable-next-line no-undef
   Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
 
-  const aspectRatio = config.aspectRatio || 1.4;
+  const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 1.4;
+
   const canvas = document.createElement('canvas');
   block.appendChild(canvas);
 

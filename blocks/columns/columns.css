@@ -780,6 +780,10 @@ div.img-col > video {
   main .block.columns.big-gap > div {
     gap: 10.25rem;
   }
+
+  main .block.columns.no-gap > div {
+    gap: 0;
+  }
 }
 
 /* Text-image overlap View */

@@ -1,4 +1,6 @@
 import { decorateRenderHints } from '../../scripts/lib-franklin.js';
+import { processLoadableCells } from '../fragment/fragment.js';
+import { loadFragment, initInjectedBlocks, injectFragmentIntoCell, replaceCellContent } from '../../scripts/scripts.js';
 
 function decorateAnchors(row, shouldHaveButtons) {
   const anchors = row.querySelectorAll('a');
@@ -58,7 +60,17 @@ function injectBackgroundDivForText(row) {
   }
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
+  await processLoadableCells(block, {
+    marker: 'Fragment',
+    load: async (path) => loadFragment(path, { decorate: false }),
+    onMatch: async ({ cell, loadedContent }) => {
+      replaceCellContent(cell, loadedContent);
+      injectFragmentIntoCell(cell, loadedContent);
+      await initInjectedBlocks(cell);
+    },
+  });
+
   const shouldHaveButtons = !block.classList.contains('no-buttons');
   decorateRenderHints(block);
 
