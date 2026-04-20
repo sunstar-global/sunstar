@@ -34,9 +34,51 @@ function animateValueLabels(chart, duration = 600) {
   requestAnimationFrame(frame);
 }
 
-function generateBarChart(labels, data, config, block) {
+function withOpacity(color, opacity = 0.5) {
+  if (!color || typeof color !== 'string') return color;
+
+  const hex = color.trim();
+  const normalizedOpacity = Math.max(0, Math.min(1, opacity));
+
+  // #RGB, #RGBA, #RRGGBB, #RRGGBBAA -> rgba(r, g, b, a)
+  if (hex.startsWith('#')) {
+    let value = hex.slice(1);
+
+    if (value.length === 3 || value.length === 4) {
+      value = value
+        .split('')
+        .slice(0, 3)
+        .map((ch) => ch + ch)
+        .join('');
+    } else if (value.length === 8) {
+      value = value.slice(0, 6);
+    }
+
+    if (value.length === 6) {
+      const r = Number.parseInt(value.slice(0, 2), 16);
+      const g = Number.parseInt(value.slice(2, 4), 16);
+      const b = Number.parseInt(value.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${normalizedOpacity})`;
+    }
+  }
+
+  // rgb() -> rgba(); rgba() -> replace alpha.
+  const rgbMatch = hex.match(/^rgba?\(([^)]+)\)$/i);
+  if (rgbMatch) {
+    const channels = rgbMatch[1].split(',').map((part) => part.trim());
+    if (channels.length >= 3) {
+      return `rgba(${channels[0]}, ${channels[1]}, ${channels[2]}, ${normalizedOpacity})`;
+    }
+  }
+
+  return color;
+}
+
+function generateBarChart(labels, data, colors, config, block, isSmallText = false) {
   // eslint-disable-next-line no-undef
   Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
+
+  const chartColors = Array.isArray(colors) && colors.length > 0 ? colors : ['#4D89A3', '#00577C', '#F28B2D'];
 
   const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 1.2;
   const canvas = document.createElement('canvas');
@@ -66,6 +108,8 @@ function generateBarChart(labels, data, config, block) {
     afterDatasetsDraw(chart) {
       const { ctx } = chart;
       const progress = chart.$labelAnimationProgress ?? 0;
+      const lastBarFontSize = isSmallText ? 22 : 28;
+      const otherBarFontSize = isSmallText ? 18 : 24;
 
       chart.data.datasets.forEach((dataset, datasetIndex) => {
         const meta = chart.getDatasetMeta(datasetIndex);
@@ -83,12 +127,12 @@ function generateBarChart(labels, data, config, block) {
           ctx.textAlign = 'center';
 
           if (isLast) {
-            ctx.font = '500 28px "Noto Sans", sans-serif';
+            ctx.font = `500 ${lastBarFontSize}px "Noto Sans", sans-serif`;
             ctx.fillStyle = '#F28B2D';
             ctx.textBaseline = 'bottom';
             ctx.fillText(animatedValue.toLocaleString(), x, y - 10);
           } else {
-            ctx.font = '500 24px "Noto Sans", sans-serif';
+            ctx.font = `500 ${otherBarFontSize}px "Noto Sans", sans-serif`;
             ctx.fillStyle = '#ffffff';
             ctx.textBaseline = 'middle';
             ctx.fillText(animatedValue.toLocaleString(), x, y + (base - y) / 2);
@@ -112,7 +156,7 @@ function generateBarChart(labels, data, config, block) {
           rawValues: finalMainData,
           borderWidth: 0,
           borderRadius: 16,
-          backgroundColor: ['#4D89A3', '#00577C', null],
+          backgroundColor: chartColors.map((color, i) => (i === lastIndex ? '#F28B2D' : color)),
           barPercentage: 0.8,
           grouped: false,
         },
@@ -121,7 +165,7 @@ function generateBarChart(labels, data, config, block) {
           rawValues: finalLastBarData,
           borderWidth: 0,
           borderRadius: 16,
-          backgroundColor: [null, null, '#F28B2D'],
+          backgroundColor: chartColors.map((color, i) => (i === lastIndex ? '#F28B2D' : color)),
           barPercentage: 1,
           grouped: false,
         },
@@ -149,11 +193,15 @@ function generateBarChart(labels, data, config, block) {
             stepSize,
             maxValue: maxRounded,
             font: {
-              size: 16,
+              size: isSmallText ? 13 : 16,
             },
           },
+          grid: {
+            display: false,
+          },
           border: {
-            width: 0,
+            color: '#00587c',
+            width: 1,
           },
         },
         x: {
@@ -163,18 +211,18 @@ function generateBarChart(labels, data, config, block) {
               const isLastTick = ct.index === ct.chart.data.labels.length - 1;
 
               return {
-                size: isLastTick ? 20 : 16,
+                // eslint-disable-next-line no-nested-ternary
+                size: isLastTick ? (isSmallText ? 16 : 20) : isSmallText ? 13 : 16,
                 weight: isLastTick ? '600' : '400',
                 family: 'Noto Sans, Noto Sans JP, sans-serif',
               };
             },
           },
           border: {
-            width: 0,
+            color: '#00587c',
+            width: 1,
           },
           grid: {
-            drawTicks: true,
-            tickLength: 8,
             display: false,
           },
         },
@@ -228,7 +276,7 @@ function generateBarChart(labels, data, config, block) {
   observer.observe(canvas);
 }
 
-function generateDoughnutChart(labels, data, config, block) {
+function generateDoughnutChart(labels, data, colors, config, block) {
   // eslint-disable-next-line no-undef
   Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
 
@@ -237,11 +285,11 @@ function generateDoughnutChart(labels, data, config, block) {
   const canvas = document.createElement('canvas');
   block.appendChild(canvas);
 
-  const colors = config.colors || ['#0099D4', '#00A89C'];
+  const chartColors = Array.isArray(colors) && colors.length > 0 ? colors : ['#0099D4', '#00A89C'];
+  const outerLayerColors = chartColors.map((color) => withOpacity(color, 0.2));
   const centerTextColor = config.centerTextColor || '#00577C';
   const labelColor = config.labelColor || '#00577C';
-  const connectorColor = config.connectorColor || '#7A8A93';
-  const dotColor = config.dotColor || '#2F3A40';
+  const connectorColor = config.connectorColor || '#3c46501f';
 
   const total = data.reduce((sum, value) => sum + value, 0);
 
@@ -282,12 +330,12 @@ function generateDoughnutChart(labels, data, config, block) {
 
         const isRight = Math.cos(angle) >= 0;
 
-        // Keep everything inside chart area
-        const dotX = isRight ? cx + outerRadius + 18 : cx - outerRadius - 18;
+        // Keep labels close to the ring, similar to the design reference
+        const dotX = isRight ? cx + outerRadius + 10 : cx - outerRadius - 10;
         const dotY = anchorY;
 
-        const lineEndX = isRight ? dotX + 22 : dotX - 22;
-        const textX = isRight ? lineEndX + 8 : lineEndX - 8;
+        const lineEndX = isRight ? dotX + 16 : dotX - 16;
+        const textX = isRight ? lineEndX + 6 : lineEndX - 6;
 
         // Connector
         ctx.beginPath();
@@ -297,12 +345,6 @@ function generateDoughnutChart(labels, data, config, block) {
         ctx.lineTo(dotX, dotY);
         ctx.lineTo(lineEndX, dotY);
         ctx.stroke();
-
-        // Dot
-        ctx.beginPath();
-        ctx.fillStyle = dotColor;
-        ctx.arc(dotX, dotY, 2.5, 0, Math.PI * 2);
-        ctx.fill();
 
         // Text
         ctx.fillStyle = labelColor;
@@ -327,24 +369,40 @@ function generateDoughnutChart(labels, data, config, block) {
       datasets: [
         {
           data,
-          backgroundColor: colors,
+          backgroundColor: outerLayerColors,
+          spacing: 0,
+          borderWidth: 2,
+          radius: '69%',
+          cutout: '80%',
+          weight: 1,
+        },
+        {
+          data,
+          backgroundColor: chartColors,
+          spacing: 0,
           borderWidth: 2,
           borderColor: '#ffffff',
-          hoverOffset: 0,
-          radius: '78%', // makes doughnut smaller
+          radius: '78%',
+          cutout: '60%',
+          weight: 1,
         },
       ],
     },
     options: {
+      events: [],
+      elements: {
+        arc: {
+          borderWidth: 0,
+        },
+      },
       aspectRatio,
       maintainAspectRatio: true,
-      cutout: '60%',
       layout: {
         padding: {
           top: 30,
-          right: 90,
+          right: 70,
           bottom: 30,
-          left: 90,
+          left: 70,
         },
       },
       animation: {
@@ -367,6 +425,7 @@ function generateDoughnutChart(labels, data, config, block) {
 function getDataFromBlock(block) {
   const labels = [];
   const data = [];
+  const colors = [];
   const rows = Array.from(block.children);
 
   const dataStartIndex = rows.findIndex((row) => {
@@ -375,7 +434,7 @@ function getDataFromBlock(block) {
   });
 
   if (dataStartIndex === -1) {
-    return { labels, data };
+    return { labels, data, colors };
   }
 
   for (let i = dataStartIndex + 1; i < rows.length; i += 1) {
@@ -385,21 +444,24 @@ function getDataFromBlock(block) {
     if (cells.length >= 2) {
       const label = cells[0].textContent.trim();
       const value = parseFloat(cells[1].textContent.trim());
+      const color = cells[2]?.textContent.trim();
 
       if (label) labels.push(label);
       if (!Number.isNaN(value)) data.push(value);
+      if (color) colors.push(color);
     }
   }
 
-  return { labels, data };
+  return { labels, data, colors };
 }
 
 export default async function decorate(block) {
   await loadChartJs();
 
   const blockCfg = readBlockConfig(block);
+  const isSmallText = block.classList.contains('small-text');
 
-  const { labels, data } = getDataFromBlock(block);
+  const { labels, data, colors } = getDataFromBlock(block);
 
   Array.from(block.children).forEach((child) => {
     block.removeChild(child);
@@ -423,11 +485,11 @@ export default async function decorate(block) {
   }
 
   if (blockCfg.type === 'doughnut') {
-    generateDoughnutChart(labels, data, blockCfg, block);
+    generateDoughnutChart(labels, data, colors, blockCfg, block);
     return;
   }
 
   if (blockCfg.type === 'bar') {
-    generateBarChart(labels, data, blockCfg, block);
+    generateBarChart(labels, data, colors, blockCfg, block, isSmallText);
   }
 }
