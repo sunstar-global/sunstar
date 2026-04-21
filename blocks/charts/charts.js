@@ -200,7 +200,7 @@ function generateBarChart(labels, data, colors, config, block, isSmallText = fal
             display: false,
           },
           border: {
-            color: '#00587c',
+            color: '#4D89A3',
             width: 1,
           },
         },
@@ -219,7 +219,7 @@ function generateBarChart(labels, data, colors, config, block, isSmallText = fal
             },
           },
           border: {
-            color: '#00587c',
+            color: '#4D89A3',
             width: 1,
           },
           grid: {

@@ -129,7 +129,8 @@
   order: 0;
 }
 
-.columns.invert-image-order-in-narrow-view > div .img-col {
+.columns.invert-image-order-in-narrow-view > div .img-col,
+.columns.invert-image-order-in-narrow-view > div .charts-wrapper {
   order: 2;
 }
 
