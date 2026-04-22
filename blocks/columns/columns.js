@@ -1,7 +1,6 @@
 import { loadEmbed } from '../embed/embed.js';
 import { decorateButtons } from '../text/text.js';
-import { processLoadableCells } from '../fragment/fragment.js';
-import { loadFragment, initInjectedBlocks, injectFragmentIntoCell, replaceCellContent } from '../../scripts/scripts.js';
+import { loadFragment, initInjectedBlocks } from '../../scripts/scripts.js';
 
 export function applySplitPercentages(block) {
   const ratios = [];
@@ -80,16 +79,63 @@ export function applyCellAlignment(block) {
   applyVerticalCellAlignment(block);
 }
 
-export default async function decorate(block) {
-  await processLoadableCells(block, {
-    marker: 'Fragment',
-    load: async (path) => loadFragment(path, { decorate: false }),
-    onMatch: async ({ cell, loadedContent }) => {
-      replaceCellContent(cell, loadedContent);
-      injectFragmentIntoCell(cell, loadedContent);
+function getFragmentPathsFromCell(cell, marker = 'fragment') {
+  if (!cell) return [];
+
+  const hasMarker = [...cell.querySelectorAll('p, div, span')].some(
+    (el) => el.textContent.trim().toLowerCase() === marker.toLowerCase()
+  );
+
+  if (!hasMarker) return [];
+
+  return [...cell.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')).filter((href) => !!href);
+}
+
+function getInjectableNodes(fragment) {
+  const fragmentSection = fragment?.querySelector(':scope .section') || fragment?.querySelector('.section');
+  if (fragmentSection) {
+    const fragmentSectionContainer = fragmentSection.querySelector('.section-container');
+    return fragmentSectionContainer ? [...fragmentSectionContainer.childNodes] : [...fragmentSection.childNodes];
+  }
+
+  // Fallback: keep compatibility with fragments that don't include section wrappers.
+  const fragmentRoot = fragment?.querySelector('main') || fragment;
+  const firstWrapper = fragmentRoot?.firstElementChild;
+  if (!firstWrapper) return [];
+
+  return firstWrapper.children.length ? [...firstWrapper.children] : [firstWrapper];
+}
+
+async function loadColumnFragments(block) {
+  const cells = [...block.querySelectorAll(':scope > div > div')];
+
+  await Promise.all(
+    cells.map(async (cell) => {
+      const paths = getFragmentPathsFromCell(cell, 'fragment');
+      if (!paths.length) return;
+
+      const loadedFragments = (await Promise.all(paths.map((path) => loadFragment(path, { decorate: false })))).filter(
+        (fragment) => !!fragment
+      );
+
+      if (!loadedFragments.length) return;
+
+      cell.replaceChildren();
+
+      loadedFragments.forEach((fragment) => {
+        const nodes = getInjectableNodes(fragment);
+        if (nodes.length) {
+          cell.append(...nodes);
+        }
+      });
+
       await initInjectedBlocks(cell);
-    },
-  });
+    })
+  );
+}
+
+export default async function decorate(block) {
+  await loadColumnFragments(block);
 
   const background = block.classList.contains('backgroundimage');
   if (background) {

@@ -200,7 +200,7 @@ function generateBarChart(labels, data, colors, config, block, isSmallText = fal
             display: false,
           },
           border: {
-            color: '#4D89A3',
+            color: '#3c46501f',
             width: 1,
           },
         },
@@ -219,7 +219,7 @@ function generateBarChart(labels, data, colors, config, block, isSmallText = fal
             },
           },
           border: {
-            color: '#4D89A3',
+            color: '#3c46501f',
             width: 1,
           },
           grid: {
@@ -280,64 +280,115 @@ function generateDoughnutChart(labels, data, colors, config, block) {
   // eslint-disable-next-line no-undef
   Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
 
-  const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 1.4;
+  const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 1.1;
+  const MOBILE_BREAKPOINT = 560;
 
   const canvas = document.createElement('canvas');
   block.appendChild(canvas);
 
+  // HTML legend shown below on mobile
+  const legendEl = document.createElement('div');
+  legendEl.classList.add('doughnut-legend');
+  block.appendChild(legendEl);
+
   const chartColors = Array.isArray(colors) && colors.length > 0 ? colors : ['#0099D4', '#00A89C'];
   const outerLayerColors = chartColors.map((color) => withOpacity(color, 0.2));
   const centerTextColor = config.centerTextColor || '#00577C';
+  const centerCaption = (config['caption-chart'] || '').trim() || '';
+  const centerTitle = (config['title-chart'] || '').trim() || '';
   const labelColor = config.labelColor || '#00577C';
   const connectorColor = config.connectorColor || '#3c46501f';
+  const configuredBorderColor =
+    typeof config['border-color'] === 'string' && config['border-color'].trim() ? config['border-color'].trim() : null;
 
   const total = data.reduce((sum, value) => sum + value, 0);
+
+  // Build HTML legend items once
+  labels.forEach((label, i) => {
+    const percent = `${Math.round((data[i] / total) * 100)}%`;
+    const item = document.createElement('div');
+    item.classList.add('doughnut-legend-item');
+    const dot = document.createElement('span');
+    dot.classList.add('doughnut-legend-dot');
+    dot.style.backgroundColor = chartColors[i] || chartColors[0];
+    const labelSpan = document.createElement('span');
+    labelSpan.classList.add('doughnut-legend-label');
+    labelSpan.textContent = label;
+    const valueSpan = document.createElement('span');
+    valueSpan.classList.add('doughnut-legend-value');
+    valueSpan.textContent = percent;
+    item.append(dot, labelSpan, valueSpan);
+    legendEl.appendChild(item);
+  });
+
+  const isMobile = () => block.offsetWidth < MOBILE_BREAKPOINT;
+
+  const getLayoutPadding = () =>
+    isMobile() ? { top: 4, right: 4, bottom: 4, left: 4 } : { top: 4, right: 0, bottom: 4, left: 0 };
 
   const customPlugin = {
     id: 'customDoughnutInsideLabels',
     afterDraw(chart) {
-      const { ctx, chartArea } = chart;
-      const meta = chart.getDatasetMeta(0);
+      const { ctx } = chart;
+      const outerMeta = chart.getDatasetMeta(0);
+      const mainMeta = chart.getDatasetMeta(1) || outerMeta;
 
-      if (!meta?.data?.length) return;
+      if (!mainMeta?.data?.length) return;
 
-      const arc = meta.data[0];
+      const arc = mainMeta.data[0];
       const cx = arc.x;
       const cy = arc.y;
-      const { outerRadius } = arc;
 
       ctx.save();
 
-      // Center text
+      // Center text — always drawn
       ctx.fillStyle = centerTextColor;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
       ctx.font = '400 14px "Noto Sans", sans-serif';
-      ctx.fillText('Sales (%) by', cx, cy - 16);
+      ctx.fillText(centerCaption, cx, cy - 16);
+
+      const titleWords = centerTitle.split(/\s+/).filter(Boolean);
+      const titleLines =
+        titleWords.length > 1
+          ? [
+              titleWords.slice(0, Math.ceil(titleWords.length / 2)).join(' '),
+              titleWords.slice(Math.ceil(titleWords.length / 2)).join(' '),
+            ]
+          : [centerTitle];
 
       ctx.font = '700 18px "Noto Sans", sans-serif';
-      ctx.fillText('Business', cx, cy + 2);
-      ctx.fillText('Sector', cx, cy + 24);
+      if (titleLines.length === 1) {
+        ctx.fillText(titleLines[0], cx, cy + 12);
+      } else {
+        ctx.fillText(titleLines[0], cx, cy + 2);
+        ctx.fillText(titleLines[1], cx, cy + 24);
+      }
 
-      meta.data.forEach((segment, index) => {
+      // Side labels only on desktop
+      if (isMobile()) {
+        ctx.restore();
+        return;
+      }
+
+      mainMeta.data.forEach((segment, index) => {
         const angle = (segment.startAngle + segment.endAngle) / 2;
         const value = data[index];
         const percent = `${Math.round((value / total) * 100)}%`;
 
-        const anchorX = cx + Math.cos(angle) * (outerRadius - 8);
-        const anchorY = cy + Math.sin(angle) * (outerRadius - 8);
+        const ringAnchorRadius = segment.innerRadius + (segment.outerRadius - segment.innerRadius) * 0.7;
+        const anchorX = cx + Math.cos(angle) * ringAnchorRadius;
+        const anchorY = cy + Math.sin(angle) * ringAnchorRadius;
 
         const isRight = Math.cos(angle) >= 0;
 
-        // Keep labels close to the ring, similar to the design reference
-        const dotX = isRight ? cx + outerRadius + 10 : cx - outerRadius - 10;
+        const dotX = isRight ? cx + segment.outerRadius + 18 : cx - segment.outerRadius - 18;
         const dotY = anchorY;
+        const lineEndX = isRight ? dotX + 22 : dotX - 22;
+        const textX = isRight ? lineEndX + 10 : lineEndX - 10;
 
-        const lineEndX = isRight ? dotX + 16 : dotX - 16;
-        const textX = isRight ? lineEndX + 6 : lineEndX - 6;
-
-        // Connector
+        // Connector line
         ctx.beginPath();
         ctx.strokeStyle = connectorColor;
         ctx.lineWidth = 1.5;
@@ -346,13 +397,17 @@ function generateDoughnutChart(labels, data, colors, config, block) {
         ctx.lineTo(lineEndX, dotY);
         ctx.stroke();
 
-        // Text
+        // Dot at connector origin on the ring
+        ctx.beginPath();
+        ctx.fillStyle = labelColor;
+        ctx.arc(anchorX, anchorY, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Label text
         ctx.fillStyle = labelColor;
         ctx.textAlign = isRight ? 'left' : 'right';
-
         ctx.font = '400 13px "Noto Sans", sans-serif';
         ctx.fillText(labels[index], textX, dotY - 12);
-
         ctx.font = '700 18px "Noto Sans", sans-serif';
         ctx.fillText(percent, textX, dotY + 10);
       });
@@ -372,6 +427,7 @@ function generateDoughnutChart(labels, data, colors, config, block) {
           backgroundColor: outerLayerColors,
           spacing: 0,
           borderWidth: 2,
+          ...(configuredBorderColor ? { borderColor: configuredBorderColor } : {}),
           radius: '69%',
           cutout: '80%',
           weight: 1,
@@ -381,7 +437,7 @@ function generateDoughnutChart(labels, data, colors, config, block) {
           backgroundColor: chartColors,
           spacing: 0,
           borderWidth: 2,
-          borderColor: '#ffffff',
+          borderColor: configuredBorderColor || '#ffffff',
           radius: '78%',
           cutout: '60%',
           weight: 1,
@@ -390,36 +446,33 @@ function generateDoughnutChart(labels, data, colors, config, block) {
     },
     options: {
       events: [],
-      elements: {
-        arc: {
-          borderWidth: 0,
-        },
-      },
-      aspectRatio,
+      elements: { arc: { borderWidth: 0 } },
+      rotation: 0,
+      aspectRatio: isMobile() ? 1 : aspectRatio,
       maintainAspectRatio: true,
-      layout: {
-        padding: {
-          top: 30,
-          right: 70,
-          bottom: 30,
-          left: 70,
-        },
-      },
-      animation: {
-        animateRotate: true,
-        duration: 800,
-      },
+      layout: { padding: getLayoutPadding() },
+      animation: { animateRotate: true, duration: 800 },
       plugins: {
-        legend: {
-          display: false,
-        },
-        tooltip: {
-          enabled: false,
-        },
+        legend: { display: false },
+        tooltip: { enabled: false },
       },
     },
     plugins: [customPlugin],
   });
+
+  // Sync legend visibility and chart options on resize
+  const resizeObserver = new ResizeObserver(() => {
+    const mobile = isMobile();
+    legendEl.style.display = mobile ? 'flex' : 'none';
+    chart.options.layout.padding = getLayoutPadding();
+    chart.options.aspectRatio = mobile ? 1 : aspectRatio;
+    chart.update('none');
+  });
+
+  resizeObserver.observe(block);
+
+  // Set initial legend visibility
+  legendEl.style.display = isMobile() ? 'flex' : 'none';
 }
 
 function getDataFromBlock(block) {

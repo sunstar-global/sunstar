@@ -279,6 +279,15 @@
   color: var(--gray-dark) !important;
 }
 
+.columns.blue-title h1,
+.columns.blue-title h2,
+.columns.blue-title h3 {
+  background-color: var(--primary);
+  color: var(--white);
+  margin: 0;
+  padding: 1.5rem;
+}
+
 .columns.heading-narrow-spacing h1:has(+ h2),
 .columns.heading-narrow-spacing h1:has(+ h3),
 .columns.heading-narrow-spacing h1:has(+ h4),
@@ -625,6 +634,7 @@ div.img-col > video {
   }
 
   .columns.invert-image-order-in-narrow-view > div .img-col,
+  .columns.invert-image-order-in-narrow-view > div .charts-wrapper,
   .columns.invert-even-col-in-narrow-view > div:nth-child(even) .img-col {
     order: unset;
   }
@@ -719,6 +729,12 @@ div.img-col > video {
 
   .columns.h4-h3 h4 {
     font-size: var(--h3-font-size-desktop) !important;
+  }
+
+  .columns.blue-title h1,
+  .columns.blue-title h2,
+  .columns.blue-title h3 {
+    padding: 3rem;
   }
 
   main .block.columns.machine-parts .text-col h1,

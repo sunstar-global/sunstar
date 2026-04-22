@@ -837,10 +837,11 @@ main .section.auto-top-spacing .section-container {
 
 main .section .default-content-wrapper:first-of-type > :first-child,
 main .section.no-top-margin .default-content-wrapper {
-  margin-top: 0;
+  margin-top: 0!important;
 }
 
-main .section.hero .section-container {
+main .section.hero .section-container,
+main .section.no-top-margin .section-container {
   margin-top: 0 !important;
   padding: 0 !important;
 }
