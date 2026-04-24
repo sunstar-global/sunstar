@@ -11,6 +11,8 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
+  decorateBlock,
+  loadBlock,
   loadCSS,
   getMetadata,
   isInternalPage,
@@ -816,26 +818,31 @@ export function getEnvType(hostname = window.location.hostname) {
   return fqdnToEnvType[hostname] || 'dev';
 }
 
-export async function loadFragment(path) {
+export async function loadFragment(path, { decorate = true } = {}) {
   const resp = await fetch(`${path}.plain.html`);
-  if (resp.ok) {
-    const main = document.createElement('main');
-    main.innerHTML = await resp.text();
+  if (!resp.ok) return null;
+
+  const main = document.createElement('main');
+  main.innerHTML = await resp.text();
+
+  if (decorate) {
     decorateMain(main);
     await loadBlocks(main);
-    return main;
   }
-  return null;
+
+  return main;
 }
 
 export async function loadScript(url = null, attrs = {}) {
   const script = document.createElement('script');
+  
   if (url && url !== '') {
     script.src = url;
   } else {
     // inject inline script content if url is not provided
     script.textContent = attrs.content || '';
   }
+  
   // eslint-disable-next-line no-restricted-syntax
   for (const [name, value] of Object.entries(attrs)) {
     script.setAttribute(name, value);
@@ -1064,4 +1071,56 @@ export function cropString(inputString, maxLength) {
 
 if (!window.noload) {
   loadPage();
+}
+
+export async function loadChartJs() {
+  if (!window.Chart) {
+    return loadScript('https://cdn.jsdelivr.net/npm/chart.js');
+  }
+  return Promise.resolve();
+}
+
+export function replaceCellContent(cell, loadedContent) {
+  if (!cell || !loadedContent) return;
+
+  const fragmentRoot = loadedContent.querySelector('main') || loadedContent;
+
+  // get the first meaningful wrapper inside the fragment
+  const firstWrapper = fragmentRoot.firstElementChild;
+  if (!firstWrapper) return;
+
+  // if the wrapper itself contains the actual content blocks, use them
+  const content = firstWrapper.children.length ? [...firstWrapper.children] : [firstWrapper];
+
+  cell.replaceChildren(...content);
+}
+
+export function injectFragmentIntoCell(cell, fragment) {
+  if (!cell || !fragment) return [];
+
+  const fragmentSection = fragment.querySelector(':scope .section') || fragment.querySelector('.section');
+  if (!fragmentSection) return [];
+
+  const fragmentSectionContainer = fragmentSection.querySelector('.section-container');
+  const nodes = fragmentSectionContainer ? [...fragmentSectionContainer.childNodes] : [...fragmentSection.childNodes];
+
+  cell.replaceChildren(...nodes);
+
+  return [...cell.children];
+}
+
+export async function initInjectedBlocks(container) {
+  if (!container) return;
+
+  const candidates = [...container.children].filter((child) => child.tagName === 'DIV' && child.classList.length);
+
+  for (let i = 0; i < candidates.length; i += 1) {
+    const child = candidates[i];
+    decorateBlock(child);
+
+    if (child.classList.contains('block')) {
+      // eslint-disable-next-line no-await-in-loop
+      await loadBlock(child);
+    }
+  }
 }

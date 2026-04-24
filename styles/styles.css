@@ -58,6 +58,8 @@
   --highlight-background-color: #ccc;
   --text-color: #3c4350;
   --text-h2-underline-color: #3c46501e;
+  --light-blue: #C4E3EE;
+  --light-green: #C4E6E3;
   --blue-light-color: #90bfdc;
   --blue-deep-color: #044764;
   --tab-content-color: var(--blue-light-color);
@@ -835,10 +837,11 @@ main .section.auto-top-spacing .section-container {
 
 main .section .default-content-wrapper:first-of-type > :first-child,
 main .section.no-top-margin .default-content-wrapper {
-  margin-top: 0;
+  margin-top: 0!important;
 }
 
-main .section.hero .section-container {
+main .section.hero .section-container,
+main .section.no-top-margin .section-container {
   margin-top: 0 !important;
   padding: 0 !important;
 }
@@ -1108,7 +1111,7 @@ main .section.padding-bottom-400 .section-container {
 }
 
 /* section - highlight */
-main .section .section-container.highlight {
+main .section.highlight {
   background-color: var(--highlight-background-color);
 }
 

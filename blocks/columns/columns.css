@@ -129,7 +129,8 @@
   order: 0;
 }
 
-.columns.invert-image-order-in-narrow-view > div .img-col {
+.columns.invert-image-order-in-narrow-view > div .img-col,
+.columns.invert-image-order-in-narrow-view > div .charts-wrapper {
   order: 2;
 }
 
@@ -276,6 +277,15 @@
 .columns.h3-dark h3,
 .columns.h4-dark h4 {
   color: var(--gray-dark) !important;
+}
+
+.columns.blue-title h1,
+.columns.blue-title h2,
+.columns.blue-title h3 {
+  background-color: var(--primary);
+  color: var(--white);
+  margin: 0;
+  padding: 1.5rem;
 }
 
 .columns.heading-narrow-spacing h1:has(+ h2),
@@ -624,6 +634,7 @@ div.img-col > video {
   }
 
   .columns.invert-image-order-in-narrow-view > div .img-col,
+  .columns.invert-image-order-in-narrow-view > div .charts-wrapper,
   .columns.invert-even-col-in-narrow-view > div:nth-child(even) .img-col {
     order: unset;
   }
@@ -720,6 +731,12 @@ div.img-col > video {
     font-size: var(--h3-font-size-desktop) !important;
   }
 
+  .columns.blue-title h1,
+  .columns.blue-title h2,
+  .columns.blue-title h3 {
+    padding: 3rem;
+  }
+
   main .block.columns.machine-parts .text-col h1,
   main .block.columns.machine-parts .text-col h2,
   main .block.columns.machine-parts .text-col h3,
@@ -779,6 +796,10 @@ div.img-col > video {
 
   main .block.columns.big-gap > div {
     gap: 10.25rem;
+  }
+
+  main .block.columns.no-gap > div {
+    gap: 0;
   }
 }
 
