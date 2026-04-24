@@ -85,73 +85,68 @@ function decorateOtherItems(otherItemsEl) {
   langPicker.classList.add('mobile-lang-picker');
   const langPickerUl = document.createElement('ul');
   langPicker.appendChild(langPickerUl);
-  otherItemsEl
-    .querySelector('.lang-picker')
-    .querySelectorAll(':scope>ul>li')
-    .forEach((li) => {
-      langPickerUl.appendChild(li.cloneNode(true));
-    });
 
-  langPicker.querySelectorAll(':scope>ul>li').forEach((li) => {
-    li.classList.add('mobile-lang-picker-item');
-    li.classList.remove('lang-picker-item');
-    li.classList.remove('picker-item');
-  });
+  // Get the desktop lang picker
+  const desktopLangPicker = otherItemsEl.querySelector('.lang-picker');
 
-  otherItemsEl.querySelector('.lang-picker').replaceWith(langPicker);
+  // Add desktop language switch link to mobile picker, or create one from the current language
+  const switchLink = desktopLangPicker.querySelector('.lang-switch-link');
+
+  const li = document.createElement('li');
+  li.classList.add('mobile-lang-picker-item');
+
+  if (switchLink) {
+    li.appendChild(switchLink.cloneNode(true));
+  } else {
+    const currentLang = getLanguage();
+    const otherLang = currentLang === 'en' ? 'jp' : 'en';
+
+    const link = document.createElement('a');
+    link.href = otherLang === 'en' ? '/' : `/${otherLang}/`;
+    link.textContent = otherLang === 'en' ? 'English' : '日本語';
+
+    li.appendChild(link);
+  }
+
+  langPickerUl.appendChild(li);
+
+  desktopLangPicker.replaceWith(langPicker);
 
   /* Move the social icons to the bottom */
   otherItemsEl.appendChild(otherItemsEl.querySelector('.social'));
 }
 
 async function decorateLangPicker(langPicker) {
-  const lang = getLanguage() || '';
-  let langName = 'English'; // default to English
   langPicker.classList.add('picker');
   langPicker.classList.add('lang-picker');
   langPicker.innerHTML = langPicker.innerHTML.replace(/\[languages\]/, '');
 
   const currentLang = getLanguage();
+  const langNames = { en: 'English', jp: '日本語' };
+  const otherLang = currentLang === 'en' ? 'jp' : 'en';
 
   // prettier-ignore
   const currPath = currentLang === 'en' ? window.location.pathname : window.location.pathname.replace(`/${currentLang}/`, '/');
   const json = await fetchIndex('query-index');
 
-  langPicker.querySelectorAll(':scope>ul>li').forEach((li) => {
-    li.classList.add('picker-item');
-    li.classList.add('lang-picker-item');
-    // Update the language links to point to the current path
-    let langRoot = li.querySelector('a').getAttribute('href');
-    langRoot = langRoot.endsWith('/') ? langRoot.slice(0, -1) : langRoot;
-    const langLink = langRoot + currPath + window.location.search;
-    li.querySelector('a').setAttribute('href', langLink);
+  // Check if the page exists in the other language
+  const otherLangRoot = otherLang === 'en' ? '' : `/${otherLang}`;
+  const newUrl = otherLangRoot + currPath;
+  const urlExcludingSlash = newUrl.endsWith('/') ? newUrl.slice(0, -1) : newUrl;
+  const data = json.data.find((page) => [newUrl, urlExcludingSlash].includes(page.path));
 
-    /* Remove the current language from the list */
-    if (langRoot === `/${lang}`) {
-      langName = li.querySelector('a').innerHTML;
-      li.remove();
-    } else if (lang === 'en' && langRoot === '') {
-      // Special Check added to remove english language from the list
-      // if selected language is english
-      li.remove();
-    } else {
-      const newUrl = langRoot === '' ? `${currPath}` : `${langRoot}${currPath}`;
-      const urlExcludingSlash = newUrl.endsWith('/') ? newUrl.slice(0, -1) : newUrl;
-      const data = json.data.find((page) => [newUrl, urlExcludingSlash].includes(page.path));
-
-      if (!data) {
-        li.remove();
-      }
-    }
-  });
-
-  const div = document.createElement('div');
-  div.textContent = langName;
-  langPicker.prepend(div);
-
-  if (langPicker.querySelectorAll(':scope>ul>li').length === 0 && langPicker.querySelector('ul')) {
-    langPicker.querySelector('ul').remove();
+  if (data) {
+    const link = document.createElement('a');
+    link.href = newUrl + window.location.search;
+    link.textContent = langNames[otherLang];
+    link.classList.add('lang-switch-link');
+    link.setAttribute('aria-label', `Switch to ${langNames[otherLang]}`);
+    langPicker.appendChild(link);
   }
+
+  // Remove the original ul if it exists
+  const ul = langPicker.querySelector('ul');
+  if (ul) ul.remove();
 }
 
 function decorateTopNav(nav) {

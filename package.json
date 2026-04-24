@@ -16,8 +16,8 @@
     "format:check": "prettier --check ."
   },
   "lint-staged": {
-    "*.js": "eslint .",
-    "*.css": "stylelint blocks/**/*.css styles/*.css"
+    "*.js": "eslint --fix",
+    "*.css": "stylelint --fix"
   },
   "repository": {
     "type": "git",
