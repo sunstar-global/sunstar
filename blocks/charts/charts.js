@@ -34,6 +34,68 @@ function animateValueLabels(chart, duration = 600) {
   requestAnimationFrame(frame);
 }
 
+function animateDoughnutLabels(chart, duration = 300) {
+  const start = performance.now();
+
+  function frame(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    chart.$labelAnimationProgress = progress;
+    chart.draw();
+
+    if (progress < 1) {
+      requestAnimationFrame(frame);
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+
+function setupDoughnutViewportAnimation(chart, observedEl, drawDuration = 800, labelDelay = 700, threshold = 0.6) {
+  chart.$labelAnimationProgress = 0;
+
+  chart.data.datasets.forEach((dataset) => {
+    dataset.circumference = 0;
+  });
+  chart.update('none');
+
+  let hasAnimated = false;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || hasAnimated) return;
+        if (entry.intersectionRatio < threshold) return;
+
+        hasAnimated = true;
+
+        // Draw donut ring from 0 -> 360deg, then fade labels in.
+        chart.$labelAnimationProgress = 0;
+        chart.options.animation = {
+          animateRotate: true,
+          duration: drawDuration,
+          easing: 'easeOutCubic',
+        };
+
+        chart.data.datasets.forEach((dataset) => {
+          dataset.circumference = 360;
+        });
+        chart.update();
+
+        setTimeout(() => {
+          animateDoughnutLabels(chart, 300);
+        }, labelDelay);
+
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: [threshold],
+    }
+  );
+
+  observer.observe(observedEl);
+}
+
 function withOpacity(color, opacity = 0.5) {
   if (!color || typeof color !== 'string') return color;
 
@@ -283,8 +345,12 @@ function generateDoughnutChart(labels, data, colors, config, block) {
   const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 1.1;
   const MOBILE_BREAKPOINT = 560;
 
+  const canvasWrap = document.createElement('div');
+  canvasWrap.classList.add('doughnut-canvas-wrap');
+  canvasWrap.style.aspectRatio = String(aspectRatio);
   const canvas = document.createElement('canvas');
-  block.appendChild(canvas);
+  canvasWrap.appendChild(canvas);
+  block.appendChild(canvasWrap);
 
   // HTML legend shown below on mobile
   const legendEl = document.createElement('div');
@@ -332,6 +398,7 @@ function generateDoughnutChart(labels, data, colors, config, block) {
       const { ctx } = chart;
       const outerMeta = chart.getDatasetMeta(0);
       const mainMeta = chart.getDatasetMeta(1) || outerMeta;
+      const labelProgress = chart.$labelAnimationProgress ?? 1;
 
       if (!mainMeta?.data?.length) return;
 
@@ -371,6 +438,8 @@ function generateDoughnutChart(labels, data, colors, config, block) {
         ctx.restore();
         return;
       }
+
+      ctx.globalAlpha = labelProgress;
 
       mainMeta.data.forEach((segment, index) => {
         const angle = (segment.startAngle + segment.endAngle) / 2;
@@ -427,6 +496,7 @@ function generateDoughnutChart(labels, data, colors, config, block) {
           backgroundColor: outerLayerColors,
           spacing: 0,
           borderWidth: 2,
+          circumference: 0,
           ...(configuredBorderColor ? { borderColor: configuredBorderColor } : {}),
           radius: '69%',
           cutout: '80%',
@@ -437,6 +507,7 @@ function generateDoughnutChart(labels, data, colors, config, block) {
           backgroundColor: chartColors,
           spacing: 0,
           borderWidth: 2,
+          circumference: 0,
           borderColor: configuredBorderColor || '#ffffff',
           radius: '78%',
           cutout: '60%',
@@ -451,7 +522,7 @@ function generateDoughnutChart(labels, data, colors, config, block) {
       aspectRatio: isMobile() ? 1 : aspectRatio,
       maintainAspectRatio: true,
       layout: { padding: getLayoutPadding() },
-      animation: { animateRotate: true, duration: 800 },
+      animation: false,
       plugins: {
         legend: { display: false },
         tooltip: { enabled: false },
@@ -460,19 +531,234 @@ function generateDoughnutChart(labels, data, colors, config, block) {
     plugins: [customPlugin],
   });
 
+  chart.$labelAnimationProgress = 0;
+
+  const updateLegendVisibility = () => {
+    const mobile = isMobile();
+    legendEl.classList.toggle('is-visible', mobile);
+    legendEl.setAttribute('aria-hidden', mobile ? 'false' : 'true');
+  };
+
   // Sync legend visibility and chart options on resize
   const resizeObserver = new ResizeObserver(() => {
     const mobile = isMobile();
-    legendEl.style.display = mobile ? 'flex' : 'none';
+    updateLegendVisibility();
     chart.options.layout.padding = getLayoutPadding();
     chart.options.aspectRatio = mobile ? 1 : aspectRatio;
+    canvasWrap.style.aspectRatio = String(mobile ? 1 : aspectRatio);
     chart.update('none');
   });
 
   resizeObserver.observe(block);
 
   // Set initial legend visibility
-  legendEl.style.display = isMobile() ? 'flex' : 'none';
+  updateLegendVisibility();
+
+  setupDoughnutViewportAnimation(chart, canvasWrap, 800, 700, 0.6);
+}
+
+function generateCustomDoughnutChart(labels, data, colors, config, block) {
+  // eslint-disable-next-line no-undef
+  Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
+
+  const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 1;
+
+  // Fallback color palette for items without a specified color
+  const FALLBACK_COLORS = [
+    '#B8D4E0',
+    '#C5DDE6',
+    '#A0C8D8',
+    '#7BAFC4',
+    '#D2E6EC',
+    '#5E9AB5',
+    '#DCEEF3',
+    '#6BA5BC',
+    '#8FBFCE',
+    '#AAD0DC',
+    '#E6F3F7',
+    '#3A7A9B',
+  ];
+  let fallbackIdx = 0;
+  const resolvedColors = labels.map((_, i) => {
+    if (colors[i]) return colors[i];
+    const c = FALLBACK_COLORS[fallbackIdx % FALLBACK_COLORS.length];
+    fallbackIdx += 1;
+    return c;
+  });
+
+  const total = data.reduce((s, v) => s + v, 0);
+
+  // Identify Scope 1+2 position to build the 2-segment outer ring
+  const scope12Index = labels.findIndex((l) => /scope\s*1\s*\+\s*2/i.test(l));
+  const scope12Value = scope12Index >= 0 ? data[scope12Index] : 0;
+  const scope3Value = total - scope12Value;
+
+  // Outer ring: Scope 1+2 (dark teal) | Scope 3 aggregate (orange)
+  // Aligned to the inner ring by matching the first segment's position
+  const outerData =
+    scope12Index === 0
+      ? [scope12Value, scope3Value]
+      : [...data.slice(0, scope12Index).map(() => 0), scope12Value, scope3Value];
+
+  const OUTER_SCOPE12 = '#00577C';
+  const OUTER_SCOPE3 = '#F28B2D';
+  const outerColors =
+    scope12Index === 0
+      ? [OUTER_SCOPE12, OUTER_SCOPE3]
+      : [...Array(scope12Index).fill('transparent'), OUTER_SCOPE12, OUTER_SCOPE3];
+
+  const centerTextColor = config.centerTextColor || '#00577C';
+  const centerCaption = (config['caption-chart'] || '').trim();
+  const centerTitle = (config['title-chart'] || '').trim();
+
+  const canvasWrap = document.createElement('div');
+  canvasWrap.classList.add('doughnut-canvas-wrap');
+  canvasWrap.style.aspectRatio = String(aspectRatio);
+  const canvas = document.createElement('canvas');
+  canvasWrap.appendChild(canvas);
+  block.appendChild(canvasWrap);
+
+  // Legend rendered below the chart (always visible)
+  const legendEl = document.createElement('div');
+  legendEl.classList.add('doughnut-custom-legend');
+  block.appendChild(legendEl);
+
+  labels.forEach((label, i) => {
+    const commaIdx = label.indexOf(',');
+    const scopeName = commaIdx >= 0 ? label.slice(0, commaIdx).trim() : label;
+    const description = commaIdx >= 0 ? label.slice(commaIdx + 1).trim() : '';
+    const displayPercent = `${data[i]}%`;
+
+    const item = document.createElement('div');
+    item.classList.add('doughnut-custom-legend-item');
+
+    const swatch = document.createElement('span');
+    swatch.classList.add('doughnut-custom-legend-swatch');
+    swatch.style.backgroundColor = resolvedColors[i];
+
+    const nameEl = document.createElement('div');
+    nameEl.classList.add('doughnut-custom-legend-name');
+    nameEl.textContent = scopeName;
+
+    const descEl = document.createElement('div');
+    descEl.classList.add('doughnut-custom-legend-desc');
+    descEl.textContent = description;
+
+    const valueEl = document.createElement('div');
+    valueEl.classList.add('doughnut-custom-legend-value');
+    valueEl.textContent = displayPercent;
+
+    item.append(swatch, nameEl, descEl, valueEl);
+    legendEl.appendChild(item);
+  });
+
+  // Helper: wrap text to fit within maxWidth
+  function wrapText(ctx, text, maxWidth) {
+    const words = text.split(' ');
+    const lines = [];
+    let current = '';
+    words.forEach((word) => {
+      const test = current ? `${current} ${word}` : word;
+      if (ctx.measureText(test).width > maxWidth && current) {
+        lines.push(current);
+        current = word;
+      } else {
+        current = test;
+      }
+    });
+    if (current) lines.push(current);
+    return lines;
+  }
+
+  // Plugin: draw center caption + title inside the donut hole
+  const centerPlugin = {
+    id: 'customDoughnutCenter',
+    afterDraw(chart) {
+      const { ctx } = chart;
+      const meta = chart.getDatasetMeta(1);
+      const labelProgress = chart.$labelAnimationProgress ?? 1;
+      if (!meta?.data?.length) return;
+
+      const arc = meta.data[0];
+      const { x: cx, y: cy, innerRadius } = arc;
+      const maxTextWidth = innerRadius * 1.5;
+
+      ctx.save();
+      ctx.globalAlpha = labelProgress;
+      ctx.fillStyle = centerTextColor;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+
+      const captionFontSize = Math.max(10, Math.min(13, innerRadius * 0.17));
+      const titleFontSize = Math.max(12, Math.min(18, innerRadius * 0.23));
+      const captionLineHeight = captionFontSize * 1.35;
+      const gap = 6;
+
+      ctx.font = `400 ${captionFontSize}px "Noto Sans", sans-serif`;
+      const captionLines = wrapText(ctx, centerCaption, maxTextWidth);
+      const captionBlockH = captionLines.length * captionLineHeight;
+
+      const totalH = captionBlockH + gap + titleFontSize;
+      let y = cy - totalH / 2 + captionLineHeight;
+
+      captionLines.forEach((line) => {
+        ctx.fillText(line, cx, y);
+        y += captionLineHeight;
+      });
+
+      y += gap;
+      ctx.font = `700 ${titleFontSize}px "Noto Sans", sans-serif`;
+      ctx.fillText(centerTitle, cx, y);
+
+      ctx.restore();
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  const chart = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [
+        {
+          // Outer thin ring: Scope 1+2 vs Scope 3 aggregate
+          data: outerData,
+          backgroundColor: outerColors,
+          circumference: 0,
+          borderWidth: 0,
+          radius: '69%',
+          cutout: '80%',
+          weight: 1,
+        },
+        {
+          // Inner ring: all individual scope segments
+          data,
+          backgroundColor: resolvedColors,
+          circumference: 0,
+          borderWidth: 2,
+          borderColor: '#ffffff',
+          radius: '78%',
+          cutout: '58%',
+          weight: 1,
+        },
+      ],
+    },
+    options: {
+      events: [],
+      aspectRatio,
+      maintainAspectRatio: true,
+      rotation: 0,
+      layout: { padding: 8 },
+      animation: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },
+      },
+    },
+    plugins: [centerPlugin],
+  });
+
+  setupDoughnutViewportAnimation(chart, canvasWrap, 800, 700, 0.6);
 }
 
 function getDataFromBlock(block) {
@@ -535,6 +821,11 @@ export default async function decorate(block) {
     }
 
     block.appendChild(titleContainer);
+  }
+
+  if (blockCfg.type === 'doughnut-custom') {
+    generateCustomDoughnutChart(labels, data, colors, blockCfg, block);
+    return;
   }
 
   if (blockCfg.type === 'doughnut') {
