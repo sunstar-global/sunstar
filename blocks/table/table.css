@@ -66,9 +66,28 @@ main .table.inner-table table th {
   line-height: 1.7em;
   padding: 0.5em 1em;
   border: 1px solid var(--transparent-grey-light-color);
-  background: var(--transparent-blue-light-color);
   font-weight: var(--font-weight-bold);
   text-align: center;
+  background: var(--white);
+}
+
+main .table.theme-blue table thead th {
+  background-color: var(--secondary);
+  color: var(--white);
+}
+
+main .table.highlight-first-column:not(.no-head) thead th {
+  background-color: var(--secondary);
+  color: var(--white);
+  font-weight: var(--font-weight-bold);
+}
+
+main .table.inner-table.double-header-table table thead tr:first-child th {
+  background: var(--transparent-blue-light-color);
+}
+
+main .table.inner-table.double-header-table table thead tr:nth-child(2) th {
+  background: var(--white);
 }
 
 main .table.inner-table table td p {
@@ -76,6 +95,15 @@ main .table.inner-table table td p {
   line-height: 1.7em;
   margin-bottom: 0;
   text-size-adjust: none;
+}
+
+main .table.inner-table table thead th[rowspan] {
+  vertical-align: middle;
+}
+
+main .table.inner-table table thead th[colspan] {
+  text-align: center;
+  vertical-align: middle;
 }
 
 main .table.fixed .table-item {
@@ -195,17 +223,6 @@ main .table.padding-2 table td { padding: 2rem; }
 main .table.text-align-left tr td { text-align: left; }
 main .table.text-align-right tr td { text-align: right; }
 main .table.text-align-center tr td { text-align: center; }
-
-main .table.theme-blue table thead th {
-  background-color: var(--secondary);
-  color: var(--white);
-}
-
-main .table.highlight-first-column:not(.no-head) thead th {
-  background-color: var(--secondary);
-  color: var(--white);
-  font-weight: var(--font-weight-bold);
-}
 
 main .table.highlight-first-column:not(.no-head) tr:not(:first-of-type) td {
   text-align: center;

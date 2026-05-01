@@ -70,24 +70,52 @@ function fixTableSemantics(block) {
 
   if (table.querySelector('thead')) return;
 
-  const rows = table.querySelectorAll('tr');
+  const rows = [...table.querySelectorAll('tr')];
   if (!rows.length) return;
 
   const firstRow = rows[0];
+  const secondRow = rows[1];
+
+  const isYearHeaderRow = (row) => {
+    if (!row) return false;
+
+    const cells = [...row.children].map((cell) => (cell.textContent || '').trim());
+
+    if (!cells.length) return false;
+
+    return cells.every((text) => /^\d{4}$/.test(text));
+  };
 
   const thead = document.createElement('thead');
   const tbody = document.createElement('tbody');
 
-  [...firstRow.children].forEach((cell) => {
-    const th = document.createElement('th');
-    th.innerHTML = cell.innerHTML;
-    th.setAttribute('scope', 'col');
-    cell.replaceWith(th);
+  const headerRows = [firstRow];
+  const hasSecondHeaderRow = isYearHeaderRow(secondRow);
+
+  if (hasSecondHeaderRow) {
+    headerRows.push(secondRow);
+    block.classList.add('double-header-table');
+  }
+
+  headerRows.forEach((row, rowIndex) => {
+    [...row.children].forEach((cell, cellIndex) => {
+      const th = document.createElement('th');
+      th.innerHTML = cell.innerHTML;
+      [...cell.attributes].forEach((attr) => {
+        th.setAttribute(attr.name, attr.value);
+      });
+      if (hasSecondHeaderRow && rowIndex === 0 && cellIndex === 0 && !th.hasAttribute('rowspan')) {
+        th.setAttribute('rowspan', '2');
+      }
+
+      th.setAttribute('scope', 'col');
+      cell.replaceWith(th);
+    });
+
+    thead.appendChild(row);
   });
 
-  thead.appendChild(firstRow);
-
-  [...rows].slice(1).forEach((row) => {
+  rows.slice(headerRows.length).forEach((row) => {
     tbody.appendChild(row);
   });
 
