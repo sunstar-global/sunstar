@@ -11,10 +11,18 @@ export default async function decorate(block) {
   const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
 
   console.log(unfilteredData);
-  const data = unfilteredData.filter((item) => {
+  let data = (unfilteredData || []).filter((item) => {
     if (item.robots && item.robots.includes('noindex')) {
       return false;
     }
+    return true;
+  });
+
+  data = data.filter((item) => {
+    // Require a job title and a valid path
+    if (!item.jobtitle || !item.path) return false;
+    const path = String(item.path).trim();
+    if (path === '' || path === '#' || path.toUpperCase().includes('CALC')) return false;
     return true;
   });
 
