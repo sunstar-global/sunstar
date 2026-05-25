@@ -39,6 +39,11 @@ export default async function decorate(block) {
   const employmentTypes = unique(data.map((item) => item.employmenttype));
   const workModes = unique(data.map((item) => item.workmode));
 
+  // If there are no valid jobs left after filtering, remove the Apply Now section
+  if (!data.length) {
+    document.querySelector('.section.career-apply-container')?.remove();
+  }
+
   const wrapper = document.createElement('div');
   wrapper.classList.add('job-opportunities-page-wrapper');
 
