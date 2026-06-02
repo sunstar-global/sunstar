@@ -338,6 +338,187 @@ function generateBarChart(labels, data, colors, config, block, isSmallText = fal
   observer.observe(canvas);
 }
 
+function generateHorizontalBarChart(labels, data, colors, config, block) {
+  // eslint-disable-next-line no-undef
+  Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
+
+  const chartColors = Array.isArray(colors) && colors.length > 0 ? colors : ['#F28B2D'];
+  const aspectRatio = config.aspectratio ? parseFloat(config.aspectratio) : 0.5;
+  const canvas = document.createElement('canvas');
+  block.appendChild(canvas);
+
+  const initialData = data.map(() => 0);
+
+  const maxValue = Math.max(...data);
+  let stepSize;
+  if (config.stepsize === null || config.stepsize === undefined) {
+    stepSize = getNiceStepSize(maxValue * 1.1);
+  } else {
+    stepSize = parseInt(config.stepsize, 10);
+  }
+
+  const maxRounded = config.scale ? parseInt(config.scale, 10) : Math.ceil((maxValue * 1.1) / stepSize) * stepSize;
+
+  const valueLabelPlugin = {
+    id: 'horizontalValueLabelPlugin',
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const progress = chart.$labelAnimationProgress ?? 0;
+
+      chart.data.datasets.forEach((dataset, datasetIndex) => {
+        const meta = chart.getDatasetMeta(datasetIndex);
+
+        meta.data.forEach((bar, index) => {
+          const rawValue = dataset.rawValues?.[index];
+          if (rawValue == null) return;
+
+          const animatedValue = Math.round(rawValue * progress);
+          const { x, y, base, width, height } = bar;
+          const labelText = `${animatedValue}%`;
+          const chartArea = chart.chartArea || {};
+          const barEnd = Math.max(x, base);
+          let labelX = barEnd + 10;
+          const labelY = y;
+
+          ctx.save();
+          ctx.globalAlpha = progress;
+          ctx.font = '500 18px "Noto Sans", sans-serif';
+          const textWidth = ctx.measureText(labelText).width;
+
+          if (chartArea.right && labelX + textWidth > chartArea.right) {
+            ctx.textAlign = 'right';
+            labelX = Math.min(barEnd - 8, chartArea.right - 8);
+          } else {
+            ctx.textAlign = 'left';
+          }
+
+          ctx.fillStyle = '#000000';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(labelText, labelX, labelY);
+          ctx.restore();
+        });
+      });
+    },
+  };
+
+  // eslint-disable-next-line no-undef
+  const chart = new Chart(canvas, {
+    type: 'bar',
+    plugins: [valueLabelPlugin],
+    data: {
+      labels,
+      datasets: [
+        {
+          data: initialData,
+          rawValues: data,
+          borderWidth: 0,
+          borderRadius: 0,
+          backgroundColor: chartColors[0] || '#F28B2D',
+          barPercentage: 0.7,
+        },
+      ],
+    },
+    options: {
+      indexAxis: 'y',
+      aspectRatio,
+      maintainAspectRatio: true,
+      animation: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          min: 0,
+          max: maxRounded,
+          ticks: {
+            color: '#00587c',
+            stepSize,
+            maxValue: maxRounded,
+            font: {
+              size: 14,
+            },
+            callback(value) {
+              return `${value}%`;
+            },
+          },
+          grid: {
+            display: true,
+            color: '#e0e0e0',
+            drawBorder: false,
+          },
+          border: {
+            display: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: '#00587c',
+            font: {
+              size: 16,
+              weight: '400',
+            },
+          },
+          grid: {
+            display: false,
+          },
+          border: {
+            display: false,
+          },
+        },
+      },
+    },
+  });
+
+  chart.$labelAnimationProgress = 0;
+
+  let hasAnimated = false;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || hasAnimated) return;
+        if (entry.intersectionRatio < 0.65) return;
+
+        hasAnimated = true;
+
+        setTimeout(() => {
+          // Reset instantly before animating
+          chart.$labelAnimationProgress = 0;
+          chart.data.datasets[0].data = [...initialData];
+          chart.update('none');
+
+          // Animate bars from 0 to final values
+          chart.options.animation = {
+            duration: 1000,
+            easing: 'easeOutCubic',
+          };
+
+          chart.data.datasets[0].data = [...data];
+          chart.update();
+
+          // Start counting/fading labels after bars are almost done
+          setTimeout(() => {
+            animateValueLabels(chart, 600);
+          }, 850);
+        }, 120);
+
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: [0.65],
+    }
+  );
+
+  observer.observe(canvas);
+}
+
 function generateDoughnutChart(labels, data, colors, config, block) {
   // eslint-disable-next-line no-undef
   Chart.defaults.font.family = 'Noto Sans, Noto Sans JP, sans-serif';
@@ -830,6 +1011,11 @@ export default async function decorate(block) {
 
   if (blockCfg.type === 'doughnut') {
     generateDoughnutChart(labels, data, colors, blockCfg, block);
+    return;
+  }
+
+  if (blockCfg.type === 'horizontal-bar') {
+    generateHorizontalBarChart(labels, data, colors, blockCfg, block);
     return;
   }
 
