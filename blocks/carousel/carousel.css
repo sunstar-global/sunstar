@@ -80,6 +80,14 @@
   color: var(--white);
 }
 
+.carousel h1 {
+  margin-bottom: 1rem;
+  font-weight: var(--font-weight-small);
+  font-size: var(--heading-font-size-m);
+  margin-top: 0;
+  color: var(--white);
+}
+
 .carousel.small h1 {
   opacity: 1;
   margin-bottom: 1rem;
@@ -99,13 +107,6 @@
   color: var(--text-color);
 }
 
-.carousel h2 {
-  margin-bottom: 1rem;
-  font-weight: var(--font-weight-small);
-  font-size: var(--heading-font-size-m);
-  margin-top: 0;
-  color: var(--white);
-}
 
 .carousel .image {
   display: flex;
@@ -301,7 +302,7 @@ main .section.carousel-container {
     justify-content: unset;
   }
 
-  .carousel h2 {
+  .carousel h1 {
     font-size: 2.25rem;
   }
 }
