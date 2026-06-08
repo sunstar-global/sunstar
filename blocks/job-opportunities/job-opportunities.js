@@ -184,9 +184,22 @@ export default async function decorate(block) {
   const jobList = document.createElement('div');
   jobList.classList.add('job-list');
 
-  // eslint-disable-next-line no-use-before-define
-  loadResults(jobList, data, currentResults, chunkSize, placeholders);
-  currentResults += chunkSize;
+  const noJobsMessage = document.createElement('div');
+  noJobsMessage.classList.add('no-job-listings');
+  noJobsMessage.style.display = 'none';
+  noJobsMessage.innerHTML = `
+    <p>Thank you for your interest in Sunstar. There are currently no open positions listed. Visit Sunstar's <a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn page</a> for additional opportunities and updates.</p>
+    <a class="button primary" href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">View LinkedIn</a>
+  `;
+  jobList.append(noJobsMessage);
+
+  if (data.length > 0) {
+    // eslint-disable-next-line no-use-before-define
+    loadResults(jobList, data, currentResults, chunkSize, placeholders);
+    currentResults += chunkSize;
+  } else {
+    noJobsMessage.style.display = 'block';
+  }
 
   if (currentResults < data.length) {
     const loadMoreContainer = document.createElement('div');
@@ -220,6 +233,11 @@ export default async function decorate(block) {
     // eslint-disable-next-line no-use-before-define
     cb.addEventListener('change', () => applyFilters(placeholders));
   });
+
+  const noJobsNode = document.querySelector('.no-job-listings');
+  if (data.length === 0 && noJobsNode) {
+    noJobsNode.style.display = 'block';
+  }
 
   document.querySelectorAll('.accordion-header').forEach((header) => {
     header.addEventListener('click', () => {
