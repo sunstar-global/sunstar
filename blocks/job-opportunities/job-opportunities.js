@@ -5,8 +5,10 @@ import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 export default async function decorate(block) {
   const chunkSize = 6;
   block.innerHTML = '';
-  const lang = getLanguage();
-  const placeholders = await fetchPlaceholders(getLanguage());
+  const lang = getLanguage(window.location.pathname, true);
+  const langFromDocument = document.documentElement.lang?.startsWith('ja');
+  const isJapanese = lang === 'jp' || langFromDocument;
+  const placeholders = await fetchPlaceholders(getLanguage(window.location.pathname, true));
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
   const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
 
@@ -182,6 +184,7 @@ export default async function decorate(block) {
 
   const jobList = document.createElement('div');
   jobList.classList.add('job-list');
+  const hideNoJobsMessage = isJapanese;
 
   const noJobsMessage = document.createElement('div');
   noJobsMessage.classList.add('no-job-listings');
@@ -208,7 +211,7 @@ export default async function decorate(block) {
     // eslint-disable-next-line no-use-before-define
     loadResults(jobList, data, currentResults, chunkSize, placeholders);
     currentResults += chunkSize;
-  } else {
+  } else if (!hideNoJobsMessage) {
     noJobsMessage.style.display = 'block';
   }
 
@@ -246,7 +249,7 @@ export default async function decorate(block) {
   });
 
   const noJobsNode = document.querySelector('.no-job-listings');
-  if (data.length === 0 && noJobsNode) {
+  if (data.length === 0 && noJobsNode && !hideNoJobsMessage) {
     noJobsNode.style.display = 'block';
   }
 
@@ -493,7 +496,15 @@ function applyFilters(placeholders) {
   });
 
   const noJobsMessage = document.querySelector('.no-job-listings');
+  const isJapanese =
+    getLanguage(window.location.pathname, true) === 'jp' || document.documentElement.lang?.startsWith('ja');
   if (noJobsMessage) {
-    noJobsMessage.style.display = visibleCount === 0 ? 'block' : 'none';
+    if (isJapanese) {
+      noJobsMessage.style.display = 'none';
+    } else if (visibleCount === 0) {
+      noJobsMessage.style.display = 'block';
+    } else {
+      noJobsMessage.style.display = 'none';
+    }
   }
 }
