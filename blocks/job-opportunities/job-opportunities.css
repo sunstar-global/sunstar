@@ -196,6 +196,61 @@ span.filter-tag span.icon-close {
   margin-top: 2rem;
 }
 
+.no-job-listings {
+  display: none;
+  background-color: var(--white);
+  border: 1px solid var(--transparent-grey-light-color);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.no-job-listings-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.no-job-listings-icon {
+  display: grid;
+  place-items: center center;
+  width: 5rem;
+  height: 5rem;
+  min-width: 5rem;
+  min-height: 5rem;
+  border-radius: 1.25rem;
+  background-color: var(--transparent-grey-light-color);
+  color: var(--secondary);
+}
+
+.no-job-listings-icon svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.no-job-listings-content {
+  flex: 1 1 0;
+  min-width: 220px;
+}
+
+.no-job-listings-content h2 {
+  margin: 0 0 0.5rem;
+  font-size: var(--heading-font-size-s);
+}
+
+.job-opportunities .no-job-listings .no-job-listings-content p {
+  margin: 0 0 1rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.no-job-listings-content a.button.primary {
+  display: inline-flex;
+  align-items: center;
+}
+
 .selected-filters {
   display: none;
 }
