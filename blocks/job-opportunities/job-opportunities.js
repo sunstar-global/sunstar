@@ -5,12 +5,13 @@ import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 export default async function decorate(block) {
   const chunkSize = 6;
   block.innerHTML = '';
-  const lang = getLanguage();
-  const placeholders = await fetchPlaceholders(getLanguage());
+  const lang = getLanguage(window.location.pathname, true);
+  const langFromDocument = document.documentElement.lang?.startsWith('ja');
+  const isJapanese = lang === 'jp' || langFromDocument;
+  const placeholders = await fetchPlaceholders(getLanguage(window.location.pathname, true));
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
   const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
 
-  console.log(unfilteredData);
   let data = (unfilteredData || []).filter((item) => {
     if (item.robots && item.robots.includes('noindex')) {
       return false;
@@ -188,10 +189,36 @@ export default async function decorate(block) {
 
   const jobList = document.createElement('div');
   jobList.classList.add('job-list');
+  const hideNoJobsMessage = isJapanese;
 
-  // eslint-disable-next-line no-use-before-define
-  loadResults(jobList, data, currentResults, chunkSize, placeholders);
-  currentResults += chunkSize;
+  const noJobsMessage = document.createElement('div');
+  noJobsMessage.classList.add('no-job-listings');
+  noJobsMessage.style.display = 'none';
+  noJobsMessage.innerHTML = `
+    <div class="no-job-listings-card">
+      <div class="no-job-listings-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 7H20V20H4V7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M8 7V4H16V7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M9 12H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M9 16H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="no-job-listings-content">
+        <h2>No opportunities listed right now</h2>
+        <p>Thank you for your interest in Sunstar. There are currently no open positions listed. Visit Sunstar's <a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn page</a> for additional opportunities and updates.</p>
+      </div>
+    </div>
+  `;
+  jobList.append(noJobsMessage);
+
+  if (data.length > 0) {
+    // eslint-disable-next-line no-use-before-define
+    loadResults(jobList, data, currentResults, chunkSize, placeholders);
+    currentResults += chunkSize;
+  } else if (!hideNoJobsMessage) {
+    noJobsMessage.style.display = 'block';
+  }
 
   if (currentResults < data.length) {
     const loadMoreContainer = document.createElement('div');
@@ -225,6 +252,11 @@ export default async function decorate(block) {
     // eslint-disable-next-line no-use-before-define
     cb.addEventListener('change', () => applyFilters(placeholders));
   });
+
+  const noJobsNode = document.querySelector('.no-job-listings');
+  if (data.length === 0 && noJobsNode && !hideNoJobsMessage) {
+    noJobsNode.style.display = 'block';
+  }
 
   document.querySelectorAll('.accordion-header').forEach((header) => {
     header.addEventListener('click', () => {
@@ -442,8 +474,9 @@ function applyFilters(placeholders) {
   });
 
   updateSelectedFiltersUI(selected, placeholders);
-  updateFilterStates(selected); // <<— add this line
+  updateFilterStates(selected);
 
+  let visibleCount = 0;
   document.querySelectorAll('.job-posting-card').forEach((card) => {
     const matchCategory = !selected.category.length || selected.category.includes(card.dataset.category);
     const matchCountry = !selected.country.length || selected.country.includes(card.dataset.country);
@@ -454,15 +487,29 @@ function applyFilters(placeholders) {
       !selected.employmenttype.length || selected.employmenttype.includes(card.dataset.employmenttype);
     const matchDepartment = !selected.department.length || selected.department.includes(card.dataset.department);
 
-    card.style.display =
+    const isVisible =
       matchCategory &&
       matchCountry &&
       matchCity &&
       matchRegion &&
       matchWorkMode &&
       matchEmploymentType &&
-      matchDepartment
-        ? 'block'
-        : 'none';
+      matchDepartment;
+
+    card.style.display = isVisible ? 'block' : 'none';
+    if (isVisible) visibleCount += 1;
   });
+
+  const noJobsMessage = document.querySelector('.no-job-listings');
+  const isJapanese =
+    getLanguage(window.location.pathname, true) === 'jp' || document.documentElement.lang?.startsWith('ja');
+  if (noJobsMessage) {
+    if (isJapanese) {
+      noJobsMessage.style.display = 'none';
+    } else if (visibleCount === 0) {
+      noJobsMessage.style.display = 'block';
+    } else {
+      noJobsMessage.style.display = 'none';
+    }
+  }
 }
