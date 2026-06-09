@@ -10,7 +10,6 @@ export default async function decorate(block) {
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
   const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
 
-  console.log(unfilteredData);
   let data = (unfilteredData || []).filter((item) => {
     if (item.robots && item.robots.includes('noindex')) {
       return false;
@@ -188,8 +187,20 @@ export default async function decorate(block) {
   noJobsMessage.classList.add('no-job-listings');
   noJobsMessage.style.display = 'none';
   noJobsMessage.innerHTML = `
-    <p>Thank you for your interest in Sunstar. There are currently no open positions listed. Visit Sunstar's <a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn page</a> for additional opportunities and updates.</p>
-    <a class="button primary" href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">View LinkedIn</a>
+    <div class="no-job-listings-card">
+      <div class="no-job-listings-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 7H20V20H4V7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M8 7V4H16V7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M9 12H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M9 16H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="no-job-listings-content">
+        <h2>No opportunities listed right now</h2>
+        <p>Thank you for your interest in Sunstar. There are currently no open positions listed. Visit Sunstar's <a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn page</a> for additional opportunities and updates.</p>
+      </div>
+    </div>
   `;
   jobList.append(noJobsMessage);
 
@@ -455,8 +466,9 @@ function applyFilters(placeholders) {
   });
 
   updateSelectedFiltersUI(selected, placeholders);
-  updateFilterStates(selected); // <<— add this line
+  updateFilterStates(selected);
 
+  let visibleCount = 0;
   document.querySelectorAll('.job-posting-card').forEach((card) => {
     const matchCategory = !selected.category.length || selected.category.includes(card.dataset.category);
     const matchCountry = !selected.country.length || selected.country.includes(card.dataset.country);
@@ -467,15 +479,21 @@ function applyFilters(placeholders) {
       !selected.employmenttype.length || selected.employmenttype.includes(card.dataset.employmenttype);
     const matchDepartment = !selected.department.length || selected.department.includes(card.dataset.department);
 
-    card.style.display =
+    const isVisible =
       matchCategory &&
       matchCountry &&
       matchCity &&
       matchRegion &&
       matchWorkMode &&
       matchEmploymentType &&
-      matchDepartment
-        ? 'block'
-        : 'none';
+      matchDepartment;
+
+    card.style.display = isVisible ? 'block' : 'none';
+    if (isVisible) visibleCount += 1;
   });
+
+  const noJobsMessage = document.querySelector('.no-job-listings');
+  if (noJobsMessage) {
+    noJobsMessage.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
 }
