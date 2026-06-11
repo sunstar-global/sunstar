@@ -197,7 +197,6 @@ export default async function decorate(block) {
 
   const jobList = document.createElement('div');
   jobList.classList.add('job-list');
-  const hideNoJobsMessage = isJapanese;
 
   const noJobsMessage = document.createElement('div');
   noJobsMessage.classList.add('no-job-listings');
@@ -244,7 +243,8 @@ export default async function decorate(block) {
     // eslint-disable-next-line no-use-before-define
     loadResults(jobList, data, currentResults, chunkSize, placeholders);
     currentResults += chunkSize;
-  } else if (!hideNoJobsMessage) {
+  } else {
+    // show the no-results card regardless of language; content inside is language-specific
     noJobsMessage.style.display = 'block';
   }
 
@@ -282,7 +282,7 @@ export default async function decorate(block) {
   });
 
   const noJobsNode = document.querySelector('.no-job-listings');
-  if (data.length === 0 && noJobsNode && !hideNoJobsMessage) {
+  if (data.length === 0 && noJobsNode) {
     noJobsNode.style.display = 'block';
   }
 
@@ -529,11 +529,8 @@ function applyFilters(placeholders) {
   });
 
   const noJobsMessage = document.querySelector('.no-job-listings');
-  const isJapanese = isPageJapanese();
   if (noJobsMessage) {
-    if (isJapanese) {
-      noJobsMessage.style.display = 'none';
-    } else if (visibleCount === 0) {
+    if (visibleCount === 0) {
       noJobsMessage.style.display = 'block';
     } else {
       noJobsMessage.style.display = 'none';
