@@ -2,12 +2,25 @@ import { fetchIndex, getLanguage } from '../../scripts/scripts.js';
 import { addTextEl } from '../../scripts/blocks-utils.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
+// detect Japanese pages robustly: path segment can be 'jp' or 'ja', or document language may start with 'ja'/'jp'
+export function isPageJapanese(pathname = window.location.pathname) {
+  const lang = getLanguage(pathname, true);
+  const pathSeg = String(pathname || '').split('/')[1];
+  const docLang = document.documentElement.lang || '';
+  return (
+    pathSeg === 'jp' ||
+    pathSeg === 'ja' ||
+    docLang.toLowerCase().startsWith('ja') ||
+    docLang.toLowerCase().startsWith('jp') ||
+    lang === 'jp'
+  );
+}
+
 export default async function decorate(block) {
   const chunkSize = 6;
   block.innerHTML = '';
   const lang = getLanguage(window.location.pathname, true);
-  const langFromDocument = document.documentElement.lang?.startsWith('ja');
-  const isJapanese = lang === 'jp' || langFromDocument;
+  const isJapanese = isPageJapanese();
   const placeholders = await fetchPlaceholders(getLanguage(window.location.pathname, true));
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
   const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
@@ -189,7 +202,7 @@ export default async function decorate(block) {
   const noJobsMessage = document.createElement('div');
   noJobsMessage.classList.add('no-job-listings');
   noJobsMessage.style.display = 'none';
-  noJobsMessage.innerHTML = `
+  const noJobsCardEn = `
     <div class="no-job-listings-card">
       <div class="no-job-listings-icon" aria-hidden="true">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -205,6 +218,26 @@ export default async function decorate(block) {
       </div>
     </div>
   `;
+
+  const noJobsCardJa = `
+    <div class="no-job-listings-card">
+      <div class="no-job-listings-icon" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 7H20V20H4V7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M8 7V4H16V7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M9 12H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M9 16H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="no-job-listings-content">
+        <h2>現在、公開中の求人はありません</h2>
+        <p>サンスターにご関心をお寄せいただき、ありがとうございます。現在、公開中の求人はございません。最新の募集情報や今後の採用については、サンスターの<a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn</a>ページをご覧ください。</p>
+        <p class="no-job-note">※本メッセージは、キャリアページに掲載中の求人がない場合に表示されます。</p>
+      </div>
+    </div>
+  `;
+
+  noJobsMessage.innerHTML = isJapanese ? noJobsCardJa : noJobsCardEn;
   jobList.append(noJobsMessage);
 
   if (data.length > 0) {
@@ -496,8 +529,7 @@ function applyFilters(placeholders) {
   });
 
   const noJobsMessage = document.querySelector('.no-job-listings');
-  const isJapanese =
-    getLanguage(window.location.pathname, true) === 'jp' || document.documentElement.lang?.startsWith('ja');
+  const isJapanese = isPageJapanese();
   if (noJobsMessage) {
     if (isJapanese) {
       noJobsMessage.style.display = 'none';
