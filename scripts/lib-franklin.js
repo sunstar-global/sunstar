@@ -289,7 +289,20 @@ export async function fetchPlaceholders(locale = 'en') {
  * Decorates a block.
  * @param {Element} block The block element
  */
+function inferBlockClass(block) {
+  const chartTypes = new Set(['country-insights', 'country-stat-cards']);
+  const firstRow = block.firstElementChild;
+  const firstCellText = firstRow?.children[0]?.textContent?.trim().toLowerCase();
+  const typeText = firstRow?.children[1]?.textContent?.trim().toLowerCase();
+
+  if (firstCellText === 'type' && chartTypes.has(typeText)) {
+    block.classList.add('charts');
+  }
+}
+
 export function decorateBlock(block) {
+  if (!block.classList.length) inferBlockClass(block);
+
   const shortBlockName = block.classList[0];
   if (shortBlockName) {
     block.classList.add('block');

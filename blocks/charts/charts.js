@@ -810,8 +810,12 @@ function getCellHtml(cell) {
   return cell.innerHTML.trim();
 }
 
+function normalizeDescriptionHtml(html) {
+  return String(html || '').replace(/([a-z0-9])\(/gi, '$1 (');
+}
+
 function getCellImageSrc(cell) {
-  return cell?.querySelector('img')?.src || getCellText(cell);
+  return cell?.querySelector('img')?.src || cell?.querySelector('a')?.href || getCellText(cell);
 }
 
 function normalizeHeader(value) {
@@ -820,6 +824,56 @@ function normalizeHeader(value) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+function getCellByHeaderName(cells, headerMap, headerName) {
+  const normalizedHeader = normalizeHeader(headerName);
+  const compactHeader = normalizedHeader.replace(/-/g, '');
+  const headerIndex =
+    headerMap[normalizedHeader] ??
+    Object.entries(headerMap).find(([key]) => key.replace(/-/g, '') === compactHeader)?.[1];
+
+  return cells[headerIndex];
+}
+
+function hasHeaderName(headerMap, headerName) {
+  const compactHeader = normalizeHeader(headerName).replace(/-/g, '');
+  return Object.keys(headerMap).some((key) => key.replace(/-/g, '') === compactHeader);
+}
+
+function getHeaderMap(row) {
+  return Array.from(row?.children || []).reduce((map, cell, index) => {
+    const key = normalizeHeader(getCellText(cell));
+    if (key) map[key] = index;
+    return map;
+  }, {});
+}
+
+function getChartDataHeaderIndex(rows) {
+  const dataStartIndex = rows.findIndex((row) => {
+    const firstCell = row.children[0];
+    return firstCell && getCellText(firstCell).toLowerCase() === 'data';
+  });
+
+  if (dataStartIndex !== -1) return dataStartIndex + 1;
+
+  return rows.findIndex((row) => {
+    const headerMap = getHeaderMap(row);
+    return hasHeaderName(headerMap, 'flag') && hasHeaderName(headerMap, 'country');
+  });
+}
+
+function getBlockType(block, blockCfg) {
+  const configuredType = normalizeHeader(String(blockCfg.type || ''));
+
+  if (configuredType) return configuredType;
+
+  const typeRow = Array.from(block.children).find((row) => {
+    const firstCell = row.children[0];
+    return firstCell && normalizeHeader(getCellText(firstCell)) === 'type';
+  });
+
+  return normalizeHeader(getCellText(typeRow?.children[1]));
 }
 
 function inferCountryFromFlag(flag) {
@@ -837,7 +891,7 @@ function inferCountryFromFlag(flag) {
 }
 
 function getCountryInsightIcon(iconName) {
-  const icon = iconName
+  const icon = String(iconName || '')
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-');
@@ -874,6 +928,43 @@ function getCountryInsightIcon(iconName) {
         <path d="M96 70c3 9 8 14 17 17-9 3-14 8-17 17-3-9-8-14-17-17 9-3 14-8 17-17Z"/>
       </svg>
     `,
+    'tooth-circle': `
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="45"/>
+        <path d="M44 55c-5-14 5-24 19-18 4 2 7 2 11 0 14-6 24 4 19 18-3 8-6 16-7 27-1 8-5 14-10 14-4 0-5-5-6-13-1-6-3-10-6-10s-5 4-6 10c-1 8-2 13-6 13-5 0-9-6-10-14-1-11-4-19-7-27Z"/>
+        <path d="M28 60h3M89 60h3M60 28v3M60 89v3M36 36l2 2M82 82l2 2M84 36l-2 2M38 82l-2 2"/>
+      </svg>
+    `,
+    toothbrush: `
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="45"/>
+        <g transform="translate(2 -1) rotate(-35 60 60) scale(0.9 0.9) translate(7 7)">
+          <path d="M25 70h52"/>
+          <path d="M25 80h52"/>
+          <path d="M25 70c-5 0-8 2-8 5s3 5 8 5"/>
+          <path d="M77 66h21c4 0 7 3 7 7v2c0 4-3 7-7 7H77Z"/>
+          <path d="M82 58v8"/>
+          <path d="M88 55v11"/>
+          <path d="M94 55v11"/>
+          <path d="M100 58v8"/>
+          <path d="M77 70v10"/>
+        </g>
+      </svg>
+    `,
+    brain: `
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <path d="M36 96h33"/>
+        <path d="M66 96c-1-14-1-22 8-33"/>
+        <path d="M35 90H22c-3 0-5-2-5-5V73l-6-2 7-15c0-22 17-38 41-38 24 0 42 17 42 39 0 15-7 26-19 34"/>
+        <path d="M47 49c-7-1-12 3-12 10 0 4 2 7 5 9"/>
+        <path d="M51 34c-9 0-14 5-14 13"/>
+        <path d="M67 35c-7-5-17-2-20 5"/>
+        <path d="M78 44c0-8-5-13-12-13"/>
+        <path d="M82 58c7-4 8-14 2-20"/>
+        <path d="M65 67c6 5 16 3 20-4"/>
+        <path d="M51 63c3 8 12 10 18 5"/>
+      </svg>
+    `,
   };
 
   return icons[icon] || icons.smile;
@@ -881,23 +972,16 @@ function getCountryInsightIcon(iconName) {
 
 function getCountryInsightsFromBlock(block) {
   const rows = Array.from(block.children);
-  const dataStartIndex = rows.findIndex((row) => {
-    const firstCell = row.children[0];
-    return firstCell && getCellText(firstCell).toLowerCase() === 'data';
-  });
+  const headerRowIndex = getChartDataHeaderIndex(rows);
 
-  if (dataStartIndex === -1) return [];
+  if (headerRowIndex === -1) return [];
 
-  const headerRow = rows[dataStartIndex + 1];
-  const headerMap = Array.from(headerRow?.children || []).reduce((map, cell, index) => {
-    const key = normalizeHeader(getCellText(cell));
-    if (key) map[key] = index;
-    return map;
-  }, {});
+  const headerRow = rows[headerRowIndex];
+  const headerMap = getHeaderMap(headerRow);
 
-  const getCellByHeader = (cells, headerName) => cells[headerMap[headerName]];
-  const hasHeaderRow = Object.prototype.hasOwnProperty.call(headerMap, 'flag');
-  const contentRows = hasHeaderRow ? rows.slice(dataStartIndex + 2) : rows.slice(dataStartIndex + 1);
+  const getCellByHeader = (cells, headerName) => getCellByHeaderName(cells, headerMap, headerName);
+  const hasHeaderRow = hasHeaderName(headerMap, 'flag');
+  const contentRows = hasHeaderRow ? rows.slice(headerRowIndex + 1) : rows.slice(headerRowIndex);
 
   return contentRows.reduce((items, row) => {
     const cells = row.children;
@@ -980,11 +1064,165 @@ function generateCountryInsights(block) {
   block.append(list);
 }
 
+function getCountryStatCardsFromBlock(block) {
+  const rows = Array.from(block.children);
+  const headerRowIndex = getChartDataHeaderIndex(rows);
+
+  if (headerRowIndex === -1) return [];
+
+  const headerRow = rows[headerRowIndex];
+  const headerMap = getHeaderMap(headerRow);
+
+  const getCellByHeader = (cells, headerName) => getCellByHeaderName(cells, headerMap, headerName);
+  const hasHeaderRow = hasHeaderName(headerMap, 'flag');
+  const contentRows = hasHeaderRow ? rows.slice(headerRowIndex + 1) : rows.slice(headerRowIndex);
+
+  return contentRows.reduce((items, row) => {
+    const cells = row.children;
+    const flag = getCellImageSrc(getCellByHeader(cells, 'flag')) || getCellImageSrc(cells[0]);
+    const country =
+      getCellText(getCellByHeader(cells, 'country')) || getCellText(cells[1]) || inferCountryFromFlag(flag);
+    const subtitle = getCellText(getCellByHeader(cells, 'subtitle')) || getCellText(cells[2]);
+    const icon = getCellText(getCellByHeader(cells, 'icon')) || getCellText(cells[3]);
+    const metric = getCellText(getCellByHeader(cells, 'metric')) || getCellText(cells[4]);
+    const description = getCellHtml(getCellByHeader(cells, 'description')) || getCellHtml(cells[6]);
+
+    if (!country && !flag && !subtitle && !icon && !metric && !description) return items;
+
+    items.push({
+      flag,
+      country,
+      subtitle,
+      icon,
+      metric,
+      suffix: getCellText(getCellByHeader(cells, 'suffix')) || getCellText(cells[5]),
+      description: normalizeDescriptionHtml(description),
+      stat1Metric: getCellText(getCellByHeader(cells, 'stat-1-metric')) || getCellText(cells[7]),
+      stat1Suffix: getCellText(getCellByHeader(cells, 'stat-1-suffix')) || getCellText(cells[8]),
+      stat1Description: normalizeDescriptionHtml(
+        getCellHtml(getCellByHeader(cells, 'stat-1-description')) || getCellHtml(cells[9])
+      ),
+      stat2Metric: getCellText(getCellByHeader(cells, 'stat-2-metric')) || getCellText(cells[10]),
+      stat2Suffix: getCellText(getCellByHeader(cells, 'stat-2-suffix')) || getCellText(cells[11]),
+      stat2Description: normalizeDescriptionHtml(
+        getCellHtml(getCellByHeader(cells, 'stat-2-description')) || getCellHtml(cells[12])
+      ),
+    });
+
+    return items;
+  }, []);
+}
+
+function createCountryStatMetric(value, suffix, className) {
+  const metric = document.createElement('p');
+  metric.classList.add(className);
+
+  const metricValue = document.createElement('span');
+  metricValue.classList.add(`${className}-value`);
+  metricValue.textContent = value || '';
+  metric.append(metricValue);
+
+  if (suffix) {
+    const metricSuffix = document.createElement('span');
+    metricSuffix.classList.add(`${className}-suffix`);
+    metricSuffix.textContent = suffix;
+    metric.append(metricSuffix);
+  }
+
+  return metric;
+}
+
+function generateCountryStatCards(block) {
+  const items = getCountryStatCardsFromBlock(block);
+  block.innerHTML = '';
+  block.classList.add('country-stat-cards');
+
+  const list = document.createElement('div');
+  list.classList.add('country-stat-cards-list');
+
+  if (!items.length) {
+    const emptyMessage = document.createElement('p');
+    emptyMessage.classList.add('country-stat-cards-empty');
+    emptyMessage.textContent = 'No country stat card data found.';
+    block.append(emptyMessage);
+    return;
+  }
+
+  items.forEach((item) => {
+    const card = document.createElement('article');
+    card.classList.add('country-stat-card');
+
+    const flagWrap = document.createElement('div');
+    flagWrap.classList.add('country-stat-card-flag');
+    if (item.flag) {
+      const flag = document.createElement('img');
+      flag.src = item.flag;
+      flag.alt = `${item.country} flag`;
+      flag.loading = 'lazy';
+      flagWrap.append(flag);
+    }
+
+    const title = document.createElement('h3');
+    title.textContent = item.country || 'Country';
+
+    const subtitle = document.createElement('p');
+    subtitle.classList.add('country-stat-card-subtitle');
+    subtitle.textContent = item.subtitle;
+
+    const icon = document.createElement('div');
+    icon.classList.add('country-stat-card-icon');
+    icon.innerHTML = getCountryInsightIcon(item.icon);
+
+    const divider = document.createElement('div');
+    divider.classList.add('country-stat-card-divider');
+
+    const main = document.createElement('div');
+    main.classList.add('country-stat-card-main');
+    const mainMetric = createCountryStatMetric(item.metric, item.suffix, 'country-stat-card-main-metric');
+    const mainDescription = document.createElement('p');
+    mainDescription.classList.add('country-stat-card-main-description');
+    mainDescription.innerHTML = item.description;
+    main.append(mainMetric, mainDescription);
+
+    const stats = document.createElement('div');
+    stats.classList.add('country-stat-card-stats');
+
+    [
+      [item.stat1Metric, item.stat1Suffix, item.stat1Description],
+      [item.stat2Metric, item.stat2Suffix, item.stat2Description],
+    ].forEach(([metric, suffix, description]) => {
+      if (!metric && !description) return;
+
+      const stat = document.createElement('div');
+      stat.classList.add('country-stat-card-stat');
+      stat.append(createCountryStatMetric(metric, suffix, 'country-stat-card-stat-metric'));
+
+      const statDescription = document.createElement('p');
+      statDescription.classList.add('country-stat-card-stat-description');
+      statDescription.innerHTML = description;
+      stat.append(statDescription);
+
+      stats.append(stat);
+    });
+
+    card.append(flagWrap, title, subtitle, icon, divider, main, stats);
+    list.append(card);
+  });
+
+  block.append(list);
+}
+
 export default async function decorate(block) {
   const blockCfg = readBlockConfig(block);
+  const blockType = getBlockType(block, blockCfg);
 
-  if (blockCfg.type === 'country-insights') {
+  if (blockType === 'country-insights') {
     generateCountryInsights(block);
+    return;
+  }
+
+  if (blockType === 'country-stat-cards') {
+    generateCountryStatCards(block);
     return;
   }
 
