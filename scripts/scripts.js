@@ -343,6 +343,19 @@ function getUrlExtension(url) {
   return url.split(/[#?]/)[0].split('.').pop().trim();
 }
 
+function decorateBookmarkAnchors(anchors) {
+  anchors.forEach((a) => {
+    const href = a.getAttribute('href') || '';
+    if (!href.toLowerCase().startsWith('bookmark://')) return;
+
+    const bookmark = href.replace(/^bookmark:\/\/\/?/i, '').replace(/^#/, '');
+    if (bookmark) {
+      a.href = `#${bookmark}`;
+      a.removeAttribute('target');
+    }
+  });
+}
+
 /**
  * decorates anchors
  * for styling updates via CSS
@@ -351,6 +364,7 @@ function getUrlExtension(url) {
  */
 export function decorateAnchors(element = document) {
   const anchors = element.getElementsByTagName('a');
+  decorateBookmarkAnchors(Array.from(anchors));
   decorateVideoLinks(Array.from(anchors).filter((a) => a.href.includes('youtu')));
   decorateExternalAnchors(
     Array.from(anchors).filter(
@@ -835,14 +849,14 @@ export async function loadFragment(path, { decorate = true } = {}) {
 
 export async function loadScript(url = null, attrs = {}) {
   const script = document.createElement('script');
-  
+
   if (url && url !== '') {
     script.src = url;
   } else {
     // inject inline script content if url is not provided
     script.textContent = attrs.content || '';
   }
-  
+
   // eslint-disable-next-line no-restricted-syntax
   for (const [name, value] of Object.entries(attrs)) {
     script.setAttribute(name, value);

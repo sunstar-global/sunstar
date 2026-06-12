@@ -230,8 +230,9 @@ export default async function decorate(block) {
       </div>
       <div class="no-job-listings-content">
         <h2>現在、公開中の求人はありません</h2>
-        <p>サンスターにご関心をお寄せいただき、ありがとうございます。現在、公開中の求人はございません。最新の募集情報や今後の採用については、サンスターの<a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn</a>ページをご覧ください。</p>
-        <p class="no-job-note">※本メッセージは、キャリアページに掲載中の求人がない場合に表示されます。</p>
+        <p>サンスターにご関心をお寄せいただき、ありがとうございます。</p>
+        <p>グローバルの最新の情報や今後の採用については<a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedInページ</a>、日本の採用についてはこちらの<a href="https://sunstar.recruitment.jp/">採用情報</a>をご覧ください。</p>
+        <p class="no-job-note">※本メッセージはキャリアページに掲載中の求人がない場合に表示されます。</p>
       </div>
     </div>
   `;
