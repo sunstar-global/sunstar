@@ -202,7 +202,6 @@ span.filter-tag span.icon-close {
   border: 1px solid var(--transparent-grey-light-color);
   border-radius: 1.25rem;
   padding: 1.5rem;
-  margin-bottom: 2rem;
 }
 
 .no-job-listings-card {
@@ -304,6 +303,10 @@ span.filter-tag span.icon-close {
     padding: 0;
     grid-template-columns: 2fr 4fr;
   }
+
+  .no-job-listings {
+  margin-top: 11rem;
+ }
 
   .job-list {
     flex-grow: 1;
