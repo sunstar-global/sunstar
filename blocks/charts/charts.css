@@ -297,7 +297,7 @@
 
 .country-insights-metric-suffix {
     margin-left: 0.25rem;
-    color: var(--dark);
+    color: var(--primary);
     font-size: clamp(1.45rem, 2.1vw, 2.05rem);
     font-weight: 700;
     letter-spacing: -0.04em;
@@ -493,7 +493,7 @@
 
 .country-stat-card-main-metric-suffix {
     margin-left: 0.15rem;
-    color: var(--dark);
+    color: var(--primary);
     font-size: clamp(1.8rem, 3vw, 2rem);
     font-weight: 700;
 }
