@@ -217,8 +217,8 @@ export default async function decorate(block) {
         </svg>
       </div>
       <div class="no-job-listings-content">
-        <h2>No opportunities listed right now</h2>
-        <p>Thank you for your interest in Sunstar. There are currently no open positions listed. Visit Sunstar's <a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn page</a> for additional opportunities and updates.</p>
+        <h2>Thank you for your interest in Sunstar</h2>
+        <p>There are currently no open positions listed. Visit Sunstar's <a href="https://www.linkedin.com/company/sunstar-global/" target="_blank" rel="noopener noreferrer">LinkedIn page</a> for additional opportunities and updates.</p>
       </div>
     </div>
   `;
