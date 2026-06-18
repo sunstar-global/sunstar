@@ -3,18 +3,71 @@ import { cropString } from '../../scripts/scripts.js';
 import { decorateButtons } from '../text/text.js';
 
 function isLeadershipPage() {
-  const pathname = window.location.pathname.replace(/\/$/, '');
-  return pathname === '/about/our-leadership';
+  const pathname = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
+  return /^\/([a-z]{2}\/)?about\/our-leadership$/.test(pathname);
 }
 
+function normalizeProfileNameKey(text) {
+  return String(text || '')
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[\s・.．·]+/g, '');
+}
+
+const PROFILE_SLUGS = new Map(
+  [
+    ['Michel Pettigrew', 'michel-pettigrew'],
+    ['ミシェル・ペティグルー', 'michel-pettigrew'],
+    ['Mayumi Kaneda', 'mayumi-kaneda'],
+    ['金田 真弓', 'mayumi-kaneda'],
+    ['Marcel Schmid', 'marcel-schmid'],
+    ['マルセル・シュミット', 'marcel-schmid'],
+    ['Yuji Okamoto', 'yuji-okamoto'],
+    ['岡本 雄二', 'yuji-okamoto'],
+    ['Akihiko Kuroki', 'akihiko-kuroki'],
+    ['黒木 昭彦', 'akihiko-kuroki'],
+    ['Masaki Ukai', 'masaki-ukai'],
+    ['鵜飼 正樹', 'masaki-ukai'],
+    ['Philippe Georges', 'philippe-georges'],
+    ['René Bujard', 'rene-bujard'],
+    ['Wieland Noetzold', 'wieland-noetzold'],
+    ['Andrew Thorson', 'andrew-thorson'],
+    ['Michele Brown Beecker', 'michele-brown-beecker'],
+    ['Satoshi Fukui', 'satoshi-fukui'],
+    ['福井 聡', 'satoshi-fukui'],
+    ['Kimio Shibata', 'kimio-shibata'],
+    ['柴田 公生', 'kimio-shibata'],
+    ['Eduardo Perez', 'eduardo-perez'],
+    ['Adam Lisook', 'adam-lisook'],
+    ['Christine Truillet', 'christine-truillet'],
+    ['Jennifer Jianwen Zhu', 'jennifer-jianwen-zhu'],
+    ['Isabelle Botticelli', 'isabelle-botticelli'],
+    ['Toshiyuki Toumura', 'toshiyuki-toumura'],
+    ['東村 俊之', 'toshiyuki-toumura'],
+    ['Wally Palen', 'wally-palen'],
+    ['Xu Lianlong', 'xu-lianlong'],
+    ['徐 連龍', 'xu-lianlong'],
+    ['Hitoshi Ohno', 'hitoshi-ohno'],
+    ['大野 仁', 'hitoshi-ohno'],
+    ['Hiroshi Wada', 'hiroshi-wada'],
+    ['和田 裕', 'hiroshi-wada'],
+    ['Sadayuki Sugai', 'sadayuki-sugai'],
+    ['菅居 貞幸', 'sadayuki-sugai'],
+    ['Quek Kwang Peng', 'quek-kwang-peng'],
+  ].map(([name, slug]) => [normalizeProfileNameKey(name), slug])
+);
+
 function createProfileSlug(text, usedSlugs) {
+  const mappedSlug = PROFILE_SLUGS.get(normalizeProfileNameKey(text));
   const baseSlug =
+    mappedSlug ||
     text
       ?.normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '') || 'profile';
+      .replace(/^-|-$/g, '') ||
+    'profile';
   let slug = baseSlug;
   let counter = 2;
 
