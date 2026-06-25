@@ -556,6 +556,158 @@ main .cards-wrapper .light-background .cards-card-body h3 {
   text-decoration: unset;
 }
 
+body.leadership-profile-open {
+  overflow: hidden;
+}
+
+/* stylelint-disable no-descending-specificity */
+.cards.leadership-profiles > ul > li {
+  cursor: pointer;
+  outline: none;
+}
+
+.cards.leadership-profiles > ul > li:focus-visible {
+  box-shadow: 0 0 0 3px var(--primary);
+}
+
+.cards.leadership-profiles > ul > li.active,
+.cards.leadership-profiles > ul > li:hover {
+  transform: translateY(-0.25rem);
+}
+
+.leadership-profile-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.leadership-profile-modal.open {
+  display: flex;
+}
+
+.leadership-profile-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(15 23 32 / 68%);
+  backdrop-filter: blur(1px);
+}
+
+.leadership-profile-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(68rem, 100%);
+  max-height: min(44rem, calc(100vh - 2.5rem));
+  overflow: auto;
+  background: var(--white);
+  border-radius: 0.5rem;
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 32%);
+  outline: none;
+}
+
+.leadership-profile-close {
+  position: absolute;
+  top: 0.5rem;
+  right: -0.15rem;
+  z-index: 2;
+  width: 2.5rem;
+  min-width: 4.5rem;
+  max-width: 2.5rem;
+  height: 2.5rem;
+  min-height: 2.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.leadership-profile-modal button.leadership-profile-close:focus,
+.leadership-profile-modal button.leadership-profile-close:active,
+.leadership-profile-modal button.leadership-profile-close:not(:disabled):hover {
+  background: transparent;
+  background-color: transparent;
+}
+
+.leadership-profile-close:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.leadership-profile-close::before,
+.leadership-profile-close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.25rem;
+  height: 2px;
+  background: currentcolor;
+}
+
+.leadership-profile-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.leadership-profile-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.leadership-profile-content {
+  display: grid;
+  gap: 1.75rem;
+  padding: 4.5rem 1.5rem 2rem;
+}
+
+.leadership-profile-content .cards-card-image {
+  aspect-ratio: 1 / 1.1;
+  overflow: hidden;
+  border-radius: 0.4rem;
+  background: #f4f7f8;
+}
+
+.leadership-profile-content .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.leadership-profile-content .cards-card-body {
+  min-width: 0;
+  padding: 0;
+}
+
+.leadership-profile-content .cards-card-body :is(h1, h2, h3, h4) {
+  margin: 0 0 1.15rem;
+  color: var(--primary);
+  font-size: clamp(1.15rem, 1.8vw, 1.3rem);
+  font-weight: 400;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.leadership-profile-content .cards-card-body :is(h1, h2, h3, h4):first-child {
+  margin-bottom: 1.5rem;
+  font-size: clamp(1.75rem, 2.5vw, 2rem);
+  line-height: 1.2;
+}
+
+.leadership-profile-content .cards-card-body p {
+  margin: 0 0 1.4rem;
+  color: #1f2933;
+  font-size: 1rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+/* stylelint-enable no-descending-specificity */
+
 @media screen and (min-width: 48rem) {
   .cards > ul {
     flex-flow: row nowrap;
@@ -567,6 +719,18 @@ main .cards-wrapper .light-background .cards-card-body h3 {
 
   .cards.grid .cards-card-image img {
     object-position: 50% 0;
+  }
+
+  .leadership-profile-content {
+    grid-template-columns: minmax(18rem, 27.5rem) minmax(0, 1fr);
+    align-items: start;
+    gap: 3rem;
+    padding: 3rem 4rem 4rem;
+  }
+
+  .leadership-profile-close {
+    top: 1.75rem;
+    right: 1.75rem;
   }
 }
 
