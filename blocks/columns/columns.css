@@ -368,11 +368,16 @@
   text-transform: unset;
 }
 
-.columns.plain-links.collapse > div h6 {
+.columns.plain-links.collapse > div :is(h1, h2, h3, h4, h5, h6) {
+  border-bottom: 1px var(--transparent-grey-light-color) solid;
   color: var(--text-color);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.5;
   padding-bottom: 0.5rem;
   margin: 0 0 1rem;
   position: relative;
+  text-transform: unset;
 }
 
 .columns.top-down.collapse {
@@ -490,7 +495,7 @@ div.img-col > video {
   margin-top: 0;
 }
 
-.columns.plain-links.collapse > div h6::after {
+.columns.plain-links.collapse > div :is(h1, h2, h3, h4, h5, h6)::after {
   content: '';
   position: absolute;
   height: 20px;
@@ -505,7 +510,7 @@ div.img-col > video {
   transition: ease 0.2s;
 }
 
-.columns.plain-links.collapse > div h6.active::after {
+.columns.plain-links.collapse > div :is(h1, h2, h3, h4, h5, h6).active::after {
   transform: translateY(-50%) rotate(-180deg);
 }
 
