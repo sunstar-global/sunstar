@@ -1651,3 +1651,10 @@ p.button-container,
     padding-block: 6rem;
   }
 }
+
+@media (min-width: 62rem) {
+    .columns:not(.history, .text-and-image-in-column) .text-col-wrapper img:not(.video-modal) {
+        height: 30rem !important;
+        width: 50rem !important;
+    }
+}
