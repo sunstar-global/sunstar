@@ -189,6 +189,13 @@ main div.autoblocked.image-collage[class*='boxy-col-'].block {
   flex-direction: column;
 }
 
+main .image-collage.medium.boxy-col-3 > div > div:first-of-type {
+  min-height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 main div.autoblocked.image-collage[class*='boxy-col-'].caption-above.block > div > div {
   display: flex;
   flex-direction: column-reverse;
@@ -224,6 +231,12 @@ main div.autoblocked.image-collage[class*='boxy-col-'].caption-above.block > div
 
 main .image-collage.native-image-sizes img {
   width: auto;
+}
+
+main .image-collage.medium.boxy-col-3 img {
+  width: clamp(6rem, 5vw, 9rem);
+  max-width: 100%;
+  height: auto;
 }
 
 @media (min-width: 62rem) {

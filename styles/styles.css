@@ -810,6 +810,10 @@ main .block.centered {
   text-align: center;
 }
 
+main .block.oral-health {
+  text-align: center;
+}
+
 /* START Section Styles START */
 
 main .section.flex {
@@ -1571,7 +1575,10 @@ p.button-container,
     padding: 0;
   }
 
-  div.lead p,
+  div.lead p {
+    font-size: var(--body-font-size-l);
+  }
+
   main .block.lead p,
   p.lead {
     font-size: var(--body-font-size-xxl);
@@ -1643,4 +1650,11 @@ p.button-container,
   main .section.dark.hero {
     padding-block: 6rem;
   }
+}
+
+@media (min-width: 62rem) {
+    .columns:not(.history, .text-and-image-in-column) .text-col-wrapper img:not(.video-modal) {
+        height: 30rem !important;
+        width: 50rem !important;
+    }
 }
