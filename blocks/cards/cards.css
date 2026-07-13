@@ -79,7 +79,6 @@ main .block.cards {
 .cards > ul > li > a:hover {
   text-decoration: none;
   background-color: #00587c !important;
-  color: var(--white) !important;
 }
 
 .cards .cards-card-body {
