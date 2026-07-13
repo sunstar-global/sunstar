@@ -78,7 +78,8 @@ main .block.cards {
 
 .cards > ul > li > a:hover {
   text-decoration: none;
-  background-color: initial;
+  background-color: #00587c !important;
+  color: var(--white) !important;
 }
 
 .cards .cards-card-body {
@@ -473,6 +474,11 @@ main .cards.machine-parts .cards-card-body a {
 main .cards.machine-parts .cards-card-body a > strong {
   color: var(--light-black);
   margin-right: 1rem;
+}
+
+.cards > ul > li > a:hover .cards-card-body,
+.cards > ul > li > a:hover .cards-card-body * {
+  color: var(--white) !important;
 }
 
 /* Style for Row Cards */
