@@ -177,6 +177,41 @@ main .block.hero-banner.composite.button a:hover {
   margin: 1rem auto;
 }
 
+/* stylelint-disable no-descending-specificity */
+
+/* Allow interleaved text and CTA buttons inside the text wrapper
+   Usage in markup: <p>text</p> <p class="button-container"> <a class="button primary">...</a> </p> */
+.hero-banner .hero-banner-text-wrapper p.button-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  padding: 0;
+}
+
+.hero-banner .hero-banner-text-wrapper p.button-container a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  width: auto;
+  min-width: 0;
+  color: var(--white);
+  background-color: var(--orange-light);
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+}
+
+.hero-banner .hero-banner-text-wrapper p.meta,
+.hero-banner .hero-banner-text-wrapper p.small {
+  color: #ffffffb3;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
 .hero-banner .hero-banner-button-container span {
   font-size: var(--heading-font-size-xxs);
   margin-left: 0.5rem;
@@ -212,6 +247,86 @@ main .block.hero-banner.composite.button a:hover {
   flex-direction: column;
   gap: 1rem;
 }
+
+/* Style hero banner buttons to match site screenshot: stacked orange buttons with arrow */
+.hero-banner .button-container a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--orange-light);
+  color: var(--white);
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+  min-width: unset;
+}
+
+.hero-banner .button-container a::after {
+  content: '›';
+  display: inline-block;
+  margin-left: 0.25rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--white);
+}
+
+/* New: support per-button descriptions under each CTA
+   Markup recommended:
+   <div class="button-row">
+     <div class="button-wrap">
+       <a class="button primary">Label</a>
+       <p class="meta">Description under this button</p>
+     </div>
+     <div class="button-wrap">...</div>
+   </div>
+*/
+.hero-banner .button-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-banner .button-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hero-banner .button-wrap a,
+.hero-banner .hero-banner-text-wrapper p.button-container a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--orange-light);
+  color: var(--white);
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+  min-width: unset;
+}
+
+.hero-banner .button-wrap a::after,
+.hero-banner .hero-banner-text-wrapper p.button-container a::after {
+  content: '›';
+  display: inline-block;
+  margin-left: 0.25rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--white);
+}
+
+.hero-banner .button-wrap p.meta {
+  margin: 0;
+  color: #ffffffb3;
+  font-size: 0.95rem;
+  max-width: 16rem;
+}
+
+/* stylelint-enable no-descending-specificity */
 
 .hero-banner.overlap .hero-banner-text-wrapper h2 {
   line-height: 2.5rem;
@@ -316,6 +431,40 @@ main .block.hero-banner.composite.button a:hover {
     margin-bottom: 0.5rem;
     height: 5.125rem;
     width: 5.125rem;
+  }
+
+  /* Desktop CTA layout: place CTAs side-by-side and allow two-column meta text */
+  .hero-banner .button-container {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .hero-banner .hero-banner-text-wrapper p.button-container {
+    margin: 1rem 0 0;
+  }
+
+  .hero-banner .hero-banner-text-wrapper .meta-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .hero-banner .hero-banner-text-wrapper .meta-row p {
+    flex: 1 1 0;
+    margin: 0;
+  }
+
+  /* On desktop, show the button-row as a horizontal row of columns */
+  .hero-banner .button-row {
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .hero-banner .button-wrap a {
+    min-width: 12rem;
+    padding: 0.9rem 1.25rem;
   }
 
   .hero-banner-text-wrapper h6 {
