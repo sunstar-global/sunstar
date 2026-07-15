@@ -147,6 +147,7 @@ main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right {
 
 main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container,
 main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container {
+  order: 2;
   margin-bottom: 0;
 }
 
@@ -155,8 +156,9 @@ main div.no-image .hero-horiz-tabs-text > p {
   line-height: 1.5em;
 }
 
-main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container + p,
-main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container + p {
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left > p:not(.button-container),
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right > p:not(.button-container) {
+  order: 1;
   margin: 0;
   color: var(--white);
   font-size: var(--body-font-size-s);
@@ -343,6 +345,7 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
 
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container,
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container {
+    order: 2;
     width: auto;
   }
 
@@ -367,16 +370,17 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
     min-width: 19.5rem;
   }
 
-  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container + p {
-    max-width: 20rem;
-  }
-
-  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container + p,
-  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container + p {
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left > p:not(.button-container),
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right > p:not(.button-container) {
+    order: 1;
     margin: 0;
     color: var(--white);
     font-size: var(--body-font-size-s);
     line-height: 1.55;
+  }
+
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right > p:not(.button-container) {
+    max-width: 20rem;
   }
 }
 
