@@ -1653,7 +1653,7 @@ p.button-container,
 }
 
 @media (min-width: 62rem) {
-    .columns:not(.history, .text-and-image-in-column) .text-col-wrapper img:not(.video-modal) {
+    ul li picture img {
         height: 30rem !important;
         width: 50rem !important;
     }
