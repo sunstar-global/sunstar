@@ -1651,10 +1651,3 @@ p.button-container,
     padding-block: 6rem;
   }
 }
-
-@media (min-width: 62rem) {
-    ul li picture img {
-        height: 30rem !important;
-        width: 50rem !important;
-    }
-}
