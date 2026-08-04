@@ -880,6 +880,22 @@ main .section.no-margin-block .section-container {
   margin-block: 0 !important;
 }
 
+main .section.healthy-thinking-back-link .section-container {
+  border-top: 1px solid var(--overlay-background-color);
+  background-color: var(--background-color);
+  padding: 1.5rem;
+}
+
+main .section.healthy-thinking-back-link a {
+  color: var(--link-color);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+main .section.healthy-thinking-back-link a:hover {
+  text-decoration: underline;
+}
+
 /* section - full-width */
 main .section.full-width > .section-container,
 main .section.full-width > .tab-item.active > .section-container {
@@ -1344,6 +1360,10 @@ p.button-container,
     margin-inline: auto;
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  main .section.healthy-thinking-back-link .section-container {
+    max-width: calc(872px + 32px);
   }
 
   /* section - bottom-border */
