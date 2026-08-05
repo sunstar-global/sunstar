@@ -500,6 +500,48 @@ function wrapDirectDivTextInParagraphs(element) {
   });
 }
 
+function isHealthyThinkingArticlePath(pathname) {
+  const pathSegments = pathname.replace(/\/$/, '').split('/').filter(Boolean);
+  const healthyThinkingIndex = pathSegments.indexOf('healthy-thinking');
+  if (healthyThinkingIndex === -1) return false;
+
+  const articleSegments = pathSegments.slice(healthyThinkingIndex + 1);
+  if (!articleSegments.length || articleSegments[0] === 'tag') return false;
+
+  return !(articleSegments.length === 1 && articleSegments[0] === 'holistic-health-care');
+}
+
+function getRelatedArticlesSection(main) {
+  return [...main.children].find((section) =>
+    [...section.querySelectorAll('h1, h2, h3, h4, h5, h6')].some(
+      (heading) => heading.textContent.trim().toLowerCase() === 'related articles'
+    )
+  );
+}
+
+function addHealthyThinkingBackLink(main) {
+  if (!isHealthyThinkingArticlePath(window.location.pathname)) return;
+  if (main.querySelector('.healthy-thinking-back-link')) return;
+
+  const section = document.createElement('div');
+  section.className = 'section healthy-thinking-back-link';
+
+  const container = document.createElement('div');
+  container.className = 'section-container';
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'default-content-wrapper';
+
+  const link = document.createElement('a');
+  link.href = 'https://www.sunstar.com/healthy-thinking/holistic-health-care';
+  link.textContent = '← Back to Healthy Thinking';
+
+  wrapper.append(link);
+  container.append(wrapper);
+  section.append(container);
+  main.insertBefore(section, getRelatedArticlesSection(main) || null);
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -646,6 +688,7 @@ async function loadLazy(doc) {
   await loadBlocks(main);
   generateBreadcrumbSchema(doc);
   wrapDirectDivTextInParagraphs(main);
+  addHealthyThinkingBackLink(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(decodeURIComponent(hash.substring(1))) : null;
