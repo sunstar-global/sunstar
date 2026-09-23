@@ -2,6 +2,53 @@ import { fetchIndex, getLanguage } from '../../scripts/scripts.js';
 import { addTextEl } from '../../scripts/blocks-utils.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
+const FILTER_TYPES = ['category', 'country', 'city', 'region', 'workmode', 'employmenttype', 'department'];
+const EMPTY_FILTER_VALUES = new Set([
+  '0',
+  'undefined',
+  'null',
+  'region',
+  'country',
+  'city',
+  'workmode',
+  'employmenttype',
+  'department',
+  'jobtitle',
+  'jobdescription',
+  'linkedin',
+  'jobid',
+]);
+
+export function normalizeJobFilterValue(value) {
+  const normalized = String(value ?? '').trim();
+  if (!normalized || EMPTY_FILTER_VALUES.has(normalized.toLowerCase())) return '';
+  return normalized;
+}
+
+export function normalizeJobListingItem(item) {
+  return {
+    ...item,
+    region: normalizeJobFilterValue(item.region),
+    country: normalizeJobFilterValue(item.country),
+    city: normalizeJobFilterValue(item.city),
+    workmode: normalizeJobFilterValue(item.workmode),
+    employmenttype: normalizeJobFilterValue(item.employmenttype),
+    department: normalizeJobFilterValue(item.department),
+  };
+}
+
+export function getUniqueFilterValues(data, key) {
+  return [...new Set(data.map((item) => normalizeJobFilterValue(item[key])).filter(Boolean))];
+}
+
+export function jobMatchesSelectedFilters(job, selected, exceptType = null) {
+  return FILTER_TYPES.every((type) => {
+    if (type === exceptType) return true;
+    const selectedValues = selected[type] || [];
+    return selectedValues.length === 0 || selectedValues.includes(job[type]);
+  });
+}
+
 // detect Japanese pages robustly: path segment can be 'jp' or 'ja', or document language may start with 'ja'/'jp'
 export function isPageJapanese(pathname = window.location.pathname) {
   const lang = getLanguage(pathname, true);
@@ -40,18 +87,18 @@ export default async function decorate(block) {
     return true;
   });
 
+  data = data.map(normalizeJobListingItem);
+
   let currentResults = 0;
 
-  const unique = (arr) => [...new Set(arr.filter(Boolean))];
-
-  const countries = unique(data.map((item) => item.country));
-  const regions = unique(data.map((item) => item.region));
-  const cities = unique(data.map((item) => item.city));
-  const departments = unique(data.map((item) => item.department).filter((dept) => dept && dept !== 0 && dept !== '0'));
+  const countries = getUniqueFilterValues(data, 'country');
+  const regions = getUniqueFilterValues(data, 'region');
+  const cities = getUniqueFilterValues(data, 'city');
+  const departments = getUniqueFilterValues(data, 'department');
 
   // eslint-disable-next-line no-unused-vars
-  const employmentTypes = unique(data.map((item) => item.employmenttype));
-  const workModes = unique(data.map((item) => item.workmode));
+  const employmentTypes = getUniqueFilterValues(data, 'employmenttype');
+  const workModes = getUniqueFilterValues(data, 'workmode');
 
   // If there are no valid jobs left after filtering, remove the Apply Now section
   if (!data.length) {
@@ -450,8 +497,6 @@ function updateSelectedFiltersUI(selected, placeholders) {
   }
 }
 
-const FILTER_TYPES = ['category', 'country', 'city', 'region', 'workmode', 'employmenttype', 'department'];
-
 function getJobs() {
   return [...document.querySelectorAll('.job-posting-card')].map((el) => ({
     el,
@@ -466,11 +511,7 @@ function getJobs() {
 }
 
 function matches(job, selected, exceptType = null) {
-  return FILTER_TYPES.every((t) => {
-    if (t === exceptType) return true;
-    const sel = selected[t];
-    return sel.length === 0 || sel.includes(job[t]);
-  });
+  return jobMatchesSelectedFilters(job, selected, exceptType);
 }
 
 function updateFilterStates(selected) {
