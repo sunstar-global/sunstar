@@ -46,8 +46,8 @@ const SCHEMA_SOURCE_ATTRIBUTE = 'data-schema-source';
 const SCHEMA_SOURCES = {
   METADATA: 'metadata',
   GENERATED: 'generated',
-  BREADCRUMB: 'breadcrumb',
 };
+const SCHEMA_ORG_CONTEXTS = ['https://schema.org', 'https://schema.org/', 'http://schema.org', 'http://schema.org/'];
 
 const PAGE_TYPES = {
   HOME: 'home',
@@ -125,6 +125,48 @@ function removeSchemaScriptsBySource(doc, sources) {
   });
 }
 
+function removeManagedSchema(doc) {
+  removeSchemaScriptsBySource(doc, [SCHEMA_SOURCES.METADATA, SCHEMA_SOURCES.GENERATED]);
+}
+
+function isSchemaOrgContext(context) {
+  if (!context) return false;
+
+  if (typeof context === 'string') {
+    return SCHEMA_ORG_CONTEXTS.includes(context);
+  }
+
+  if (Array.isArray(context)) {
+    return context.some((item) => isSchemaOrgContext(item));
+  }
+
+  if (typeof context === 'object') {
+    return Object.values(context).some((value) => isSchemaOrgContext(value));
+  }
+
+  return false;
+}
+
+function isSchemaOrgJsonLd(data) {
+  if (Array.isArray(data)) {
+    return data.some((item) => isSchemaOrgJsonLd(item));
+  }
+
+  return data && typeof data === 'object' && isSchemaOrgContext(data['@context']);
+}
+
+function hasNativeJsonLd(doc = document) {
+  return [...doc.head.querySelectorAll(JSON_LD_SELECTOR)]
+    .filter((script) => !script.dataset.schemaSource)
+    .some((script) => {
+      try {
+        return isSchemaOrgJsonLd(JSON.parse(script.textContent));
+      } catch (e) {
+        return false;
+      }
+    });
+}
+
 export function injectCustomSchema(doc = document) {
   const rawSchema = getMetadata('schema')?.trim();
   if (!rawSchema) return false;
@@ -132,7 +174,7 @@ export function injectCustomSchema(doc = document) {
   try {
     const schema = JSON.parse(rawSchema);
 
-    removeSchemaScriptsBySource(doc, Object.values(SCHEMA_SOURCES));
+    removeManagedSchema(doc);
     injectScript(
       {
         type: 'application/ld+json',
@@ -439,7 +481,7 @@ export async function generateBreadcrumbSchema(doc) {
   injectScript(
     {
       type: 'application/ld+json',
-      [SCHEMA_SOURCE_ATTRIBUTE]: SCHEMA_SOURCES.BREADCRUMB,
+      [SCHEMA_SOURCE_ATTRIBUTE]: SCHEMA_SOURCES.GENERATED,
       content: JSON.stringify(cleanObject(breadcrumbList)),
     },
     doc
@@ -447,6 +489,11 @@ export async function generateBreadcrumbSchema(doc) {
 }
 
 export default async function loadSchema(doc) {
+  if (hasNativeJsonLd(doc)) {
+    removeManagedSchema(doc);
+    return;
+  }
+
   if (injectCustomSchema(doc)) return;
 
   const metadataType = normalizePageType(getMetadata('type'));
@@ -464,7 +511,7 @@ export default async function loadSchema(doc) {
     .map((schema) => cleanObject(schema))
     .filter((schema) => schema && Object.keys(schema).length > 0);
 
-  removeSchemaScriptsBySource(doc, [SCHEMA_SOURCES.GENERATED]);
+  removeManagedSchema(doc);
   schemas.forEach((schema) => {
     injectScript(
       {
