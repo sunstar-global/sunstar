@@ -78,6 +78,30 @@
   padding-bottom: 1rem;
 }
 
+.columns .has-sustainability-category-labels {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.columns .sustainability-category-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.columns .sustainability-category-label {
+  background-color: var(--transparent-blue-light-color);
+  border-radius: 0.125rem;
+  color: var(--primary);
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  padding: 0.25rem 0.5rem;
+}
+
 .columns :not(.table) h4 {
   font-size: var(--h4-font-size-mobile);
 }

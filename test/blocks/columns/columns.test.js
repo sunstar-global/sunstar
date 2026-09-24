@@ -102,4 +102,64 @@ describe('Columns Block', () => {
     expect(cd2.style.display).to.not.equal('flex');
     expect(cd2.style.textAlign).to.equal('');
   });
+
+  it('Adds sustainability category labels from authored label marker', () => {
+    const block = document.createElement('div');
+    block.className = 'columns';
+    block.innerHTML = `
+      <div>
+        <div>
+          <h3>Use of low environmental impact materials in products and packaging (Japan)</h3>
+          <p>Labels: Reduce, Renew</p>
+          <p>Body copy</p>
+        </div>
+      </div>
+    `;
+
+    scripts.decorateSustainabilityProductLabels(block);
+
+    const labels = [...block.querySelectorAll('.sustainability-category-label')].map((label) => label.textContent);
+    expect(labels).to.deep.equal(['Reduce', 'Renew']);
+    expect(block.querySelector('h3 > .sustainability-category-labels')).to.exist;
+    expect(block.textContent).to.not.include('Labels:');
+  });
+
+  it('Ignores unsupported sustainability category labels', () => {
+    const block = document.createElement('div');
+    block.className = 'columns';
+    block.innerHTML = `
+      <div>
+        <div>
+          <h3>Use of low environmental impact materials in products and packaging (Japan)</h3>
+          <p>Labels: Other</p>
+          <p>Body copy</p>
+        </div>
+      </div>
+    `;
+
+    scripts.decorateSustainabilityProductLabels(block);
+
+    expect(block.querySelector('.sustainability-category-label')).to.equal(null);
+    expect(block.textContent).to.include('Labels: Other');
+  });
+
+  it('Adds sustainability category labels when the title renders as paragraph text', () => {
+    const block = document.createElement('div');
+    block.className = 'columns';
+    block.innerHTML = `
+      <div>
+        <div>
+          <p>Use of low environmental impact materials in products and packaging (Japan)</p>
+          <p>Labels: Reuse, Recycle, Decarbonize</p>
+          <p>Body copy</p>
+        </div>
+      </div>
+    `;
+
+    scripts.decorateSustainabilityProductLabels(block);
+
+    const labels = [...block.querySelectorAll('.sustainability-category-label')].map((label) => label.textContent);
+    expect(labels).to.deep.equal(['Reuse', 'Recycle', 'Decarbonize']);
+    expect(block.querySelector('p > .sustainability-category-labels')).to.exist;
+  });
 });

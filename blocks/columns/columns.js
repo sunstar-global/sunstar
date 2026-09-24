@@ -3,6 +3,77 @@ import { decorateButtons } from '../text/text.js';
 import { loadFragment, initInjectedBlocks } from '../../scripts/scripts.js';
 
 const COLLAPSE_HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
+const SUSTAINABILITY_LABEL_TARGET_SELECTOR = `${COLLAPSE_HEADING_SELECTOR}, p`;
+const SUSTAINABILITY_LABEL_MARKER_PATTERN = /^(?:labels?|categories?|category labels?)\s*:\s*(.+)$/i;
+const SUSTAINABILITY_LABELS = ['Reduce', 'Reuse', 'Recycle', 'Renew', 'Decarbonize'];
+const SUSTAINABILITY_LABEL_MAP = SUSTAINABILITY_LABELS.reduce((labels, label) => {
+  labels[label.toLowerCase()] = label;
+  return labels;
+}, {});
+
+function parseSustainabilityCategoryLabels(text) {
+  const labelMatch = String(text || '')
+    .trim()
+    .match(SUSTAINABILITY_LABEL_MARKER_PATTERN);
+  if (!labelMatch) return [];
+
+  return [
+    ...new Set(
+      labelMatch[1]
+        .split(/[,|/]/)
+        .map((label) => SUSTAINABILITY_LABEL_MAP[label.trim().toLowerCase()])
+        .filter(Boolean)
+    ),
+  ];
+}
+
+function createSustainabilityCategoryLabels(labels) {
+  const labelGroup = document.createElement('div');
+  labelGroup.className = 'sustainability-category-labels';
+
+  labels.forEach((label) => {
+    const labelElement = document.createElement('span');
+    labelElement.className = 'sustainability-category-label';
+    labelElement.textContent = label;
+    labelGroup.append(labelElement);
+  });
+
+  return labelGroup;
+}
+
+function hasSustainabilityCategoryLabels(element) {
+  return (
+    element.querySelector(':scope > .sustainability-category-labels') ||
+    element.nextElementSibling?.classList.contains('sustainability-category-labels')
+  );
+}
+
+function getSustainabilityLabelTarget(marker) {
+  let target = marker.previousElementSibling;
+
+  while (target && !target.textContent.trim()) {
+    target = target.previousElementSibling;
+  }
+
+  return target?.matches(SUSTAINABILITY_LABEL_TARGET_SELECTOR) ? target : null;
+}
+
+export function decorateSustainabilityProductLabels(block) {
+  block.querySelectorAll('p').forEach((marker) => {
+    const labels = parseSustainabilityCategoryLabels(marker.textContent);
+    if (!labels.length) return;
+
+    const target = getSustainabilityLabelTarget(marker);
+    if (!target) return;
+
+    if (!hasSustainabilityCategoryLabels(target)) {
+      target.classList.add('has-sustainability-category-labels');
+      target.append(createSustainabilityCategoryLabels(labels));
+    }
+
+    marker.remove();
+  });
+}
 
 export function applySplitPercentages(block) {
   const ratios = [];
@@ -246,6 +317,8 @@ export default async function decorate(block) {
   });
 
   // stylize anchors unless block has no-buttons class or the anchor is a youtube link which has embed-yt class
+  decorateSustainabilityProductLabels(block);
+
   if (!block.classList.contains('no-buttons')) {
     if (block.classList.contains('button')) {
       decorateButtons(block);
