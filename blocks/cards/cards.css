@@ -173,8 +173,6 @@ main .cards.features-items ul > li {
 
 main .cards.info-points > ul > li {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
   box-shadow: none;
 }
 
@@ -358,7 +356,7 @@ main .cards.info-points .cards-card-body h6 {
   margin-bottom: 1.5rem;
 }
 
-main .section:has(.cards.info-points) > .section-container h2 {
+main .section.cards-container:has(.cards.info-points) h2 {
   font-size: var(--heading-font-size-m);
   text-align: left;
   margin-bottom: 2rem;
@@ -377,20 +375,11 @@ main .section:has(.cards.info-points) > .section-container h2 {
   text-overflow: ellipsis;
 }
 
-main .cards.info-points .cards-card-body h3,
 main .cards.info-points .cards-card-body h4 {
   font-size: var(--heading-font-size-mxs);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-bold);
   margin-top: 0;
   margin-bottom: 1rem;
-  text-align: center;
-}
-
-main .cards.info-points .cards-card-body {
-  padding: 0;
-  font-size: 1rem;
-  line-height: 1.6;
-  width: 100%;
 }
 
 main .cards.info-points .cards-card-body p {
@@ -408,16 +397,6 @@ main .cards.info-points > ul > li:hover {
 main .cards.info-points .cards-card-image img {
   width: 5rem;
   height: 5rem;
-}
-
-main .cards.info-points .cards-card-image {
-  aspect-ratio: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 5rem;
-  height: 5rem;
-  flex: 0 0 5rem;
 }
 
 /* Styles for machine parts cards */
@@ -537,9 +516,7 @@ main .cards.text-center > ul > li .cards-card-body {
 }
 
 main .nolink .cards.info-points > ul > li .cards-card-image {
-  width: 5rem;
-  height: 5rem;
-  flex: 0 0 5rem;
+  width: auto;
   border: none;
 }
 
@@ -577,15 +554,6 @@ main .cards-wrapper .light-background .cards-card-body h3 {
   background-color: var(--primary);
   border-color: var(--primary);
   text-decoration: unset;
-}
-
-main .cards.info-points:has(.cards-card-image) > ul > li:is(:hover, :focus-within) {
-  box-shadow: none;
-  transform: none;
-}
-
-main .cards.info-points:has(.cards-card-image) > ul > li > a:hover {
-  background-color: transparent;
 }
 
 @media screen and (min-width: 48rem) {
@@ -780,12 +748,11 @@ main .cards.info-points:has(.cards-card-image) > ul > li > a:hover {
     text-align: center;
   }
 
-  main .cards.info-points .cards-card-body h3,
   main .cards.info-points .cards-card-body h4 {
     font-size: var(--heading-font-size-s);
     font-weight: var(--font-weight-medium);
-    margin-top: 0;
-    margin-inline: 0;
+    margin-top: 2rem;
+    margin-inline: 3rem;
   }
 
   main .cards.info-points > ul {
@@ -796,40 +763,13 @@ main .cards.info-points:has(.cards-card-image) > ul > li > a:hover {
     display: block;
   }
 
-  main .cards.info-points:has(.cards-card-image) .cards-card-image {
-    width: 8rem;
-    height: 8rem;
-    flex-basis: 8rem;
-    margin-inline: auto;
+  main .cards.info-points .cards-card-image img {
+    width: 100%;
+    height: 100%;
   }
 
-  main .cards.info-points:has(.cards-card-image) .cards-card-image img {
-    width: 8rem;
-    height: 8rem;
-  }
-
-  main .cards.info-points:has(.cards-card-image) .cards-card-body h3,
-  main .cards.info-points:has(.cards-card-image) .cards-card-body h4 {
-    font-size: var(--heading-font-size-s);
-  }
-
-  main .cards.info-points:has(.cards-card-image) .cards-card-body p {
-    font-size: 1rem;
-    line-height: 1.65;
-  }
-
-  main .cards.info-points:has(.cards-card-image) > ul > li > a {
-    display: contents;
-  }
-
-  main .cards.info-points:has(.cards-card-image) > ul > li {
-    display: grid;
-    grid-template-rows: 8rem auto;
-    align-items: start;
-  }
-
-  main .section:has(.cards.info-points) > .section-container h2 {
-    font-size: var(--heading-font-size-xl);
+  main .section.cards-container:has(.cards.info-points) h2 {
+    font-size: var(--heading-font-size-mxl);
     text-align: center;
   }
 

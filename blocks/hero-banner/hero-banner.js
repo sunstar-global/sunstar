@@ -80,9 +80,7 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
     sprite.classList.add('icon', 'icon-linkedin');
     linkedin.appendChild(sprite);
 
-    const callToAction =
-      [...textDiv.querySelectorAll('p')].find((paragraph) => paragraph.querySelector('a[href]')) || pElement;
-    if (callToAction) callToAction.append(linkedin);
+    pElement.append(linkedin);
   } else if (
     !target.classList.contains('small-box') &&
     pElement &&
