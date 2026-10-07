@@ -621,6 +621,18 @@ main .cards.info-points:has(.cards-card-image) > ul > li > a:hover .cards-card-b
   .cards.grid .cards-card-image img {
     object-position: 50% 0;
   }
+
+  .leadership-profile-content {
+    grid-template-columns: minmax(18rem, 27.5rem) minmax(0, 1fr);
+    align-items: start;
+    gap: 3rem;
+    padding: 3rem 4rem 4rem;
+  }
+
+  .leadership-profile-close {
+    top: 1.75rem;
+    right: 1.75rem;
+  }
 }
 
 @media screen and (min-width: 62rem) {

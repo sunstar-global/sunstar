@@ -2,6 +2,8 @@ import { loadEmbed } from '../embed/embed.js';
 import { decorateButtons } from '../text/text.js';
 import { loadFragment, initInjectedBlocks } from '../../scripts/scripts.js';
 
+const COLLAPSE_HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
+
 export function applySplitPercentages(block) {
   const ratios = [];
   for (let i = 0; i < block.classList.length; i += 1) {
@@ -289,15 +291,17 @@ export default async function decorate(block) {
   const collapseEnabled = block.classList.contains('collapse');
   if (collapseEnabled) {
     [...block.children].forEach((row) => {
-      const headings = row.querySelectorAll('h6');
+      const headings = row.querySelectorAll(COLLAPSE_HEADING_SELECTOR);
       if (headings.length) {
         [...headings].forEach((h) => {
-          h.parentElement.addEventListener('click', () => {
+          const list = h.nextElementSibling;
+          if (!list) {
+            return;
+          }
+
+          h.addEventListener('click', () => {
             h.classList.toggle('active');
-            const list = h.nextElementSibling;
-            if (list) {
-              list.classList.toggle('active');
-            }
+            list.classList.toggle('active');
           });
         });
       }
