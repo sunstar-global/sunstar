@@ -176,6 +176,8 @@ main .cards.features-items ul > li {
 
 main .cards.info-points > ul > li {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
   box-shadow: none;
 }
 
@@ -359,7 +361,7 @@ main .cards.info-points .cards-card-body h6 {
   margin-bottom: 1.5rem;
 }
 
-main .section.cards-container:has(.cards.info-points) h2 {
+main .section:has(.cards.info-points) > .section-container h2 {
   font-size: var(--heading-font-size-m);
   text-align: left;
   margin-bottom: 2rem;
@@ -378,11 +380,20 @@ main .section.cards-container:has(.cards.info-points) h2 {
   text-overflow: ellipsis;
 }
 
+main .cards.info-points .cards-card-body h3,
 main .cards.info-points .cards-card-body h4 {
   font-size: var(--heading-font-size-mxs);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-medium);
   margin-top: 0;
   margin-bottom: 1rem;
+  text-align: center;
+}
+
+main .cards.info-points .cards-card-body {
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  width: 100%;
 }
 
 main .cards.info-points .cards-card-body p {
@@ -400,6 +411,16 @@ main .cards.info-points > ul > li:hover {
 main .cards.info-points .cards-card-image img {
   width: 5rem;
   height: 5rem;
+}
+
+main .cards.info-points .cards-card-image {
+  aspect-ratio: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  flex: 0 0 5rem;
 }
 
 /* Styles for machine parts cards */
@@ -524,7 +545,9 @@ main .cards.text-center > ul > li .cards-card-body {
 }
 
 main .nolink .cards.info-points > ul > li .cards-card-image {
-  width: auto;
+  width: 5rem;
+  height: 5rem;
+  flex: 0 0 5rem;
   border: none;
 }
 
@@ -564,157 +587,27 @@ main .cards-wrapper .light-background .cards-card-body h3 {
   text-decoration: unset;
 }
 
-body.leadership-profile-open {
-  overflow: hidden;
+main .cards.info-points:has(.cards-card-image) > ul > li:is(:hover, :focus-within) {
+  box-shadow: none;
+  transform: none;
 }
 
-/* stylelint-disable no-descending-specificity */
-.cards.leadership-profiles > ul > li {
-  cursor: pointer;
-  outline: none;
+main .cards.info-points:has(.cards-card-image) > ul > li > a:hover {
+  background-color: transparent !important;
 }
 
-.cards.leadership-profiles > ul > li:focus-visible {
-  box-shadow: 0 0 0 3px var(--primary);
+main .cards.info-points:has(.cards-card-image) > ul > li > a:hover .cards-card-body {
+  color: var(--light-black);
 }
 
-.cards.leadership-profiles > ul > li.active,
-.cards.leadership-profiles > ul > li:hover {
-  transform: translateY(-0.25rem);
-}
-
-.leadership-profile-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem;
-}
-
-.leadership-profile-modal.open {
-  display: flex;
-}
-
-.leadership-profile-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgb(15 23 32 / 68%);
-  backdrop-filter: blur(1px);
-}
-
-.leadership-profile-dialog {
-  position: relative;
-  z-index: 1;
-  width: min(68rem, 100%);
-  max-height: min(44rem, calc(100vh - 2.5rem));
-  overflow: auto;
-  background: var(--white);
-  border-radius: 0.5rem;
-  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 32%);
-  outline: none;
-}
-
-.leadership-profile-close {
-  position: absolute;
-  top: 0.5rem;
-  right: -0.15rem;
-  z-index: 2;
-  width: 2.5rem;
-  min-width: 4.5rem;
-  max-width: 2.5rem;
-  height: 2.5rem;
-  min-height: 2.5rem;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+main .cards.info-points:has(.cards-card-image) > ul > li > a:hover .cards-card-body h3,
+main .cards.info-points:has(.cards-card-image) > ul > li > a:hover .cards-card-body h4 {
   color: var(--primary);
-  cursor: pointer;
 }
 
-.leadership-profile-modal button.leadership-profile-close:focus,
-.leadership-profile-modal button.leadership-profile-close:active,
-.leadership-profile-modal button.leadership-profile-close:not(:disabled):hover {
-  background: transparent;
-  background-color: transparent;
+main .cards.info-points:has(.cards-card-image) > ul > li > a:hover .cards-card-body p {
+  color: var(--light-black);
 }
-
-.leadership-profile-close:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-.leadership-profile-close::before,
-.leadership-profile-close::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1.25rem;
-  height: 2px;
-  background: currentcolor;
-}
-
-.leadership-profile-close::before {
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.leadership-profile-close::after {
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-.leadership-profile-content {
-  display: grid;
-  gap: 1.75rem;
-  padding: 4.5rem 1.5rem 2rem;
-}
-
-.leadership-profile-content .cards-card-image {
-  aspect-ratio: 1 / 1.1;
-  overflow: hidden;
-  border-radius: 0.4rem;
-  background: #f4f7f8;
-}
-
-.leadership-profile-content .cards-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 0;
-}
-
-.leadership-profile-content .cards-card-body {
-  min-width: 0;
-  padding: 0;
-}
-
-.leadership-profile-content .cards-card-body :is(h1, h2, h3, h4) {
-  margin: 0 0 1.15rem;
-  color: var(--primary);
-  font-size: clamp(1.15rem, 1.8vw, 1.3rem);
-  font-weight: 400;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-
-.leadership-profile-content .cards-card-body :is(h1, h2, h3, h4):first-child {
-  margin-bottom: 1.5rem;
-  font-size: clamp(1.75rem, 2.5vw, 2rem);
-  line-height: 1.2;
-}
-
-.leadership-profile-content .cards-card-body p {
-  margin: 0 0 1.4rem;
-  color: #1f2933;
-  font-size: 1rem;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
-  word-break: normal;
-}
-/* stylelint-enable no-descending-specificity */
 
 @media screen and (min-width: 48rem) {
   .cards > ul {
@@ -920,11 +813,12 @@ body.leadership-profile-open {
     text-align: center;
   }
 
+  main .cards.info-points .cards-card-body h3,
   main .cards.info-points .cards-card-body h4 {
     font-size: var(--heading-font-size-s);
     font-weight: var(--font-weight-medium);
-    margin-top: 2rem;
-    margin-inline: 3rem;
+    margin-top: 0;
+    margin-inline: 0;
   }
 
   main .cards.info-points > ul {
@@ -935,13 +829,43 @@ body.leadership-profile-open {
     display: block;
   }
 
-  main .cards.info-points .cards-card-image img {
-    width: 100%;
-    height: 100%;
+  main .cards.info-points:has(.cards-card-image) .cards-card-image {
+    width: 8rem;
+    height: 8rem;
+    flex-basis: 8rem;
+    margin-inline: auto;
   }
 
-  main .section.cards-container:has(.cards.info-points) h2 {
-    font-size: var(--heading-font-size-mxl);
+  main .cards.info-points:has(.cards-card-image) .cards-card-image img {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  main .cards.info-points:has(.cards-card-image) .cards-card-body h3,
+  main .cards.info-points:has(.cards-card-image) .cards-card-body h4 {
+    font-size: var(--heading-font-size-s);
+    max-width: 22rem;
+    min-height: 4rem;
+    margin-inline: auto;
+  }
+
+  main .cards.info-points:has(.cards-card-image) .cards-card-body p {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  main .cards.info-points:has(.cards-card-image) > ul > li > a {
+    display: contents;
+  }
+
+  main .cards.info-points:has(.cards-card-image) > ul > li {
+    display: grid;
+    grid-template-rows: 8rem auto;
+    align-items: start;
+  }
+
+  main .section:has(.cards.info-points) > .section-container h2 {
+    font-size: var(--heading-font-size-xl);
     text-align: center;
   }
 
