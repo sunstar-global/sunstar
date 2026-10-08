@@ -103,7 +103,7 @@ describe('Columns Block', () => {
     expect(cd2.style.textAlign).to.equal('');
   });
 
-  it('Adds sustainability category labels from authored label marker', () => {
+  it('Adds arbitrary labels from an authored label marker', () => {
     const block = document.createElement('div');
     block.className = 'columns';
     block.innerHTML = `
@@ -116,34 +116,35 @@ describe('Columns Block', () => {
       </div>
     `;
 
-    scripts.decorateSustainabilityProductLabels(block);
+    scripts.decorateLabels(block);
 
-    const labels = [...block.querySelectorAll('.sustainability-category-label')].map((label) => label.textContent);
+    const labels = [...block.querySelectorAll('.content-label')].map((label) => label.textContent);
     expect(labels).to.deep.equal(['Reduce', 'Renew']);
-    expect(block.querySelector('h3 > .sustainability-category-labels')).to.exist;
+    expect(block.querySelector('h3 > .content-labels')).to.exist;
     expect(block.textContent).to.not.include('Labels:');
   });
 
-  it('Ignores unsupported sustainability category labels', () => {
+  it('Supports labels that are not part of a predefined category list', () => {
     const block = document.createElement('div');
-    block.className = 'columns';
+    block.className = 'cards';
     block.innerHTML = `
       <div>
         <div>
-          <h3>Use of low environmental impact materials in products and packaging (Japan)</h3>
-          <p>Labels: Other</p>
+          <div>Use of low environmental impact materials in products and packaging (Japan)</div>
+          <p>Labels: Research, Employee wellbeing, Other</p>
           <p>Body copy</p>
         </div>
       </div>
     `;
 
-    scripts.decorateSustainabilityProductLabels(block);
+    scripts.decorateLabels(block);
 
-    expect(block.querySelector('.sustainability-category-label')).to.equal(null);
-    expect(block.textContent).to.include('Labels: Other');
+    const labels = [...block.querySelectorAll('.content-label')].map((label) => label.textContent);
+    expect(labels).to.deep.equal(['Research', 'Employee wellbeing', 'Other']);
+    expect(block.textContent).to.not.include('Labels:');
   });
 
-  it('Adds sustainability category labels when the title renders as paragraph text', () => {
+  it('Adds labels when the title renders as paragraph text', () => {
     const block = document.createElement('div');
     block.className = 'columns';
     block.innerHTML = `
@@ -156,10 +157,10 @@ describe('Columns Block', () => {
       </div>
     `;
 
-    scripts.decorateSustainabilityProductLabels(block);
+    scripts.decorateLabels(block);
 
-    const labels = [...block.querySelectorAll('.sustainability-category-label')].map((label) => label.textContent);
+    const labels = [...block.querySelectorAll('.content-label')].map((label) => label.textContent);
     expect(labels).to.deep.equal(['Reuse', 'Recycle', 'Decarbonize']);
-    expect(block.querySelector('p > .sustainability-category-labels')).to.exist;
+    expect(block.querySelector('p > .content-labels')).to.exist;
   });
 });
