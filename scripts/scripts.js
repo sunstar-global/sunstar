@@ -21,6 +21,7 @@ import {
 } from './lib-franklin.js';
 
 import loadSchema, { generateBreadcrumbSchema } from './schema.js';
+import decorateLabels from './labels.js';
 
 const LCP_BLOCKS = [
   'hero',
@@ -688,6 +689,7 @@ async function loadLazy(doc) {
   await loadBlocks(main);
   generateBreadcrumbSchema(doc);
   wrapDirectDivTextInParagraphs(main);
+  decorateLabels(main);
   addHealthyThinkingBackLink(main);
 
   const { hash } = window.location;
@@ -885,6 +887,7 @@ export async function loadFragment(path, { decorate = true } = {}) {
   if (decorate) {
     decorateMain(main);
     await loadBlocks(main);
+    decorateLabels(main);
   }
 
   return main;

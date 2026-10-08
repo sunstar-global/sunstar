@@ -1,8 +1,11 @@
 import { loadEmbed } from '../embed/embed.js';
 import { decorateButtons } from '../text/text.js';
 import { loadFragment, initInjectedBlocks } from '../../scripts/scripts.js';
+import decorateLabels from '../../scripts/labels.js';
 
 const COLLAPSE_HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
+export { decorateLabels };
+export const decorateSustainabilityProductLabels = decorateLabels;
 
 export function applySplitPercentages(block) {
   const ratios = [];
@@ -246,6 +249,8 @@ export default async function decorate(block) {
   });
 
   // stylize anchors unless block has no-buttons class or the anchor is a youtube link which has embed-yt class
+  decorateLabels(block);
+
   if (!block.classList.contains('no-buttons')) {
     if (block.classList.contains('button')) {
       decorateButtons(block);
