@@ -1,4 +1,4 @@
-import { fetchIndex, getLanguage } from '../../scripts/scripts.js';
+import { fetchIndex, fixExcelFilterZeroes, getLanguage } from '../../scripts/scripts.js';
 import { addTextEl } from '../../scripts/blocks-utils.js';
 import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
@@ -26,8 +26,10 @@ export function normalizeJobFilterValue(value) {
 }
 
 export function normalizeJobListingItem(item) {
+  const jobdescription = normalizeJobFilterValue(item.jobdescription) || normalizeJobFilterValue(item.description);
   return {
     ...item,
+    jobdescription,
     region: normalizeJobFilterValue(item.region),
     country: normalizeJobFilterValue(item.country),
     city: normalizeJobFilterValue(item.city),
@@ -71,6 +73,7 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders(getLanguage(window.location.pathname, true));
   const idxPrefix = lang === 'en' ? '' : `${lang}-`;
   const { data: unfilteredData } = await fetchIndex('query-index', `${idxPrefix}career-opportunities`);
+  fixExcelFilterZeroes(unfilteredData || []);
 
   let data = (unfilteredData || []).filter((item) => {
     if (item.robots && item.robots.includes('noindex')) {
