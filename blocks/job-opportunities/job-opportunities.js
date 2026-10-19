@@ -26,8 +26,10 @@ export function normalizeJobFilterValue(value) {
 }
 
 export function normalizeJobListingItem(item) {
+  const jobdescription = normalizeJobFilterValue(item.jobdescription) || normalizeJobFilterValue(item.description);
   return {
     ...item,
+    jobdescription,
     region: normalizeJobFilterValue(item.region),
     country: normalizeJobFilterValue(item.country),
     city: normalizeJobFilterValue(item.city),
