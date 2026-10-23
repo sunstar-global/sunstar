@@ -7,67 +7,19 @@ function isLeadershipPage() {
   return /^\/([a-z]{2}\/)?about\/our-leadership$/.test(pathname);
 }
 
-function normalizeProfileNameKey(text) {
-  return String(text || '')
-    .normalize('NFKC')
-    .toLowerCase()
-    .replace(/[\s・.．·]+/g, '');
+function getProfileTitle(card) {
+  return card.querySelector('.cards-card-body h1, .cards-card-body h2, .cards-card-body h3, .cards-card-body h4')
+    ?.textContent;
 }
 
-const PROFILE_SLUGS = new Map(
-  [
-    ['Michel Pettigrew', 'michel-pettigrew'],
-    ['ミシェル・ペティグルー', 'michel-pettigrew'],
-    ['Mayumi Kaneda', 'mayumi-kaneda'],
-    ['金田 真弓', 'mayumi-kaneda'],
-    ['Marcel Schmid', 'marcel-schmid'],
-    ['マルセル・シュミット', 'marcel-schmid'],
-    ['Yuji Okamoto', 'yuji-okamoto'],
-    ['岡本 雄二', 'yuji-okamoto'],
-    ['Akihiko Kuroki', 'akihiko-kuroki'],
-    ['黒木 昭彦', 'akihiko-kuroki'],
-    ['Masaki Ukai', 'masaki-ukai'],
-    ['鵜飼 正樹', 'masaki-ukai'],
-    ['Philippe Georges', 'philippe-georges'],
-    ['René Bujard', 'rene-bujard'],
-    ['Wieland Noetzold', 'wieland-noetzold'],
-    ['Andrew Thorson', 'andrew-thorson'],
-    ['Michele Brown Beecker', 'michele-brown-beecker'],
-    ['Satoshi Fukui', 'satoshi-fukui'],
-    ['福井 聡', 'satoshi-fukui'],
-    ['Kimio Shibata', 'kimio-shibata'],
-    ['柴田 公生', 'kimio-shibata'],
-    ['Eduardo Perez', 'eduardo-perez'],
-    ['Adam Lisook', 'adam-lisook'],
-    ['Christine Truillet', 'christine-truillet'],
-    ['Jennifer Jianwen Zhu', 'jennifer-jianwen-zhu'],
-    ['Isabelle Botticelli', 'isabelle-botticelli'],
-    ['Toshiyuki Toumura', 'toshiyuki-toumura'],
-    ['東村 俊之', 'toshiyuki-toumura'],
-    ['Wally Palen', 'wally-palen'],
-    ['Xu Lianlong', 'xu-lianlong'],
-    ['徐 連龍', 'xu-lianlong'],
-    ['Hitoshi Ohno', 'hitoshi-ohno'],
-    ['大野 仁', 'hitoshi-ohno'],
-    ['Hiroshi Wada', 'hiroshi-wada'],
-    ['和田 裕', 'hiroshi-wada'],
-    ['Sadayuki Sugai', 'sadayuki-sugai'],
-    ['菅居 貞幸', 'sadayuki-sugai'],
-    ['Quek Kwang Peng', 'quek-kwang-peng'],
-  ].map(([name, slug]) => [normalizeProfileNameKey(name), slug])
-);
-
 function createProfileSlug(text, usedSlugs) {
-  const mappedSlug = PROFILE_SLUGS.get(normalizeProfileNameKey(text));
   const baseSlug =
-    mappedSlug ||
     text
       ?.normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '') ||
-    'profile';
+      .replace(/^-|-$/g, '') || 'profile';
   let slug = baseSlug;
   let counter = 2;
 
@@ -78,11 +30,6 @@ function createProfileSlug(text, usedSlugs) {
 
   usedSlugs.add(slug);
   return slug;
-}
-
-function getProfileTitle(card) {
-  return card.querySelector('.cards-card-body h1, .cards-card-body h2, .cards-card-body h3, .cards-card-body h4')
-    ?.textContent;
 }
 
 function createProfileModal() {
@@ -106,17 +53,13 @@ function clearHash() {
 }
 
 function decorateLeadershipProfiles(block) {
-  if (!isLeadershipPage()) {
-    return;
-  }
+  if (!isLeadershipPage()) return;
 
   const profiles = [...block.querySelectorAll(':scope > ul > li')].filter(
     (card) => card.querySelector('.cards-card-image') && getProfileTitle(card)
   );
 
-  if (!profiles.length) {
-    return;
-  }
+  if (!profiles.length) return;
 
   const usedSlugs = new Set();
   const modal = createProfileModal();
@@ -134,9 +77,7 @@ function decorateLeadershipProfiles(block) {
     activeProfile?.focus();
     activeProfile = null;
 
-    if (updateUrl && window.location.hash) {
-      clearHash();
-    }
+    if (updateUrl && window.location.hash) clearHash();
   }
 
   function openProfile(profile, { updateUrl = true } = {}) {
@@ -154,22 +95,18 @@ function decorateLeadershipProfiles(block) {
     const title = content.querySelector(
       '.cards-card-body h1, .cards-card-body h2, .cards-card-body h3, .cards-card-body h4'
     );
-    if (title) {
-      title.id = 'leadership-profile-title';
-    }
+    if (title) title.id = 'leadership-profile-title';
 
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('leadership-profile-open');
     dialog.focus();
 
-    if (updateUrl) {
-      window.history.pushState(null, '', `#${profile.id}`);
-    }
+    if (updateUrl) window.history.pushState(null, '', `#${profile.id}`);
   }
 
   function openProfileFromHash() {
-    const profileId = window.location.hash.replace('#', '');
+    const profileId = window.location.hash.slice(1);
     const profile = profiles.find((card) => card.id === profileId);
 
     if (profile) {
@@ -180,13 +117,12 @@ function decorateLeadershipProfiles(block) {
   }
 
   profiles.forEach((profile) => {
-    const title = getProfileTitle(profile);
+    const title = getProfileTitle(profile).trim();
     const slug = createProfileSlug(title, usedSlugs);
     profile.id = slug;
     profile.tabIndex = 0;
     profile.setAttribute('role', 'button');
     profile.setAttribute('aria-label', `Open profile for ${title}`);
-    profile.dataset.profileUrl = `${window.location.pathname}${window.location.search}#${slug}`;
 
     profile.addEventListener('click', (event) => {
       event.preventDefault();
@@ -201,15 +137,11 @@ function decorateLeadershipProfiles(block) {
   });
 
   modal.addEventListener('click', (event) => {
-    if (event.target.closest('[data-profile-close]')) {
-      closeProfile();
-    }
+    if (event.target.closest('[data-profile-close]')) closeProfile();
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && activeProfile) {
-      closeProfile();
-    }
+    if (event.key === 'Escape' && activeProfile) closeProfile();
   });
 
   window.addEventListener('hashchange', openProfileFromHash);
