@@ -102,4 +102,65 @@ describe('Columns Block', () => {
     expect(cd2.style.display).to.not.equal('flex');
     expect(cd2.style.textAlign).to.equal('');
   });
+
+  it('Adds arbitrary labels from an authored label marker', () => {
+    const block = document.createElement('div');
+    block.className = 'columns';
+    block.innerHTML = `
+      <div>
+        <div>
+          <h3>Use of low environmental impact materials in products and packaging (Japan)</h3>
+          <p>Labels: Reduce, Renew</p>
+          <p>Body copy</p>
+        </div>
+      </div>
+    `;
+
+    scripts.decorateLabels(block);
+
+    const labels = [...block.querySelectorAll('.content-label')].map((label) => label.textContent);
+    expect(labels).to.deep.equal(['Reduce', 'Renew']);
+    expect(block.querySelector('h3 > .content-labels')).to.exist;
+    expect(block.textContent).to.not.include('Labels:');
+  });
+
+  it('Supports labels that are not part of a predefined category list', () => {
+    const block = document.createElement('div');
+    block.className = 'cards';
+    block.innerHTML = `
+      <div>
+        <div>
+          <div>Use of low environmental impact materials in products and packaging (Japan)</div>
+          <p>Labels: Research, Employee wellbeing, Other</p>
+          <p>Body copy</p>
+        </div>
+      </div>
+    `;
+
+    scripts.decorateLabels(block);
+
+    const labels = [...block.querySelectorAll('.content-label')].map((label) => label.textContent);
+    expect(labels).to.deep.equal(['Research', 'Employee wellbeing', 'Other']);
+    expect(block.textContent).to.not.include('Labels:');
+  });
+
+  it('Adds labels when the title renders as paragraph text', () => {
+    const block = document.createElement('div');
+    block.className = 'columns';
+    block.innerHTML = `
+      <div>
+        <div>
+          <p>Use of low environmental impact materials in products and packaging (Japan)</p>
+          <p>Labels: Reuse, Recycle, Decarbonize</p>
+          <p>Body copy</p>
+        </div>
+      </div>
+    `;
+
+    scripts.decorateLabels(block);
+
+    const labels = [...block.querySelectorAll('.content-label')].map((label) => label.textContent);
+    expect(labels).to.deep.equal(['Reuse', 'Recycle', 'Decarbonize']);
+    expect(block.querySelector('p > .content-labels')).to.exist;
+  });
 });

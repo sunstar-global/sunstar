@@ -94,17 +94,75 @@ main .hero-horiz-tabs-with-button .hero-horiz-tabs-text > p {
 }
 
 main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container {
-  margin-bottom: 0.4375rem;
+  display: inline-flex;
+  width: auto;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
 }
 
 main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container > a {
-  width: 100%;
+  width: auto;
+  min-width: 12.25rem;
   background-color: var(--orange-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--white);
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+}
+
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container > a:hover,
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container > a:focus {
+  background-color: var(--orange-light);
+  color: var(--white);
+  text-decoration: none;
+}
+
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container > a::after {
+  content: '›';
+  color: var(--white);
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  margin-left: 0.625rem;
+}
+
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left,
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container,
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container {
+  order: 2;
+  margin-bottom: 0;
 }
 
 main div.no-image .hero-horiz-tabs-text > p {
   color: var(--white);
   line-height: 1.5em;
+}
+
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left > p:not(.button-container),
+main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right > p:not(.button-container) {
+  order: 1;
+  margin: 0;
+  color: var(--white);
+  font-size: var(--body-font-size-s);
+  line-height: 1.55;
 }
 
 main .hero-horiz-tabs-img picture,
@@ -266,19 +324,63 @@ main .hero-horizontal-tabs a.button.primary.video-link::after {
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button {
     width: inherit;
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
   }
 
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left,
   main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right {
     flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
   }
 
-  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text p.button-container > a {
-    width: 14.375rem;
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container,
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container {
+    order: 2;
+    width: auto;
+  }
+
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container > a,
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right p.button-container > a {
+    width: auto;
+    min-width: 13rem;
     font-size: var(--body-font-size-s);
     background-color: var(--orange-light);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.25rem;
+    color: var(--white);
+    border-radius: 0.25rem;
+    text-decoration: none;
+    font-weight: var(--font-weight-bold);
+  }
+
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left p.button-container > a {
+    min-width: 19.5rem;
+  }
+
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-left > p:not(.button-container),
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right > p:not(.button-container) {
+    order: 1;
+    margin: 0;
+    color: var(--white);
+    font-size: var(--body-font-size-s);
+    line-height: 1.55;
+  }
+
+  main .hero-horiz-tabs-with-button .hero-horiz-tabs-text-button-right > p:not(.button-container) {
+    max-width: 20rem;
   }
 }
 

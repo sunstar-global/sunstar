@@ -168,6 +168,28 @@
   --split-lasttwothird: 60%: 40%;
 }
 
+.has-content-labels {
+  display: block;
+}
+
+.content-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.content-label {
+  background-color: var(--transparent-blue-light-color);
+  border-radius: 0.125rem;
+  color: var(--primary);
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  padding: 0.25rem 0.5rem;
+}
+
 *,
 *::before,
 *::after {
@@ -810,6 +832,10 @@ main .block.centered {
   text-align: center;
 }
 
+main .block.oral-health {
+  text-align: center;
+}
+
 /* START Section Styles START */
 
 main .section.flex {
@@ -874,6 +900,22 @@ main .section.bold-headings h6 {
 
 main .section.no-margin-block .section-container {
   margin-block: 0 !important;
+}
+
+main .section.healthy-thinking-back-link .section-container {
+  border-top: 1px solid var(--overlay-background-color);
+  background-color: var(--background-color);
+  padding: 1.5rem;
+}
+
+main .section.healthy-thinking-back-link a {
+  color: var(--link-color);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+main .section.healthy-thinking-back-link a:hover {
+  text-decoration: underline;
 }
 
 /* section - full-width */
@@ -1342,6 +1384,10 @@ p.button-container,
     padding-right: 16px;
   }
 
+  main .section.healthy-thinking-back-link .section-container {
+    max-width: calc(872px + 32px);
+  }
+
   /* section - bottom-border */
   main .section.bottom-border {
     border-bottom: 1px solid var(--overlay-background-color);
@@ -1571,7 +1617,10 @@ p.button-container,
     padding: 0;
   }
 
-  div.lead p,
+  div.lead p {
+    font-size: var(--body-font-size-l);
+  }
+
   main .block.lead p,
   p.lead {
     font-size: var(--body-font-size-xxl);

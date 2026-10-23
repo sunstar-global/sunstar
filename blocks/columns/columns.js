@@ -1,6 +1,11 @@
 import { loadEmbed } from '../embed/embed.js';
 import { decorateButtons } from '../text/text.js';
 import { loadFragment, initInjectedBlocks } from '../../scripts/scripts.js';
+import decorateLabels from '../../scripts/labels.js';
+
+const COLLAPSE_HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
+export { decorateLabels };
+export const decorateSustainabilityProductLabels = decorateLabels;
 
 export function applySplitPercentages(block) {
   const ratios = [];
@@ -244,6 +249,8 @@ export default async function decorate(block) {
   });
 
   // stylize anchors unless block has no-buttons class or the anchor is a youtube link which has embed-yt class
+  decorateLabels(block);
+
   if (!block.classList.contains('no-buttons')) {
     if (block.classList.contains('button')) {
       decorateButtons(block);
@@ -289,15 +296,17 @@ export default async function decorate(block) {
   const collapseEnabled = block.classList.contains('collapse');
   if (collapseEnabled) {
     [...block.children].forEach((row) => {
-      const headings = row.querySelectorAll('h6');
+      const headings = row.querySelectorAll(COLLAPSE_HEADING_SELECTOR);
       if (headings.length) {
         [...headings].forEach((h) => {
-          h.parentElement.addEventListener('click', () => {
+          const list = h.nextElementSibling;
+          if (!list) {
+            return;
+          }
+
+          h.addEventListener('click', () => {
             h.classList.toggle('active');
-            const list = h.nextElementSibling;
-            if (list) {
-              list.classList.toggle('active');
-            }
+            list.classList.toggle('active');
           });
         });
       }

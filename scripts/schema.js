@@ -41,6 +41,13 @@ import { getMetadata } from './lib-franklin.js';
 const SCHEMA_CONTEXT = 'https://schema.org';
 const ORGANIZATION_NAME = 'Sunstar';
 const DEFAULT_IMAGE_SELECTOR = 'main img';
+const JSON_LD_SELECTOR = 'script[type="application/ld+json"]';
+const SCHEMA_SOURCE_ATTRIBUTE = 'data-schema-source';
+const SCHEMA_SOURCES = {
+  METADATA: 'metadata',
+  GENERATED: 'generated',
+};
+const SCHEMA_ORG_CONTEXTS = ['https://schema.org', 'https://schema.org/', 'http://schema.org', 'http://schema.org/'];
 
 const PAGE_TYPES = {
   HOME: 'home',
@@ -96,7 +103,7 @@ const PAGE_TYPE_ALIASES = {
   'generic-content': PAGE_TYPES.GENERIC,
 };
 
-function injectScript(attrs = {}) {
+function injectScript(attrs = {}, doc = document) {
   const script = document.createElement('script');
 
   Object.entries(attrs).forEach(([name, value]) => {
@@ -107,15 +114,79 @@ function injectScript(attrs = {}) {
     }
   });
 
-  document.head.appendChild(script);
+  doc.head.appendChild(script);
 }
 
-function validateSchema(json) {
+function removeSchemaScriptsBySource(doc, sources) {
+  sources.forEach((source) => {
+    doc.head
+      .querySelectorAll(`${JSON_LD_SELECTOR}[${SCHEMA_SOURCE_ATTRIBUTE}="${source}"]`)
+      .forEach((script) => script.remove());
+  });
+}
+
+function removeManagedSchema(doc) {
+  removeSchemaScriptsBySource(doc, [SCHEMA_SOURCES.METADATA, SCHEMA_SOURCES.GENERATED]);
+}
+
+function isSchemaOrgContext(context) {
+  if (!context) return false;
+
+  if (typeof context === 'string') {
+    return SCHEMA_ORG_CONTEXTS.includes(context);
+  }
+
+  if (Array.isArray(context)) {
+    return context.some((item) => isSchemaOrgContext(item));
+  }
+
+  if (typeof context === 'object') {
+    return Object.values(context).some((value) => isSchemaOrgContext(value));
+  }
+
+  return false;
+}
+
+function isSchemaOrgJsonLd(data) {
+  if (Array.isArray(data)) {
+    return data.some((item) => isSchemaOrgJsonLd(item));
+  }
+
+  return data && typeof data === 'object' && isSchemaOrgContext(data['@context']);
+}
+
+function hasNativeJsonLd(doc = document) {
+  return [...doc.head.querySelectorAll(JSON_LD_SELECTOR)]
+    .filter((script) => !script.dataset.schemaSource)
+    .some((script) => {
+      try {
+        return isSchemaOrgJsonLd(JSON.parse(script.textContent));
+      } catch (e) {
+        return false;
+      }
+    });
+}
+
+export function injectCustomSchema(doc = document) {
+  const rawSchema = getMetadata('schema')?.trim();
+  if (!rawSchema) return false;
+
   try {
-    JSON.parse(json);
+    const schema = JSON.parse(rawSchema);
+
+    removeManagedSchema(doc);
+    injectScript(
+      {
+        type: 'application/ld+json',
+        [SCHEMA_SOURCE_ATTRIBUTE]: SCHEMA_SOURCES.METADATA,
+        content: JSON.stringify(schema),
+      },
+      doc
+    );
+
     return true;
   } catch (e) {
-    console.error('Invalid JSON schema:', e);
+    console.error(`Invalid JSON-LD in schema metadata on ${window.location.href}:`, e, rawSchema);
     return false;
   }
 }
@@ -407,28 +478,23 @@ export async function generateBreadcrumbSchema(doc) {
     })),
   };
 
-  injectScript({
-    type: 'application/ld+json',
-    content: JSON.stringify(cleanObject(breadcrumbList)),
-  });
+  injectScript(
+    {
+      type: 'application/ld+json',
+      [SCHEMA_SOURCE_ATTRIBUTE]: SCHEMA_SOURCES.GENERATED,
+      content: JSON.stringify(cleanObject(breadcrumbList)),
+    },
+    doc
+  );
 }
 
 export default async function loadSchema(doc) {
-  const manualSchema = getMetadata('schema');
-
-  if (manualSchema) {
-    if (validateSchema(manualSchema)) {
-      return;
-    }
-
-    doc.head.querySelectorAll('script[type="application/ld+json"]').forEach((script) => {
-      if (script.textContent.trim() === manualSchema.trim()) {
-        script.remove();
-      }
-    });
-
-    console.error('Invalid manual schema JSON:', manualSchema);
+  if (hasNativeJsonLd(doc)) {
+    removeManagedSchema(doc);
+    return;
   }
+
+  if (injectCustomSchema(doc)) return;
 
   const metadataType = normalizePageType(getMetadata('type'));
   const inferredType = inferPageType(window.location.pathname);
@@ -445,10 +511,15 @@ export default async function loadSchema(doc) {
     .map((schema) => cleanObject(schema))
     .filter((schema) => schema && Object.keys(schema).length > 0);
 
+  removeManagedSchema(doc);
   schemas.forEach((schema) => {
-    injectScript({
-      type: 'application/ld+json',
-      content: JSON.stringify(schema),
-    });
+    injectScript(
+      {
+        type: 'application/ld+json',
+        [SCHEMA_SOURCE_ATTRIBUTE]: SCHEMA_SOURCES.GENERATED,
+        content: JSON.stringify(schema),
+      },
+      doc
+    );
   });
 }
