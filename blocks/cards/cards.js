@@ -188,7 +188,10 @@ function decorateLeadershipProfiles(block) {
     profile.setAttribute('aria-label', `Open profile for ${title}`);
     profile.dataset.profileUrl = `${window.location.pathname}${window.location.search}#${slug}`;
 
-    profile.addEventListener('click', () => openProfile(profile));
+    profile.addEventListener('click', (event) => {
+      event.preventDefault();
+      openProfile(profile);
+    });
     profile.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
