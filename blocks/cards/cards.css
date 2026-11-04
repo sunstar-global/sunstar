@@ -79,7 +79,7 @@ main .block.cards {
   text-decoration: none;
 }
 
-.cards > ul > li > a:is(:hover, :focus, :focus-visible) {
+.cards:where(:not(.info-points)) > ul > li > a:is(:hover, :focus, :focus-visible) {
   text-decoration: none;
   background-color: #00587c !important;
 }
@@ -179,6 +179,10 @@ main .cards.info-points > ul > li {
   flex-direction: column;
   align-items: stretch;
   box-shadow: none;
+}
+
+main .cards.info-points:where(:not(:has(.cards-card-image))) > ul > li {
+  padding: 1.5rem;
 }
 
 .cards.hover-background-gray > ul > li:hover {
@@ -499,8 +503,8 @@ main .cards.machine-parts .cards-card-body a > strong {
   margin-right: 1rem;
 }
 
-.cards > ul > li > a:is(:hover, :focus, :focus-visible) .cards-card-body,
-.cards > ul > li > a:is(:hover, :focus, :focus-visible) .cards-card-body * {
+.cards:where(:not(.info-points)) > ul > li > a:is(:hover, :focus, :focus-visible) .cards-card-body,
+.cards:where(:not(.info-points)) > ul > li > a:is(:hover, :focus, :focus-visible) .cards-card-body * {
   color: var(--white);
 }
 

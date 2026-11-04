@@ -1,6 +1,3 @@
-/* eslint-disable no-empty */
-import { getLanguage } from '../../scripts/scripts.js';
-import { fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { decorateButtons } from '../text/text.js';
 
 /* eslint-disable no-console */
@@ -50,7 +47,7 @@ function decorateBackGroundImage(mediaRow, target) {
   target.appendChild(mediaDiv);
 }
 
-function decorateTextContent(headingRow, target, placeholders, overlap) {
+function decorateTextContent(headingRow, target, overlap) {
   headingRow.classList.add('hero-banner-text-container');
   let textDiv = headingRow.querySelector('div');
   const heroBannerWrapper = document.createElement('div');
@@ -70,26 +67,6 @@ function decorateTextContent(headingRow, target, placeholders, overlap) {
   }
 
   textDiv.classList.add('hero-banner-text-wrapper');
-  const pElement = textDiv.querySelector('p');
-  if (target.classList.contains('careers')) {
-    const linkedin = document.createElement('a');
-    linkedin.innerText = placeholders['career-apply-linkedin'];
-    linkedin.classList.add('button', 'primary', 'linkedin');
-    linkedin.href = placeholders['career-apply-linkedin-href'];
-    const sprite = document.createElement('span');
-    sprite.classList.add('icon', 'icon-linkedin');
-    linkedin.appendChild(sprite);
-
-    const callToAction =
-      [...textDiv.querySelectorAll('p')].find((paragraph) => paragraph.querySelector('a[href]')) || pElement;
-    if (callToAction) callToAction.append(linkedin);
-  } else if (
-    !target.classList.contains('small-box') &&
-    pElement &&
-    pElement.childElementCount === 1 &&
-    pElement.firstElementChild.tagName === 'A'
-  ) {
-  }
 
   if (textDiv.querySelector('h6') !== null) {
     const h6 = textDiv.querySelector('h6');
@@ -157,8 +134,6 @@ export default async function decorate(block) {
     block.innerHTML = '';
     block.appendChild(compositeContainer);
   } else {
-    const placeholders = await fetchPlaceholders(getLanguage());
-
     const mediaRow = rows.at(0);
     const contentRow = rows.at(1);
 
@@ -173,7 +148,7 @@ export default async function decorate(block) {
     }
 
     if (contentRow) {
-      decorateTextContent(contentRow, block, placeholders, overlap);
+      decorateTextContent(contentRow, block, overlap);
     }
 
     if (block.classList && block.classList.contains('overlap')) {
