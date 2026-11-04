@@ -7,6 +7,10 @@ main .block.cards {
   margin: 0 auto 3.75rem;
 }
 
+main .section:where(:has(.cards.info-points):not(:has(.cards.info-points .cards-card-image))) {
+  background-color: var(--transparent-blue-light-color);
+}
+
 .cards > ul {
   display: flex;
   list-style: none;
@@ -183,6 +187,7 @@ main .cards.info-points > ul > li {
 
 main .cards.info-points:where(:not(:has(.cards-card-image))) > ul > li {
   padding: 1.5rem;
+  background-color: var(--white);
 }
 
 .cards.hover-background-gray > ul > li:hover {
