@@ -333,23 +333,6 @@ main .block.hero-banner.composite.button a:hover {
   margin: 0 auto 1.5rem;
 }
 
-.hero-banner a.button.primary.linkedin {
-  background-color: unset;
-  border: 1px solid white;
-  padding-left: 2.5rem;
-}
-
-.hero-banner a.button.primary.linkedin:hover {
-  opacity: 0.7;
-}
-
-.hero-banner span.icon-linkedin {
-  margin-left: 0.625rem;
-  margin-right: 1rem;
-  height: 2rem;
-  width: 2.125rem;
-}
-
 .hero-banner.superposition .hero-banner-media-section::after {
   content: '';
   background: var(--transparent-grey-color-2);
