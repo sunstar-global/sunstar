@@ -906,3 +906,20 @@ main:has(.hero-banner.careers)
   > .text-col-wrapper:first-child {
   margin-top: 1rem;
 }
+
+main:has(.hero-banner.careers)
+  .section:has(#faqs-careers-at-sunstar)
+  .columns.plain-links.collapse
+  .text-col
+  > ul:has(> li + li) {
+  padding-inline-start: 1.5rem;
+}
+
+main:has(.hero-banner.careers)
+  .section:has(#faqs-careers-at-sunstar)
+  .columns.plain-links.collapse
+  .text-col
+  > ul:has(> li + li)
+  > li {
+  list-style: disc;
+}
