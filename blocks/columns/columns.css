@@ -871,4 +871,38 @@ div.img-col > video {
   .columns :not(.table) h3 {
     font-size: var(--h3-font-size-desktop);
   }
+
+  main:has(.hero-banner.careers)
+    .columns.text-layout:has(#your-career-at-sunstar-thrive-in-a-global-environment)
+    > div
+    > .img-col
+    > picture {
+    display: block;
+    width: 90%;
+    margin-inline: auto;
+  }
+
+  main:has(.hero-banner.careers)
+    .section:has(#faqs-careers-at-sunstar)
+    .columns.plain-links.top-down.collapse
+    > div {
+    gap: 0.5rem;
+  }
+}
+
+main:has(.hero-banner.careers)
+  .section:has(#faqs-careers-at-sunstar)
+  .columns.plain-links.top-down.collapse
+  > div
+  > .text-col-wrapper
+  > .text-col {
+  padding: 0;
+}
+
+main:has(.hero-banner.careers)
+  .section:has(#faqs-careers-at-sunstar)
+  .columns.plain-links.top-down.collapse:not(.continuation)
+  > div
+  > .text-col-wrapper:first-child {
+  margin-top: 1rem;
 }
