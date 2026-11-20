@@ -7,6 +7,22 @@ const COLLAPSE_HEADING_SELECTOR = 'h1, h2, h3, h4, h5, h6';
 export { decorateLabels };
 export const decorateSustainabilityProductLabels = decorateLabels;
 
+function groupFaqAnswer(heading) {
+  const answer = document.createElement('div');
+  answer.className = 'faq-answer';
+  answer.hidden = true;
+
+  let sibling = heading.nextSibling;
+  while (sibling && !sibling.matches?.(COLLAPSE_HEADING_SELECTOR)) {
+    const next = sibling.nextSibling;
+    answer.append(sibling);
+    sibling = next;
+  }
+
+  heading.after(answer);
+  return answer;
+}
+
 export function applySplitPercentages(block) {
   const ratios = [];
   for (let i = 0; i < block.classList.length; i += 1) {
@@ -295,18 +311,22 @@ export default async function decorate(block) {
   // style headings if collapse is enabled
   const collapseEnabled = block.classList.contains('collapse');
   if (collapseEnabled) {
+    const isCareersFaq = block.matches(
+      'main:has(.hero-banner.careers) .section:has(#faqs-careers-at-sunstar) .columns.plain-links.top-down.collapse'
+    );
     [...block.children].forEach((row) => {
       const headings = row.querySelectorAll(COLLAPSE_HEADING_SELECTOR);
       if (headings.length) {
         [...headings].forEach((h) => {
-          const list = h.nextElementSibling;
-          if (!list) {
+          if (!h.nextElementSibling) {
             return;
           }
 
+          const answer = isCareersFaq ? groupFaqAnswer(h) : h.nextElementSibling;
           h.addEventListener('click', () => {
             h.classList.toggle('active');
-            list.classList.toggle('active');
+            answer.classList.toggle('active');
+            if (isCareersFaq) answer.hidden = !answer.classList.contains('active');
           });
         });
       }
