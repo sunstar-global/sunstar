@@ -910,7 +910,22 @@ main:has(.hero-banner.careers)
 main:has(.hero-banner.careers)
   .section:has(#faqs-careers-at-sunstar)
   .columns.plain-links.collapse
-  .text-col
+  .faq-answer {
+  padding: 0;
+}
+
+main:has(.hero-banner.careers)
+  .section:has(#faqs-careers-at-sunstar)
+  .columns.plain-links.collapse
+  .faq-answer
+  > ul {
+  display: block;
+}
+
+main:has(.hero-banner.careers)
+  .section:has(#faqs-careers-at-sunstar)
+  .columns.plain-links.collapse
+  .faq-answer
   > ul:has(> li + li) {
   padding-inline-start: 1.5rem;
 }
@@ -918,7 +933,7 @@ main:has(.hero-banner.careers)
 main:has(.hero-banner.careers)
   .section:has(#faqs-careers-at-sunstar)
   .columns.plain-links.collapse
-  .text-col
+  .faq-answer
   > ul:has(> li + li)
   > li {
   list-style: disc;
