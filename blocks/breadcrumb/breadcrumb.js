@@ -79,7 +79,7 @@ async function createAutoBreadcrumb(block) {
       currentTitle = tagPageTitle;
     }
   }
-  currentTitle = currentTitle || getMetadata('breadcrumbtitle');
+  currentTitle = currentTitle || getMetadata('breadcrumbtitle') || getMetadata('breadcrumb-title');
 
   const breadcrumbs = [
     {
